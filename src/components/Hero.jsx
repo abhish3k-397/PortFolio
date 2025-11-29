@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useTheme } from '../context/ThemeContext';
+import InteractiveBlob from './InteractiveBlob';
 
 const Hero = () => {
     const { theme } = useTheme();
@@ -30,6 +31,15 @@ const Hero = () => {
                     ease: "rough"
                 });
 
+            } else if (theme === 'futuristic') {
+                // Futuristic Fade In
+                gsap.from(".hero-text-element", {
+                    y: 50,
+                    opacity: 0,
+                    stagger: 0.2,
+                    duration: 1.5,
+                    ease: "power2.out"
+                });
             } else {
                 // Standard Fade
                 gsap.from(containerRef.current, { opacity: 0, duration: 1 });
@@ -51,37 +61,60 @@ const Hero = () => {
                 </div>
             )}
 
-            <div className="z-10 text-center max-w-5xl w-full">
-                <div ref={textRef} className="overflow-visible">
+            {theme === 'futuristic' && (
+                <InteractiveBlob />
+            )}
+
+            <div className="z-10 text-center max-w-5xl w-full pointer-events-none">
+                <div ref={textRef} className="overflow-visible pointer-events-auto">
                     <h2 className="hero-text-element text-xl md:text-2xl mb-4 font-mono tracking-widest">
                         {theme === 'cyberpunk' ? (
                             <span className="text-cyber-yellow bg-black/50 px-2">&gt; SYSTEM.INIT(USER: ABHISHEK)</span>
+                        ) : theme === 'futuristic' ? (
+                            <span className="text-cyan-400 tracking-[0.5em] uppercase text-sm">Interactive Experience</span>
                         ) : (
                             <span className="text-cyan-400">Hello, I am</span>
                         )}
                     </h2>
 
-                    <h1 className="hero-text-element text-6xl md:text-9xl font-black mb-6 tracking-tighter leading-[0.9]">
-                        ABHISHEK <br />
-                        <span className={`glitch-text inline-block ${theme === 'cyberpunk' ? 'text-cyber-red drop-shadow-[4px_4px_0_rgba(255,255,255,0.2)]' : 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600'}`}>
-                            KRISHNA
-                        </span>
-                    </h1>
+                    {theme === 'futuristic' ? (
+                        <>
+                            <h1 className="hero-text-element text-5xl md:text-8xl font-bold mb-6 tracking-tight leading-tight text-white mix-blend-overlay">
+                                Crafting experiences <br /> through code.
+                            </h1>
+                            <p className="hero-text-element text-lg md:text-xl opacity-90 max-w-2xl mx-auto font-light text-cyan-100">
+                                Building intuitive, fast, and meaningful software.
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <h1 className="hero-text-element text-6xl md:text-9xl font-black mb-6 tracking-tighter leading-[0.9]">
+                                ABHISHEK <br />
+                                <span className={`glitch-text inline-block ${theme === 'cyberpunk' ? 'text-cyber-red drop-shadow-[4px_4px_0_rgba(255,255,255,0.2)]' : 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600'}`}>
+                                    KRISHNA
+                                </span>
+                            </h1>
 
-                    <p className="hero-text-element text-lg md:text-2xl opacity-80 max-w-3xl mx-auto leading-relaxed font-light">
-                        Full Stack Developer • Systems Engineer • Cybersecurity Enthusiast
-                    </p>
+                            <p className="hero-text-element text-lg md:text-2xl opacity-80 max-w-3xl mx-auto leading-relaxed font-light">
+                                Full Stack Developer • Systems Engineer • Cybersecurity Enthusiast
+                            </p>
+                        </>
+                    )}
 
                     <div className="hero-text-element mt-12 flex justify-center gap-6">
                         <button className={`px-8 py-3 font-bold text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
-                            ? 'bg-cyber-red text-black skew-x-[-10deg] hover:bg-white hover:shadow-[0_0_20px_#ff003c]'
-                            : 'bg-cyan-500 text-black rounded-full hover:bg-cyan-400 hover:shadow-[0_0_20px_cyan]'
+                                ? 'bg-cyber-red text-black skew-x-[-10deg] hover:bg-white hover:shadow-[0_0_20px_#ff003c]'
+                                : theme === 'futuristic'
+                                    ? 'bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 border border-white/20'
+                                    : 'bg-cyan-500 text-black rounded-full hover:bg-cyan-400 hover:shadow-[0_0_20px_cyan]'
                             }`}>
                             VIEW WORK
                         </button>
                         <button className={`px-8 py-3 font-bold text-xl transition-all duration-300 border-2 ${theme === 'cyberpunk'
-                            ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
-                            : 'border-white/20 text-white rounded-full hover:bg-white/10'
+                                ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
+                                : theme === 'futuristic'
+                                    ? 'border-white/10 text-white rounded-full hover:bg-white/5'
+                                    : 'border-white/20 text-white rounded-full hover:bg-white/10'
                             }`}>
                             CONTACT
                         </button>

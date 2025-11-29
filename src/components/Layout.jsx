@@ -1,9 +1,13 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { Monitor, Zap, Palette } from 'lucide-react';
+import { useSoundFX } from '../context/SoundContext';
+import { Monitor, Zap, Palette, Volume2, VolumeX } from 'lucide-react';
+import CustomCursor from './CustomCursor';
+import MagneticButton from './MagneticButton';
 
 const Layout = ({ children }) => {
     const { theme, setTheme } = useTheme();
+    const { isMuted, toggleMute, playHover, playClick } = useSoundFX();
 
     const themes = [
         { id: 'cyberpunk', icon: Monitor, label: 'Cyber' },
@@ -11,27 +15,52 @@ const Layout = ({ children }) => {
         { id: 'creative', icon: Palette, label: 'Art' },
     ];
 
+    const handleThemeChange = (id) => {
+        playClick();
+        setTheme(id);
+    };
+
     return (
-        <div className={`min-h-screen transition-colors duration-500 
+        <div className={`min-h-screen transition-colors duration-500 cursor-none 
       ${theme === 'cyberpunk' ? 'bg-cyber-blue text-cyber-neon' : ''}
       ${theme === 'futuristic' ? 'bg-slate-950 text-cyan-400' : ''}
       ${theme === 'creative' ? 'bg-purple-950 text-pink-300' : ''}
     `}>
-            {/* Theme Switcher */}
-            <div className="fixed top-6 right-6 z-50 flex gap-2 p-2 rounded-full bg-black/20 backdrop-blur-md border border-white/10">
-                {themes.map((t) => (
+            <CustomCursor />
+
+            {/* Controls Container */}
+            <div className="fixed top-6 right-6 z-50 flex flex-col gap-4 items-end">
+
+                {/* Theme Switcher */}
+                <div className="flex gap-2 p-2 rounded-full bg-black/20 backdrop-blur-md border border-white/10">
+                    {themes.map((t) => (
+                        <MagneticButton key={t.id}>
+                            <button
+                                onClick={() => handleThemeChange(t.id)}
+                                onMouseEnter={playHover}
+                                className={`p-2 rounded-full transition-all duration-300 ${theme === t.id
+                                        ? 'bg-white/20 text-white scale-110 shadow-[0_0_15px_rgba(255,255,255,0.5)]'
+                                        : 'text-white/50 hover:text-white hover:bg-white/10'
+                                    }`}
+                                title={t.label}
+                            >
+                                <t.icon size={20} />
+                            </button>
+                        </MagneticButton>
+                    ))}
+                </div>
+
+                {/* Sound Toggle */}
+                <MagneticButton>
                     <button
-                        key={t.id}
-                        onClick={() => setTheme(t.id)}
-                        className={`p-2 rounded-full transition-all duration-300 ${theme === t.id
-                                ? 'bg-white/20 text-white scale-110 shadow-[0_0_15px_rgba(255,255,255,0.5)]'
-                                : 'text-white/50 hover:text-white hover:bg-white/10'
-                            }`}
-                        title={t.label}
+                        onClick={() => { playClick(); toggleMute(); }}
+                        onMouseEnter={playHover}
+                        className="p-3 rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-all"
+                        title={isMuted ? "Unmute" : "Mute"}
                     >
-                        <t.icon size={20} />
+                        {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
                     </button>
-                ))}
+                </MagneticButton>
             </div>
 
             <main className="relative z-10">
