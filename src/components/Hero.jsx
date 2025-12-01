@@ -4,7 +4,6 @@ import { useTheme } from '../context/ThemeContext';
 import InteractiveBlob from './InteractiveBlob';
 import MagneticButton from './MagneticButton';
 import CodeRevealText from './CodeRevealText';
-import GlitchText from './GlitchText';
 
 const Hero = () => {
     const { theme } = useTheme();
@@ -91,13 +90,21 @@ const Hero = () => {
                         </>
                     ) : (
                         <>
-                            <div className="mb-6 relative inline-block">
+                            <div
+                                className="mb-6 relative inline-block group"
+                                onMouseEnter={() => {
+                                    gsap.fromTo(".hero-ripple",
+                                        { x: '-200%', opacity: 0.5 },
+                                        { x: '300%', opacity: 0, duration: 1, ease: "power1.inOut" }
+                                    );
+                                }}
+                            >
                                 <CodeRevealText
                                     code={`<h1 className="hero-title">ABHISHEK KRISHNA</h1> <span className="glitch">DEV</span>`}
                                     className="cursor-crosshair"
                                 >
                                     {/* Main Text Container */}
-                                    <div className="relative">
+                                    <div className="relative overflow-hidden">
                                         {/* 
                                             Glitch Stack:
                                             1. Main Text (Visible)
@@ -136,6 +143,17 @@ const Hero = () => {
                                                 KRISHNA
                                             </span>
                                         </h1>
+
+                                        {/* Light Sweep Overlay */}
+                                        <div
+                                            className="hero-ripple absolute top-0 bottom-0 w-1/2 pointer-events-none z-30"
+                                            style={{
+                                                background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%)',
+                                                transform: 'skewX(-20deg) translateX(-200%)',
+                                                left: 0,
+                                                mixBlendMode: 'overlay'
+                                            }}
+                                        />
                                     </div>
                                 </CodeRevealText>
                             </div>
