@@ -2,6 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useTheme } from '../context/ThemeContext';
 import InteractiveBlob from './InteractiveBlob';
+import MagneticButton from './MagneticButton';
+import CodeRevealText from './CodeRevealText';
+import GlitchText from './GlitchText';
 
 const Hero = () => {
     const { theme } = useTheme();
@@ -88,12 +91,54 @@ const Hero = () => {
                         </>
                     ) : (
                         <>
-                            <h1 className="hero-text-element text-6xl md:text-9xl font-black mb-6 tracking-tighter leading-[0.9]">
-                                ABHISHEK <br />
-                                <span className={`glitch-text inline-block ${theme === 'cyberpunk' ? 'text-cyber-red drop-shadow-[4px_4px_0_rgba(255,255,255,0.2)]' : 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600'}`}>
-                                    KRISHNA
-                                </span>
-                            </h1>
+                            <div className="mb-6 relative inline-block">
+                                <CodeRevealText
+                                    code={`<h1 className="hero-title">ABHISHEK KRISHNA</h1> <span className="glitch">DEV</span>`}
+                                    className="cursor-crosshair"
+                                >
+                                    {/* Main Text Container */}
+                                    <div className="relative">
+                                        {/* 
+                                            Glitch Stack:
+                                            1. Main Text (Visible)
+                                            2. Red Ghost (Behind, Glitching)
+                                            3. Cyan Ghost (Behind, Glitching)
+                                        */}
+
+                                        {/* Red Ghost Layer */}
+                                        {theme === 'cyberpunk' && (
+                                            <div className="absolute inset-0 text-cyber-red opacity-70 animate-glitch-1 select-none pointer-events-none z-[-1]" aria-hidden="true">
+                                                <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] font-geek-trend">
+                                                    ABHISHEK <br />
+                                                    <span className="inline-block glitch-skew">
+                                                        KRISHNA
+                                                    </span>
+                                                </h1>
+                                            </div>
+                                        )}
+
+                                        {/* Cyan Ghost Layer */}
+                                        {theme === 'cyberpunk' && (
+                                            <div className="absolute inset-0 text-cyan-400 opacity-70 animate-glitch-2 select-none pointer-events-none z-[-2]" aria-hidden="true">
+                                                <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] font-geek-trend">
+                                                    ABHISHEK <br />
+                                                    <span className="inline-block glitch-skew">
+                                                        KRISHNA
+                                                    </span>
+                                                </h1>
+                                            </div>
+                                        )}
+
+                                        {/* Main Visible Text */}
+                                        <h1 className="hero-text-element text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] cursor-default relative z-10 font-geek-trend">
+                                            ABHISHEK <br />
+                                            <span className={`inline-block glitch-skew ${theme === 'cyberpunk' ? 'text-cyber-yellow drop-shadow-[4px_4px_0_rgba(255,0,0,0.5)]' : 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600'}`}>
+                                                KRISHNA
+                                            </span>
+                                        </h1>
+                                    </div>
+                                </CodeRevealText>
+                            </div>
 
                             <p className="hero-text-element text-lg md:text-2xl opacity-80 max-w-3xl mx-auto leading-relaxed font-light">
                                 Full Stack Developer • Systems Engineer • Cybersecurity Enthusiast
@@ -102,22 +147,27 @@ const Hero = () => {
                     )}
 
                     <div className="hero-text-element mt-12 flex justify-center gap-6">
-                        <button className={`px-8 py-3 font-bold text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
+                        <MagneticButton strength={0.5}>
+                            <button className={`px-8 py-3 font-bold text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
                                 ? 'bg-cyber-red text-black skew-x-[-10deg] hover:bg-white hover:shadow-[0_0_20px_#ff003c]'
                                 : theme === 'futuristic'
                                     ? 'bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 border border-white/20'
                                     : 'bg-cyan-500 text-black rounded-full hover:bg-cyan-400 hover:shadow-[0_0_20px_cyan]'
-                            }`}>
-                            VIEW WORK
-                        </button>
-                        <button className={`px-8 py-3 font-bold text-xl transition-all duration-300 border-2 ${theme === 'cyberpunk'
+                                }`}>
+                                VIEW WORK
+                            </button>
+                        </MagneticButton>
+
+                        <MagneticButton strength={0.5}>
+                            <button className={`px-8 py-3 font-bold text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
                                 ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
                                 : theme === 'futuristic'
                                     ? 'border-white/10 text-white rounded-full hover:bg-white/5'
                                     : 'border-white/20 text-white rounded-full hover:bg-white/10'
-                            }`}>
-                            CONTACT
-                        </button>
+                                }`}>
+                                CONTACT
+                            </button>
+                        </MagneticButton>
                     </div>
                 </div>
             </div>

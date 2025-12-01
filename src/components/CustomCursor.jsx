@@ -8,6 +8,7 @@ const CustomCursor = () => {
     const followerRef = useRef(null);
     const trailRefs = useRef([]); // Array of refs for the trail
     const [isHovering, setIsHovering] = useState(false);
+    const isHoveringRef = useRef(false); // Ref to track hover state inside event listener
 
     // Initialize trail refs array
     trailRefs.current = [];
@@ -17,28 +18,52 @@ const CustomCursor = () => {
         }
     };
 
+    // Sync ref with state
     useEffect(() => {
+        isHoveringRef.current = isHovering;
+    }, [isHovering]);
+
+    // Handle hover scaling with GSAP to avoid CSS conflict
+    useEffect(() => {
+        if (followerRef.current && theme !== 'futuristic') {
+            gsap.to(followerRef.current, {
+                scale: isHovering ? 1.5 : 1,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        }
+    }, [isHovering, theme]);
+
+    useEffect(() => {
+        // 1. Setup gsap.quickTo instances
+        const cursorX = gsap.quickTo(cursorRef.current, "x", { duration: 0.1, ease: "power2.out" });
+        const cursorY = gsap.quickTo(cursorRef.current, "y", { duration: 0.1, ease: "power2.out" });
+
+        let followerX, followerY;
+        if (followerRef.current) {
+            followerX = gsap.quickTo(followerRef.current, "x", { duration: 0.3, ease: "power2.out" });
+            followerY = gsap.quickTo(followerRef.current, "y", { duration: 0.3, ease: "power2.out" });
+        }
+
+        const trailX = [];
+        const trailY = [];
+        trailRefs.current.forEach((el, index) => {
+            trailX.push(gsap.quickTo(el, "x", { duration: 0.15 + (index * 0.05), ease: "power2.out" }));
+            trailY.push(gsap.quickTo(el, "y", { duration: 0.15 + (index * 0.05), ease: "power2.out" }));
+        });
+
         const onMouseMove = (e) => {
             // 1. Main Cursor (Immediate)
-            gsap.to(cursorRef.current, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.1,
-                ease: 'power2.out'
-            });
+            cursorX(e.clientX);
+            cursorY(e.clientY);
 
             // 2. Theme Specific Behavior
             if (theme === 'futuristic') {
                 // Trail Effect
-                trailRefs.current.forEach((el, index) => {
-                    gsap.to(el, {
-                        x: e.clientX,
-                        y: e.clientY,
-                        duration: 0.15 + (index * 0.05), // Staggered delay for "tail" effect
-                        ease: 'power2.out'
-                    });
-                });
-                // Hide standard follower in futuristic mode (we use trail instead)
+                trailX.forEach(func => func(e.clientX));
+                trailY.forEach(func => func(e.clientY));
+
+                // Hide standard follower in futuristic mode
                 if (followerRef.current) {
                     gsap.set(followerRef.current, { opacity: 0 });
                 }
@@ -46,13 +71,13 @@ const CustomCursor = () => {
             } else {
                 // Standard Follower (Cyberpunk / Creative)
                 if (followerRef.current) {
-                    gsap.set(followerRef.current, { opacity: isHovering ? 0.5 : 1 });
-                    gsap.to(followerRef.current, {
-                        x: e.clientX,
-                        y: e.clientY,
-                        duration: 0.3,
-                        ease: 'power2.out'
-                    });
+                    // Use ref for current hover state to avoid re-binding listener
+                    gsap.set(followerRef.current, { opacity: isHoveringRef.current ? 0.5 : 1 });
+
+                    if (followerX && followerY) {
+                        followerX(e.clientX);
+                        followerY(e.clientY);
+                    }
                 }
             }
         };
@@ -75,7 +100,7 @@ const CustomCursor = () => {
                 el.removeEventListener('mouseleave', onMouseLeave);
             });
         };
-    }, [theme, isHovering]);
+    }, [theme]); // Only re-run when theme changes (to reset refs/quickTo)
 
     if (typeof navigator !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
         return null;
@@ -114,8 +139,7 @@ const CustomCursor = () => {
             {/* Standard Follower (Cyberpunk / Creative) */}
             <div
                 ref={followerRef}
-                className={`fixed top-0 left-0 pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-all duration-300
-          ${isHovering ? 'scale-150' : 'scale-100'}
+                className={`fixed top-0 left-0 pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-[width,height,border-radius,background-color,opacity] duration-300
           ${theme === 'cyberpunk'
                         ? 'w-8 h-8 border border-cyber-yellow bg-transparent'
                         : ''}
