@@ -23,16 +23,6 @@ const Hero = () => {
                     delay: 0.5
                 });
 
-                // Glitch effect loop
-                gsap.to(".glitch-text", {
-                    skewX: 20,
-                    duration: 0.1,
-                    repeat: -1,
-                    yoyo: true,
-                    repeatDelay: 3,
-                    ease: "rough"
-                });
-
             } else if (theme === 'futuristic') {
                 // Futuristic Fade In
                 gsap.from(".hero-text-element", {

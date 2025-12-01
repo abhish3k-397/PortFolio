@@ -1,39 +1,92 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import useSound from 'use-sound';
-
-// Placeholder sounds - in a real app, you'd import actual mp3 files
-// For now, we'll use a simple beep if available, or just manage the state
-// Since we don't have assets, I'll set up the structure.
-// You would typically do: import hoverSfx from '../assets/hover.mp3';
+import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 
 const SoundContext = createContext({
     isMuted: false,
     toggleMute: () => { },
     playHover: () => { },
-    playClick: () => { }
+    playClick: () => { },
+    playThemeSwitch: () => { }
 });
 
 export const SoundProvider = ({ children }) => {
     const [isMuted, setIsMuted] = useState(false);
+    const audioCtxRef = useRef(null);
 
-    // Mock play functions since we don't have files yet
-    // In production: const [playHover] = useSound(hoverSfx, { volume: 0.5, soundEnabled: !isMuted });
+    // Initialize AudioContext lazily to handle autoplay policies
+    const initAudio = () => {
+        if (!audioCtxRef.current) {
+            audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtxRef.current.state === 'suspended') {
+            audioCtxRef.current.resume();
+        }
+        return audioCtxRef.current;
+    };
 
     const playHover = () => {
         if (isMuted) return;
-        // console.log("Play Hover SFX"); 
-        // If we had an Audio object: new Audio('/hover.mp3').play();
+        const ctx = initAudio();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.05);
+
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.05);
     };
 
     const playClick = () => {
         if (isMuted) return;
-        // console.log("Play Click SFX");
+        const ctx = initAudio();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(200, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.1);
+
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.1);
+    };
+
+    const playThemeSwitch = () => {
+        if (isMuted) return;
+        const ctx = initAudio();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(100, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(600, ctx.currentTime + 0.3);
+
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
     };
 
     const toggleMute = () => setIsMuted(!isMuted);
 
     return (
-        <SoundContext.Provider value={{ isMuted, toggleMute, playHover, playClick }}>
+        <SoundContext.Provider value={{ isMuted, toggleMute, playHover, playClick, playThemeSwitch }}>
             {children}
         </SoundContext.Provider>
     );

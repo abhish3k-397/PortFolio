@@ -4,6 +4,8 @@ import { useSoundFX } from '../context/SoundContext';
 import { Monitor, Zap, Palette, Volume2, VolumeX } from 'lucide-react';
 import CustomCursor from './CustomCursor';
 import MagneticButton from './MagneticButton';
+import DotGrid from './DotGrid';
+import CommandPalette from './CommandPalette';
 
 const Layout = ({ children }) => {
     const { theme, setTheme } = useTheme();
@@ -27,6 +29,7 @@ const Layout = ({ children }) => {
       ${theme === 'creative' ? 'bg-purple-950 text-pink-300' : ''}
     `}>
             <CustomCursor />
+            <CommandPalette />
 
             {/* Controls Container */}
             <div className="fixed top-6 right-6 z-50 flex flex-col gap-4 items-end">
@@ -39,8 +42,8 @@ const Layout = ({ children }) => {
                                 onClick={() => handleThemeChange(t.id)}
                                 onMouseEnter={playHover}
                                 className={`p-2 rounded-full transition-all duration-300 ${theme === t.id
-                                        ? 'bg-white/20 text-white scale-110 shadow-[0_0_15px_rgba(255,255,255,0.5)]'
-                                        : 'text-white/50 hover:text-white hover:bg-white/10'
+                                    ? 'bg-white/20 text-white scale-110 shadow-[0_0_15px_rgba(255,255,255,0.5)]'
+                                    : 'text-white/50 hover:text-white hover:bg-white/10'
                                     }`}
                                 title={t.label}
                             >
@@ -69,6 +72,7 @@ const Layout = ({ children }) => {
 
             {/* Background Effects */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+                <DotGrid />
                 {theme === 'cyberpunk' && (
                     <>
                         <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[1] bg-[length:100%_2px,3px_100%] pointer-events-none animate-scanline" />

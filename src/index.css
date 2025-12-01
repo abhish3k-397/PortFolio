@@ -304,3 +304,7 @@
 .glitch-skew {
   animation: glitch-skew 4s infinite step-end;
 }
+
+.glitch-text {
+  animation: glitch-skew 4s infinite step-end;
+}
