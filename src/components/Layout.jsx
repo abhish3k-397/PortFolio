@@ -6,6 +6,7 @@ import CustomCursor from './CustomCursor';
 import MagneticButton from './MagneticButton';
 import DotGrid from './DotGrid';
 import CommandPalette from './CommandPalette';
+import CyberpunkHUD from './CyberpunkHUD';
 
 const Layout = ({ children }) => {
     const { theme, setTheme } = useTheme();
@@ -30,6 +31,7 @@ const Layout = ({ children }) => {
     `}>
             <CustomCursor />
             <CommandPalette />
+            {theme === 'cyberpunk' && <CyberpunkHUD />}
 
             {/* Controls Container */}
             <div className="fixed top-6 right-6 z-50 flex flex-col gap-4 items-end">
