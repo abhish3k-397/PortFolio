@@ -83,10 +83,42 @@ export const SoundProvider = ({ children }) => {
         osc.stop(ctx.currentTime + 0.3);
     };
 
+    const playDenied = () => {
+        if (isMuted) return;
+        const ctx = initAudio();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        // Harsh buzzer sound
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(400, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(100, ctx.currentTime + 0.3);
+
+        // Modulation for "glitchy" feel
+        const lfo = ctx.createOscillator();
+        lfo.type = 'square';
+        lfo.frequency.value = 50;
+        const lfoGain = ctx.createGain();
+        lfoGain.gain.value = 500;
+        lfo.connect(lfoGain);
+        lfoGain.connect(osc.frequency);
+        lfo.start();
+        lfo.stop(ctx.currentTime + 0.3);
+
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+    };
+
     const toggleMute = () => setIsMuted(!isMuted);
 
     return (
-        <SoundContext.Provider value={{ isMuted, toggleMute, playHover, playClick, playThemeSwitch }}>
+        <SoundContext.Provider value={{ isMuted, toggleMute, playHover, playClick, playThemeSwitch, playDenied }}>
             {children}
         </SoundContext.Provider>
     );

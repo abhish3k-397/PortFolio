@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSoundFX } from '../context/SoundContext';
 import { Monitor, Zap, Palette, Volume2, VolumeX } from 'lucide-react';
@@ -7,10 +7,29 @@ import MagneticButton from './MagneticButton';
 import DotGrid from './DotGrid';
 import CommandPalette from './CommandPalette';
 import CyberpunkHUD from './CyberpunkHUD';
+import AccessDenied from './AccessDenied';
 
 const Layout = ({ children }) => {
     const { theme, setTheme } = useTheme();
-    const { isMuted, toggleMute, playHover, playClick } = useSoundFX();
+    const { isMuted, toggleMute, playHover, playClick, playDenied } = useSoundFX();
+    const [isDenied, setIsDenied] = useState(false);
+
+    useEffect(() => {
+        const handleSecurityBreach = (e) => {
+            e.preventDefault();
+            setIsDenied(true);
+            playDenied();
+            // Persistent until dismissed
+        };
+
+        window.addEventListener('contextmenu', handleSecurityBreach);
+        window.addEventListener('copy', handleSecurityBreach);
+
+        return () => {
+            window.removeEventListener('contextmenu', handleSecurityBreach);
+            window.removeEventListener('copy', handleSecurityBreach);
+        };
+    }, [playDenied]);
 
     const themes = [
         { id: 'cyberpunk', icon: Monitor, label: 'Cyber' },
@@ -32,6 +51,7 @@ const Layout = ({ children }) => {
             <CustomCursor />
             <CommandPalette />
             {theme === 'cyberpunk' && <CyberpunkHUD />}
+            {isDenied && <AccessDenied onDismiss={() => setIsDenied(false)} />}
 
             {/* Controls Container */}
             <div className="fixed top-6 right-6 z-50 flex flex-col gap-4 items-end">
