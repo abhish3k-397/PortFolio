@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <path d="M16 2 L30 10 L28 26 L16 30 L4 26 L2 10 Z" fill="#bd34fe" stroke="#000" stroke-width="2" />
+  <text x="16" y="20" font-size="10" text-anchor="middle" fill="white">V</text>
+</svg>
