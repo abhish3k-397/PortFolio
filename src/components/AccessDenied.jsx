@@ -128,7 +128,7 @@ const AccessDenied = ({ onDismiss }) => {
 
                 {/* Glitch Text */}
                 <div className="text-center">
-                    <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter font-geek-trend glitch-skew relative inline-block">
+                    <h1 className="text-4xl md:text-8xl font-black text-white tracking-tighter font-geek-trend glitch-skew relative inline-block">
                         <span className="absolute top-0 left-0 -ml-1 text-red-500 opacity-70 animate-glitch-1">ACCESS DENIED</span>
                         <span className="absolute top-0 left-0 ml-1 text-cyan-500 opacity-70 animate-glitch-2">ACCESS DENIED</span>
                         ACCESS DENIED
@@ -163,7 +163,7 @@ const AccessDenied = ({ onDismiss }) => {
             {/* Terminal Overlay */}
             {showTerminal && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-                    <div className="w-full max-w-3xl bg-black border-2 border-green-500/50 rounded-lg shadow-[0_0_50px_rgba(0,255,0,0.2)] overflow-hidden flex flex-col h-[60vh]">
+                    <div className="w-[95%] md:w-full md:max-w-3xl bg-black border-2 border-green-500/50 rounded-lg shadow-[0_0_50px_rgba(0,255,0,0.2)] overflow-hidden flex flex-col h-[50vh] md:h-[60vh]">
                         {/* Terminal Header */}
                         <div className="bg-green-900/20 border-b border-green-500/30 p-2 flex justify-between items-center">
                             <div className="flex gap-2">

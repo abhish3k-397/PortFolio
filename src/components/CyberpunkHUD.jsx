@@ -74,7 +74,7 @@ const CyberpunkHUD = () => {
             </div>
 
             {/* Top Right: Battery & Network */}
-            <div className="absolute top-8 right-8 flex flex-col items-end gap-2">
+            <div className="absolute top-8 right-8 hidden md:flex flex-col items-end gap-2">
                 <div className="flex items-center gap-4 text-cyan-400">
                     <div className="flex items-center gap-2">
                         <span className="text-xs tracking-widest">NET</span>
@@ -94,7 +94,7 @@ const CyberpunkHUD = () => {
             </div>
 
             {/* Bottom Right: Scroll Progress */}
-            <div className="absolute bottom-8 right-8 flex flex-col items-end gap-2">
+            <div className="absolute bottom-8 right-8 hidden md:flex flex-col items-end gap-2">
                 <div className="text-xs tracking-[0.3em] text-cyan-400 mb-1">
                     INTEGRITY
                 </div>
@@ -119,7 +119,7 @@ const CyberpunkHUD = () => {
             </div>
 
             {/* Bottom Left: Decorative */}
-            <div className="absolute bottom-8 left-8">
+            <div className="absolute bottom-8 left-8 hidden md:block">
                 <div className="border-l-2 border-b-2 border-cyan-400/50 w-16 h-16 rounded-bl-lg" />
                 <div className="text-[10px] tracking-widest text-cyan-400/60 mt-2 ml-2">
                     VER 2.0.4
@@ -127,10 +127,10 @@ const CyberpunkHUD = () => {
             </div>
 
             {/* Corner Brackets */}
-            <div className="absolute top-0 left-0 w-32 h-32 border-l-2 border-t-2 border-white/10 rounded-tl-3xl pointer-events-none" />
-            <div className="absolute top-0 right-0 w-32 h-32 border-r-2 border-t-2 border-white/10 rounded-tr-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 border-l-2 border-b-2 border-white/10 rounded-bl-3xl pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-32 h-32 border-r-2 border-b-2 border-white/10 rounded-br-3xl pointer-events-none" />
+            <div className="absolute top-0 left-0 w-16 h-16 md:w-32 md:h-32 border-l-2 border-t-2 border-white/10 rounded-tl-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-16 h-16 md:w-32 md:h-32 border-r-2 border-t-2 border-white/10 rounded-tr-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-16 h-16 md:w-32 md:h-32 border-l-2 border-b-2 border-white/10 rounded-bl-3xl pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-16 h-16 md:w-32 md:h-32 border-r-2 border-b-2 border-white/10 rounded-br-3xl pointer-events-none" />
         </div>
     );
 };
