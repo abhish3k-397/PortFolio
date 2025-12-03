@@ -13,6 +13,7 @@ const Layout = ({ children }) => {
     const { theme, setTheme } = useTheme();
     const { isMuted, toggleMute, playHover, playClick, playDenied } = useSoundFX();
     const [isDenied, setIsDenied] = useState(false);
+    const [isIdle, setIsIdle] = useState(false);
 
     useEffect(() => {
         const handleSecurityBreach = (e) => {
@@ -50,7 +51,7 @@ const Layout = ({ children }) => {
     `}>
             <CustomCursor />
             <CommandPalette />
-            {theme === 'cyberpunk' && <CyberpunkHUD />}
+            {theme === 'cyberpunk' && <CyberpunkHUD onIdleChange={setIsIdle} />}
             {isDenied && <AccessDenied onDismiss={() => setIsDenied(false)} />}
 
             {/* Controls Container */}
@@ -88,12 +89,12 @@ const Layout = ({ children }) => {
                 </MagneticButton>
             </div>
 
-            <main className="relative z-10">
+            <main className={`relative z-10 transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px] opacity-50' : 'blur-0 opacity-100'}`}>
                 {children}
             </main>
 
             {/* Background Effects */}
-            <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+            <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px]' : 'blur-0'}`}>
                 <DotGrid />
                 {theme === 'cyberpunk' && (
                     <>

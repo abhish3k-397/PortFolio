@@ -2,8 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Battery, BatteryCharging, Wifi } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const CyberpunkHUD = () => {
+const useTime = () => {
     const [time, setTime] = useState(new Date());
+    useEffect(() => {
+        const timer = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+    return { time, setTime };
+};
+
+const CyberpunkHUD = ({ onIdleChange }) => {
+    const { time } = useTime();
     const [battery, setBattery] = useState({ level: 100, charging: false });
     const [scrollProgress, setScrollProgress] = useState(0);
     const [isIdle, setIsIdle] = useState(false);
@@ -15,9 +24,12 @@ const CyberpunkHUD = () => {
         const resetIdleTimer = () => {
             setIsIdle(false);
             setIsGlitching(false);
+            if (onIdleChange) onIdleChange(false);
+
             if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
             idleTimerRef.current = setTimeout(() => {
                 setIsIdle(true);
+                if (onIdleChange) onIdleChange(true);
             }, 15000); // 15 seconds
         };
 
@@ -31,7 +43,7 @@ const CyberpunkHUD = () => {
             if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
             events.forEach(event => window.removeEventListener(event, resetIdleTimer));
         };
-    }, []);
+    }, [onIdleChange]);
 
     // Trigger Glitch after animation
     useEffect(() => {
@@ -43,12 +55,6 @@ const CyberpunkHUD = () => {
         }
         return () => clearTimeout(timeout);
     }, [isIdle]);
-
-    // Clock Logic
-    useEffect(() => {
-        const timer = setInterval(() => setTime(new Date()), 1000);
-        return () => clearInterval(timer);
-    }, []);
 
     // Battery Logic
     useEffect(() => {
@@ -97,16 +103,24 @@ const CyberpunkHUD = () => {
     return (
         <div className="fixed inset-0 pointer-events-none z-50 font-rajdhani text-cyber-yellow select-none">
 
-            {/* Idle Blur Overlay */}
+            {/* Idle Overlay (Dark Tint + Noise) */}
             <AnimatePresence>
                 {isIdle && (
                     <motion.div
-                        initial={{ opacity: 0, backdropFilter: "blur(0px) saturate(100%)" }}
-                        animate={{ opacity: 1, backdropFilter: "blur(50px) saturate(150%)" }}
-                        exit={{ opacity: 0, backdropFilter: "blur(0px) saturate(100%)" }}
-                        transition={{ duration: 0.8 }}
-                        className="absolute inset-0 bg-black/30 z-40"
-                    />
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1, ease: "easeInOut" }}
+                        className="absolute inset-0 bg-black/60 z-40"
+                    >
+                        {/* Noise Texture for Acrylic Feel */}
+                        <div
+                            className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
+                            style={{
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`
+                            }}
+                        />
+                    </motion.div>
                 )}
             </AnimatePresence>
 
