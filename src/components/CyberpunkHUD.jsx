@@ -101,11 +101,11 @@ const CyberpunkHUD = () => {
             <AnimatePresence>
                 {isIdle && (
                     <motion.div
-                        initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-                        animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
-                        exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                        initial={{ opacity: 0, backdropFilter: "blur(0px) saturate(100%)" }}
+                        animate={{ opacity: 1, backdropFilter: "blur(50px) saturate(150%)" }}
+                        exit={{ opacity: 0, backdropFilter: "blur(0px) saturate(100%)" }}
                         transition={{ duration: 0.8 }}
-                        className="absolute inset-0 bg-black/80 z-40"
+                        className="absolute inset-0 bg-black/30 z-40"
                     />
                 )}
             </AnimatePresence>
