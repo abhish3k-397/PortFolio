@@ -98,7 +98,7 @@ const Hero = () => {
                                         {/* Red Ghost Layer */}
                                         {theme === 'cyberpunk' && (
                                             <div className="absolute inset-0 text-cyber-red opacity-70 animate-glitch-1 select-none pointer-events-none z-[-1]" aria-hidden="true">
-                                                <h1 className="text-2xl sm:text-4xl md:text-8xl font-black tracking-tighter leading-[0.9] font-geek-trend glitch-skew origin-center">
+                                                <h1 className="text-3xl sm:text-4xl md:text-8xl font-black tracking-tighter leading-[0.9] font-geek-trend glitch-skew origin-center">
                                                     ABHISHEK <br />
                                                     KRISHNA
                                                 </h1>
@@ -108,7 +108,7 @@ const Hero = () => {
                                         {/* Cyan Ghost Layer */}
                                         {theme === 'cyberpunk' && (
                                             <div className="absolute inset-0 text-cyan-400 opacity-70 animate-glitch-2 select-none pointer-events-none z-[-2]" aria-hidden="true">
-                                                <h1 className="text-2xl sm:text-4xl md:text-8xl font-black tracking-tighter leading-[0.9] font-geek-trend glitch-skew origin-center">
+                                                <h1 className="text-3xl sm:text-4xl md:text-8xl font-black tracking-tighter leading-[0.9] font-geek-trend glitch-skew origin-center">
                                                     ABHISHEK <br />
                                                     KRISHNA
                                                 </h1>
@@ -116,7 +116,7 @@ const Hero = () => {
                                         )}
 
                                         {/* Main Visible Text */}
-                                        <h1 className="hero-text-element text-2xl sm:text-4xl md:text-8xl font-black tracking-tighter leading-[0.9] cursor-default relative z-10 font-geek-trend glitch-skew origin-center">
+                                        <h1 className="hero-text-element text-3xl sm:text-4xl md:text-8xl font-black tracking-tighter leading-[0.9] cursor-default relative z-10 font-geek-trend glitch-skew origin-center">
                                             ABHISHEK <br />
                                             <span className={theme === 'cyberpunk' ? 'text-cyber-yellow drop-shadow-[4px_4px_0_rgba(255,0,0,0.5)]' : 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600'}>
                                                 KRISHNA
