@@ -18,7 +18,7 @@ const StartPage = ({ onStart }) => {
                 loop
                 muted
                 playsInline
-                className="absolute w-full h-full object-cover opacity-50"
+                className="absolute w-full h-full object-contain md:object-cover opacity-50"
             >
                 <source src={backgroundVideo} type="video/mp4" />
             </video>
