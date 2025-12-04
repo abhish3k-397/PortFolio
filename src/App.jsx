@@ -5,7 +5,9 @@ import Layout from './components/Layout'
 import Hero from './components/Hero'
 import Bio from './components/Bio'
 import About from './components/About'
+import Experience from './components/Experience'
 import Projects from './components/Projects'
+import Contact from './components/Contact'
 import StartPage from './components/StartPage'
 import Loader from './components/Loader'
 
@@ -37,7 +39,9 @@ function App() {
                         <Hero />
                         <Bio />
                         <About />
+                        <Experience />
                         <Projects />
+                        <Contact />
                     </Layout>
                 )}
             </SoundProvider>

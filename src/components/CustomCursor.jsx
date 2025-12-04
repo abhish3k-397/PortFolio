@@ -7,10 +7,21 @@ const CustomCursor = () => {
     const cursorRef = useRef(null);
     const outerRef = useRef(null);
     const hoverTarget = useRef(null);
-    const [isHovering, setIsHovering] = useState(false);
-
+    const [isTouch, setIsTouch] = useState(false);
 
     useEffect(() => {
+        // Check for touch device
+        const checkTouch = () => {
+            setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+        };
+        checkTouch();
+        window.addEventListener('resize', checkTouch);
+        return () => window.removeEventListener('resize', checkTouch);
+    }, []);
+
+    useEffect(() => {
+        if (isTouch) return;
+
         // Hide native cursor globally
         const style = document.createElement('style');
         style.innerHTML = `
@@ -23,10 +34,12 @@ const CustomCursor = () => {
         return () => {
             document.head.removeChild(style);
         };
-    }, []);
+    }, [isTouch]);
 
 
     useEffect(() => {
+        if (isTouch) return;
+
         // Mouse movement logic
         const moveCursor = (e) => {
             // Always move the small dot
@@ -97,13 +110,9 @@ const CustomCursor = () => {
                 el.removeEventListener('mouseleave', handleMouseLeave);
             });
         };
-    }, []);
+    }, [isTouch]);
 
-
-
-    if (typeof navigator !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
-        return null;
-    }
+    if (isTouch) return null;
 
     const getColor = () => {
         switch (theme) {

@@ -40,6 +40,7 @@ const Projects = () => {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top 70%",
+                    toggleActions: "play none none reverse",
                 },
                 y: 100,
                 opacity: 0,

@@ -23,6 +23,7 @@ const About = () => {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top 85%", // Trigger slightly earlier
+                    toggleActions: "play none none reverse",
                 },
                 y: 50,
                 // opacity: 0, // Removed to prevent disappearance bug

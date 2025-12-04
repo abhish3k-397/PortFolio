@@ -8,6 +8,8 @@ const TiltCard = ({ children, className = "" }) => {
     const [bounds, setBounds] = useState(null);
 
     const handleMouseEnter = (e) => {
+        if (window.matchMedia("(pointer: coarse)").matches) return;
+
         setBounds(cardRef.current.getBoundingClientRect());
         gsap.to(cardRef.current, {
             scale: 1.05,
@@ -27,6 +29,8 @@ const TiltCard = ({ children, className = "" }) => {
     };
 
     const handleMouseLeave = () => {
+        if (window.matchMedia("(pointer: coarse)").matches) return;
+
         gsap.to(cardRef.current, {
             rotationX: 0,
             rotationY: 0,
@@ -41,6 +45,7 @@ const TiltCard = ({ children, className = "" }) => {
     };
 
     const handleMouseMove = (e) => {
+        if (window.matchMedia("(pointer: coarse)").matches) return;
         if (!bounds) return;
 
         const x = e.clientX - bounds.left;

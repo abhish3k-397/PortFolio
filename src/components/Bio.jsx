@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
 import ElectricBorder from './ElectricBorder';
+import DecryptedText from './DecryptedText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,7 @@ const Bio = () => {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top 70%",
+                    toggleActions: "play none none reverse",
                 },
                 x: -100,
                 opacity: 0,
@@ -31,6 +33,7 @@ const Bio = () => {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top 70%",
+                    toggleActions: "play none none reverse",
                 },
                 x: 100,
                 opacity: 0,
@@ -74,7 +77,7 @@ const Bio = () => {
 
                             {/* Duotone Overlay */}
                             <div className={`absolute inset-0 mix-blend-overlay opacity-60 transition-opacity duration-500 group-hover:opacity-0 ${theme === 'cyberpunk' ? 'bg-cyber-yellow' :
-                                    theme === 'futuristic' ? 'bg-cyan-500' : 'bg-purple-500'
+                                theme === 'futuristic' ? 'bg-cyan-500' : 'bg-purple-500'
                                 }`} />
 
                             {/* Scanlines */}
@@ -107,7 +110,10 @@ const Bio = () => {
                     <div className={`p-6 border-l-4 ${theme === 'cyberpunk' ? 'border-cyber-yellow bg-white/5' : 'border-cyan-500 bg-cyan-900/10'
                         }`}>
                         <p className="text-lg md:text-xl leading-relaxed opacity-90 font-mono">
-                            "I am a Full Stack Developer and Systems Engineer with a passion for building robust, scalable, and visually stunning digital experiences. My code is my craft, and I strive to create software that not only functions perfectly but also leaves a lasting impression."
+                            <DecryptedText
+                                text="I am a Full Stack Developer and Systems Engineer with a passion for building robust, scalable, and visually stunning digital experiences. My code is my craft, and I strive to create software that not only functions perfectly but also leaves a lasting impression."
+                                speed={20}
+                            />
                         </p>
                     </div>
 
