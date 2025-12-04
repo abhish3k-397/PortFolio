@@ -8,13 +8,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 const education = [
     {
-        id: 1,
-        type: 'college',
-        date: '2021 - 2025',
-        title: 'B.Tech in Computer Science',
-        institution: 'University of Technology',
-        desc: 'Currently pursuing Bachelor of Technology. Specializing in Full Stack Development, Artificial Intelligence, and System Architecture.',
-        tags: ['DSA', 'Web Dev', 'Database']
+        id: 3,
+        type: 'school',
+        date: '2018 - 2019',
+        title: 'Secondary Education (X)',
+        institution: 'City High School',
+        desc: 'Completed Class X with distinction. Active member of the Computer Club and Science Society.',
+        tags: ['Science', 'Maths', 'Logic']
     },
     {
         id: 2,
@@ -26,13 +26,13 @@ const education = [
         tags: ['Physics', 'Maths', 'C++']
     },
     {
-        id: 3,
-        type: 'school',
-        date: '2018 - 2019',
-        title: 'Secondary Education (X)',
-        institution: 'City High School',
-        desc: 'Completed Class X with distinction. Active member of the Computer Club and Science Society.',
-        tags: ['Science', 'Maths', 'Logic']
+        id: 1,
+        type: 'college',
+        date: '2021 - 2025',
+        title: 'B.Tech in Computer Science',
+        institution: 'University of Technology',
+        desc: 'Currently pursuing Bachelor of Technology. Specializing in Full Stack Development, Artificial Intelligence, and System Architecture.',
+        tags: ['DSA', 'Web Dev', 'Database']
     }
 ];
 

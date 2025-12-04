@@ -95,28 +95,28 @@ const Hero = () => {
                                 >
                                     {/* Main Text Container */}
                                     <div className="relative overflow-hidden">
-                                        {/* Red Ghost Layer */}
+                                        {/* Red Ghost Layer (Now Cyan for Abhishek) */}
                                         {theme === 'cyberpunk' && (
-                                            <div className="absolute inset-0 text-cyber-red opacity-70 animate-glitch-1 select-none pointer-events-none z-[-1]" aria-hidden="true">
+                                            <div className="absolute inset-0 text-cyan-400 opacity-70 animate-glitch-1 select-none pointer-events-none z-[-1]" aria-hidden="true">
                                                 <h1 className="text-[clamp(1.5rem,8vw,9rem)] font-black tracking-tighter leading-[0.9] font-geek-trend glitch-skew origin-center">
                                                     ABHISHEK <br />
-                                                    KRISHNA
+                                                    <span className="text-cyber-yellow">KRISHNA</span>
                                                 </h1>
                                             </div>
                                         )}
 
-                                        {/* Cyan Ghost Layer */}
+                                        {/* Cyan Ghost Layer (Now Yellow for Krishna) */}
                                         {theme === 'cyberpunk' && (
-                                            <div className="absolute inset-0 text-cyan-400 opacity-70 animate-glitch-2 select-none pointer-events-none z-[-2]" aria-hidden="true">
+                                            <div className="absolute inset-0 text-cyber-yellow opacity-70 animate-glitch-2 select-none pointer-events-none z-[-2]" aria-hidden="true">
                                                 <h1 className="text-[clamp(1.5rem,8vw,9rem)] font-black tracking-tighter leading-[0.9] font-geek-trend glitch-skew origin-center">
-                                                    ABHISHEK <br />
+                                                    <span className="text-cyan-400">ABHISHEK</span> <br />
                                                     KRISHNA
                                                 </h1>
                                             </div>
                                         )}
 
                                         {/* Main Visible Text */}
-                                        <h1 className="hero-text-element text-[clamp(1.5rem,8vw,9rem)] font-black tracking-tighter leading-[0.9] cursor-default relative z-10 font-geek-trend glitch-skew origin-center">
+                                        <h1 className="hero-text-element text-[clamp(1.5rem,8vw,9rem)] font-black tracking-tighter leading-[0.9] cursor-default relative z-10 font-geek-trend glitch-skew origin-center text-cyan-400">
                                             ABHISHEK <br />
                                             <span className={theme === 'cyberpunk' ? 'text-cyber-yellow drop-shadow-[4px_4px_0_rgba(255,0,0,0.5)]' : 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600'}>
                                                 KRISHNA
@@ -137,13 +137,13 @@ const Hero = () => {
                                 </CodeRevealText>
                             </div>
 
-                            <p className="hero-text-element text-lg md:text-2xl opacity-80 max-w-3xl mx-auto leading-relaxed font-light mb-12">
+                            <p className="hero-text-element text-sm md:text-2xl opacity-80 max-w-3xl mx-auto leading-relaxed font-light mb-8 md:mb-12">
                                 Full Stack Developer • Systems Engineer • Cybersecurity Enthusiast
                             </p>
 
-                            <div className="hero-text-element flex flex-col md:flex-row justify-center gap-4 md:gap-6 items-center">
+                            <div className="hero-text-element flex flex-row flex-wrap justify-center gap-3 md:gap-6 items-center">
                                 <MagneticButton strength={0.5}>
-                                    <button className={`w-full md:w-auto px-8 py-3 md:px-8 md:py-4 font-bold text-lg md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
+                                    <button className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
                                         ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
                                         : theme === 'futuristic'
                                             ? 'border-white/10 text-white rounded-full hover:bg-white/5'
@@ -154,7 +154,7 @@ const Hero = () => {
                                 </MagneticButton>
 
                                 <MagneticButton strength={0.5}>
-                                    <button className={`w-full md:w-auto px-8 py-3 md:px-8 md:py-4 font-bold text-lg md:text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
+                                    <button className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
                                         ? 'bg-cyber-red text-black skew-x-[-10deg] hover:bg-white hover:shadow-[0_0_20px_#ff003c]'
                                         : theme === 'futuristic'
                                             ? 'bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 border border-white/20'
@@ -165,7 +165,7 @@ const Hero = () => {
                                 </MagneticButton>
 
                                 <MagneticButton strength={0.5}>
-                                    <button className={`w-full md:w-auto px-8 py-3 md:px-8 md:py-4 font-bold text-lg md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
+                                    <button className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
                                         ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
                                         : theme === 'futuristic'
                                             ? 'border-white/10 text-white rounded-full hover:bg-white/5'
