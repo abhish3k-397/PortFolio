@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
 import { Github } from 'lucide-react';
 import TiltCard from './TiltCard';
+import ElectricBorder from './ElectricBorder';
 
 const projects = [
     {
@@ -59,40 +60,47 @@ const Projects = () => {
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects.map((project, index) => (
                     <div key={index} className="project-card h-full">
-                        <TiltCard className={`group relative p-6 h-full flex flex-col ${theme === 'cyberpunk'
-                            ? 'bg-black border border-white/20 hover:border-cyber-yellow transition-colors'
-                            : 'bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 hover:bg-white/10 transition-all'
-                            }`}>
-                            {theme === 'cyberpunk' && (
-                                <div className="absolute top-0 right-0 p-2 text-xs font-mono text-white/30">
-                                    0{index + 1}
-                                </div>
-                            )}
+                        <TiltCard className="h-full">
+                            <ElectricBorder
+                                className="h-full"
+                                innerClassName={`p-6 flex flex-col h-full ${theme === 'cyberpunk'
+                                    ? 'bg-black'
+                                    : 'bg-white/5 backdrop-blur-md'
+                                    }`}
+                                color={theme === 'cyberpunk' ? 'yellow' : 'cyan'}
+                                style={{ borderRadius: '0.75rem' }}
+                            >
+                                {theme === 'cyberpunk' && (
+                                    <div className="absolute top-0 right-0 p-2 text-xs font-mono text-white/30">
+                                        0{index + 1}
+                                    </div>
+                                )}
 
-                            <h3 className={`text-2xl font-bold mb-2 ${theme === 'cyberpunk' ? 'text-white group-hover:text-cyber-yellow' : 'text-cyan-300'
-                                }`}>
-                                {project.title}
-                            </h3>
-                            <p className="text-sm opacity-60 mb-4 font-mono">{project.subtitle}</p>
-
-                            <p className="mb-6 opacity-80 flex-grow">
-                                {project.desc}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2 mb-6">
-                                {project.tech.map(t => (
-                                    <span key={t} className="text-xs px-2 py-1 bg-white/5 rounded">
-                                        {t}
-                                    </span>
-                                ))}
-                            </div>
-
-                            <div className="flex gap-4 mt-auto">
-                                <a href={project.link} className={`flex items-center gap-2 text-sm font-bold ${theme === 'cyberpunk' ? 'text-cyber-neon hover:text-white' : 'text-white hover:text-cyan-300'
+                                <h3 className={`text-2xl font-bold mb-2 ${theme === 'cyberpunk' ? 'text-white group-hover:text-cyber-yellow' : 'text-cyan-300'
                                     }`}>
-                                    <Github size={16} /> CODE
-                                </a>
-                            </div>
+                                    {project.title}
+                                </h3>
+                                <p className="text-sm opacity-60 mb-4 font-mono">{project.subtitle}</p>
+
+                                <p className="mb-6 opacity-80 flex-grow">
+                                    {project.desc}
+                                </p>
+
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    {project.tech.map(t => (
+                                        <span key={t} className="text-xs px-2 py-1 bg-white/5 rounded">
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                <div className="flex gap-4 mt-auto">
+                                    <a href={project.link} className={`flex items-center gap-2 text-sm font-bold ${theme === 'cyberpunk' ? 'text-cyber-neon hover:text-white' : 'text-white hover:text-cyan-300'
+                                        }`}>
+                                        <Github size={16} /> CODE
+                                    </a>
+                                </div>
+                            </ElectricBorder>
                         </TiltCard>
                     </div>
                 ))}

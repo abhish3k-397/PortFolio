@@ -1,15 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import backgroundVideo from '../assets/background.mp4';
 import MagneticButton from './MagneticButton';
 import { useSoundFX } from '../context/SoundContext';
+import { CornerDownLeft } from 'lucide-react';
 
 const StartPage = ({ onStart }) => {
     const { playClick, playHover } = useSoundFX();
 
-    const handleStart = () => {
+    const handleStart = async () => {
         playClick();
+        try {
+            if (document.documentElement.requestFullscreen) {
+                await document.documentElement.requestFullscreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+                await document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { /* IE11 */
+                await document.documentElement.msRequestFullscreen();
+            }
+        } catch (err) {
+            console.log("Fullscreen request denied or failed:", err);
+        }
         onStart();
     };
+
+    useEffect(() => {
+        const handleKeyPress = (e) => {
+            if (e.key === 'Enter') {
+                handleStart();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [onStart]); // Added dependency
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black">
@@ -28,9 +51,9 @@ const StartPage = ({ onStart }) => {
                     <button
                         onClick={handleStart}
                         onMouseEnter={playHover}
-                        className="px-8 py-3 text-lg md:px-12 md:py-4 md:text-2xl font-bold tracking-[0.2em] text-white border border-white/30 bg-black/30 backdrop-blur-md hover:bg-white hover:text-black transition-all duration-500 rounded-sm"
+                        className="px-8 py-3 text-lg md:px-12 md:py-4 md:text-2xl font-bold tracking-[0.2em] text-white border border-white/30 bg-black/30 backdrop-blur-md hover:bg-white hover:text-black transition-all duration-500 rounded-sm flex items-center gap-3"
                     >
-                        ENTER SYSTEM
+                        ENTER SYSTEM <CornerDownLeft size={24} />
                     </button>
                 </MagneticButton>
             </div>

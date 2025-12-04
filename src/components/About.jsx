@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
+import ElectricBorder from './ElectricBorder';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,10 +43,15 @@ const About = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full">
                 {Object.entries(skills).map(([category, items]) => (
-                    <div key={category} className={`skill-category group p-6 border transition-colors ${theme === 'cyberpunk'
-                        ? 'bg-black border-white/20 hover:border-cyber-yellow'
-                        : 'border-white/10 bg-white/5 backdrop-blur-lg rounded-xl hover:bg-white/10'
-                        }`}>
+                    <ElectricBorder
+                        key={category}
+                        className="skill-category"
+                        innerClassName={`p-6 h-full ${theme === 'cyberpunk'
+                            ? 'bg-black'
+                            : 'bg-white/5 backdrop-blur-lg'
+                            }`}
+                        color={theme === 'cyberpunk' ? 'yellow' : 'cyan'}
+                    >
                         <h3 className={`text-2xl font-bold mb-6 ${theme === 'cyberpunk' ? 'text-white group-hover:text-cyber-yellow' : 'text-cyan-300'
                             }`}>
                             {theme === 'cyberpunk' ? `> ${category.toUpperCase()}` : category}
@@ -60,7 +66,7 @@ const About = () => {
                                 </span>
                             ))}
                         </div>
-                    </div>
+                    </ElectricBorder>
                 ))}
             </div>
         </section>

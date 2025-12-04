@@ -143,6 +143,17 @@ const Hero = () => {
 
                             <div className="hero-text-element flex flex-col md:flex-row justify-center gap-4 md:gap-6 items-center">
                                 <MagneticButton strength={0.5}>
+                                    <button className={`w-full md:w-auto px-8 py-3 md:px-8 md:py-4 font-bold text-lg md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
+                                        ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
+                                        : theme === 'futuristic'
+                                            ? 'border-white/10 text-white rounded-full hover:bg-white/5'
+                                            : 'border-white/20 text-white rounded-full hover:bg-white/10'
+                                        }`}>
+                                        ABOUT ME
+                                    </button>
+                                </MagneticButton>
+
+                                <MagneticButton strength={0.5}>
                                     <button className={`w-full md:w-auto px-8 py-3 md:px-8 md:py-4 font-bold text-lg md:text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
                                         ? 'bg-cyber-red text-black skew-x-[-10deg] hover:bg-white hover:shadow-[0_0_20px_#ff003c]'
                                         : theme === 'futuristic'

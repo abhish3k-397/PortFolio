@@ -79,30 +79,33 @@ const TiltCard = ({ children, className = "" }) => {
         >
             <div
                 ref={cardRef}
-                className={`relative preserve-3d transition-shadow duration-300 ${className} overflow-hidden`}
+                className={`relative preserve-3d transition-shadow duration-300 ${className}`}
                 style={{ transformStyle: 'preserve-3d' }}
             >
                 {children}
 
-                {/* Holographic Glare Overlay */}
-                <div
-                    ref={glareRef}
-                    className="absolute inset-0 pointer-events-none opacity-0 mix-blend-overlay rounded-xl z-20"
-                    style={{
-                        background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 80%)'
-                    }}
-                />
+                {/* Effects Container (Clipped) */}
+                <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none z-50">
+                    {/* Holographic Glare Overlay */}
+                    <div
+                        ref={glareRef}
+                        className="absolute inset-0 opacity-0 mix-blend-overlay"
+                        style={{
+                            background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 80%)'
+                        }}
+                    />
 
-                {/* Light Sweep Overlay */}
-                <div
-                    ref={sweepRef}
-                    className="absolute top-0 bottom-0 w-1/2 pointer-events-none z-30"
-                    style={{
-                        background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)',
-                        transform: 'skewX(-20deg) translateX(-200%)',
-                        left: 0
-                    }}
-                />
+                    {/* Light Sweep Overlay */}
+                    <div
+                        ref={sweepRef}
+                        className="absolute top-0 bottom-0 w-1/2"
+                        style={{
+                            background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)',
+                            transform: 'skewX(-20deg) translateX(-200%)',
+                            left: 0
+                        }}
+                    />
+                </div>
             </div>
         </div>
     );
