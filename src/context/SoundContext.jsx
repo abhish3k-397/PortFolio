@@ -17,11 +17,25 @@ export const SoundProvider = ({ children }) => {
         if (!audioCtxRef.current) {
             audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
         }
-        if (audioCtxRef.current.state === 'suspended') {
-            audioCtxRef.current.resume();
-        }
         return audioCtxRef.current;
     };
+
+    useEffect(() => {
+        const handleUserGesture = () => {
+            const ctx = initAudio();
+            if (ctx.state === 'suspended') {
+                ctx.resume();
+            }
+        };
+
+        window.addEventListener('click', handleUserGesture);
+        window.addEventListener('keydown', handleUserGesture);
+
+        return () => {
+            window.removeEventListener('click', handleUserGesture);
+            window.removeEventListener('keydown', handleUserGesture);
+        };
+    }, []);
 
     const playHover = () => {
         if (isMuted) return;

@@ -8,6 +8,7 @@ const CustomCursor = () => {
     const outerRef = useRef(null);
     const hoverTarget = useRef(null);
     const [isTouch, setIsTouch] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         // Check for touch device
