@@ -51,13 +51,13 @@ AVAILABLE COMMANDS:
                 setHistory([]);
                 return;
             case 'ls':
-                output = 'SECTIONS:\n  hero\n  about\n  projects\n  contact\n\nFILES:\n  resume.pdf\n  portfolio.config';
+                output = 'SECTIONS:\n  hero\n  about\n  skills\n  projects\n  contact\n\nFILES:\n  resume.pdf\n  portfolio.config';
                 break;
             case 'cd':
                 const target = args[0];
                 if (!target) {
                     output = 'Usage: cd [section]';
-                } else if (['hero', 'about', 'projects', 'contact'].includes(target)) {
+                } else if (['hero', 'about', 'skills', 'projects', 'contact'].includes(target)) {
                     const element = document.getElementById(target);
                     if (element) {
                         element.scrollIntoView({ behavior: 'smooth' });

@@ -114,7 +114,18 @@ const CommandPalette = () => {
                                 `}
                             >
                                 <User size={18} />
-                                <span>About & Skills</span>
+                                <span>About Me</span>
+                            </Command.Item>
+                            <Command.Item
+                                onSelect={() => scrollToSection('skills')}
+                                className={`
+                                    flex items-center gap-2 px-3 py-3 rounded-lg cursor-pointer transition-colors mb-1
+                                    aria-selected:bg-white/10 aria-selected:text-white
+                                    ${theme === 'cyberpunk' ? 'aria-selected:bg-cyber-neon/20 aria-selected:text-cyber-neon' : ''}
+                                `}
+                            >
+                                <Zap size={18} />
+                                <span>Skills</span>
                             </Command.Item>
                             <Command.Item
                                 onSelect={() => scrollToSection('projects')}

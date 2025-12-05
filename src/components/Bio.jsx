@@ -55,7 +55,7 @@ const Bio = () => {
     };
 
     return (
-        <section ref={containerRef} className="min-h-screen py-20 px-4 flex items-center justify-center relative z-10 overflow-hidden">
+        <section id="about" ref={containerRef} className="min-h-screen py-20 px-4 flex items-center justify-center relative z-10 overflow-hidden">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
                 {/* Image Section */}

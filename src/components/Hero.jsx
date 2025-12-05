@@ -41,6 +41,13 @@ const Hero = () => {
         return () => ctx.revert();
     }, [theme]);
 
+    const scrollToSection = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <section id="hero" ref={containerRef} className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden p-4">
 
@@ -143,34 +150,40 @@ const Hero = () => {
 
                             <div className="hero-text-element flex flex-row flex-wrap justify-center gap-2 md:gap-6 items-center">
                                 <MagneticButton strength={0.5}>
-                                    <button className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
-                                        ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
-                                        : theme === 'futuristic'
-                                            ? 'border-white/10 text-white rounded-full hover:bg-white/5'
-                                            : 'border-white/20 text-white rounded-full hover:bg-white/10'
-                                        }`}>
+                                    <button
+                                        onClick={() => scrollToSection('about')}
+                                        className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
+                                            ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
+                                            : theme === 'futuristic'
+                                                ? 'border-white/10 text-white rounded-full hover:bg-white/5'
+                                                : 'border-white/20 text-white rounded-full hover:bg-white/10'
+                                            }`}>
                                         ABOUT ME
                                     </button>
                                 </MagneticButton>
 
                                 <MagneticButton strength={0.5}>
-                                    <button className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
-                                        ? 'bg-cyber-red text-black skew-x-[-10deg] hover:bg-white hover:shadow-[0_0_20px_#ff003c]'
-                                        : theme === 'futuristic'
-                                            ? 'bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 border border-white/20'
-                                            : 'bg-cyan-500 text-black rounded-full hover:bg-cyan-400 hover:shadow-[0_0_20px_cyan]'
-                                        }`}>
+                                    <button
+                                        onClick={() => scrollToSection('projects')}
+                                        className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
+                                            ? 'bg-cyber-red text-black skew-x-[-10deg] hover:bg-white hover:shadow-[0_0_20px_#ff003c]'
+                                            : theme === 'futuristic'
+                                                ? 'bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 border border-white/20'
+                                                : 'bg-cyan-500 text-black rounded-full hover:bg-cyan-400 hover:shadow-[0_0_20px_cyan]'
+                                            }`}>
                                         VIEW WORK
                                     </button>
                                 </MagneticButton>
 
                                 <MagneticButton strength={0.5}>
-                                    <button className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
-                                        ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
-                                        : theme === 'futuristic'
-                                            ? 'border-white/10 text-white rounded-full hover:bg-white/5'
-                                            : 'border-white/20 text-white rounded-full hover:bg-white/10'
-                                        }`}>
+                                    <button
+                                        onClick={() => scrollToSection('contact')}
+                                        className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
+                                            ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
+                                            : theme === 'futuristic'
+                                                ? 'border-white/10 text-white rounded-full hover:bg-white/5'
+                                                : 'border-white/20 text-white rounded-full hover:bg-white/10'
+                                            }`}>
                                         CONTACT
                                     </button>
                                 </MagneticButton>
