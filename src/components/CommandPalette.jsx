@@ -189,7 +189,7 @@ const CommandPalette = () => {
                                 <span>GitHub</span>
                             </Command.Item>
                             <Command.Item
-                                onSelect={() => openLink('https://linkedin.com')}
+                                onSelect={() => openLink('https://www.linkedin.com/in/abhi-sh3k')}
                                 className={`
                                     flex items-center gap-2 px-3 py-3 rounded-lg cursor-pointer transition-colors mb-1
                                     aria-selected:bg-white/10 aria-selected:text-white

@@ -71,7 +71,7 @@ const Contact = () => {
 
     const socialLinks = [
         { icon: Github, label: "GITHUB", href: "https://github.com/abhish3k-397" },
-        { icon: Linkedin, label: "LINKEDIN", href: "https://www.linkedin.com/in/abhish3k-397" },
+        { icon: Linkedin, label: "LINKEDIN", href: "https://www.linkedin.com/in/abhi-sh3k" },
         { icon: Twitter, label: "TWITTER", href: "#" },
         { icon: Mail, label: "EMAIL", href: "mailto:contact@example.com" }
     ];
