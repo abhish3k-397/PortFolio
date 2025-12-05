@@ -36,7 +36,7 @@ const About = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="min-h-screen py-20 px-4 flex flex-col items-center justify-center relative z-10">
+        <section id="about" ref={containerRef} className="min-h-screen py-20 px-4 flex flex-col items-center justify-center relative z-10">
             <h2 className={`text-4xl md:text-6xl font-black mb-16 ${theme === 'cyberpunk' ? 'text-cyber-red' : 'text-white'
                 }`}>
                 SKILLSET_DATABASE

@@ -42,7 +42,7 @@ const Hero = () => {
     }, [theme]);
 
     return (
-        <section ref={containerRef} className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden p-4">
+        <section id="hero" ref={containerRef} className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden p-4">
 
             {theme === 'cyberpunk' && (
                 <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none select-none">

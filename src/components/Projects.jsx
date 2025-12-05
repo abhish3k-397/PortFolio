@@ -12,21 +12,28 @@ const projects = [
         subtitle: "Online Multiplayer Game",
         tech: ["Node.js", "WebSockets", "Docker", "HTML/CSS"],
         desc: "Browser-based multiplayer game supporting 6 concurrent players with <150ms latency using socket programming.",
-        link: "https://github.com/abhish3k-397"
+        link: "https://uno.dev.p1ng.me"
     },
     {
         title: "Res-Flow",
         subtitle: "Python Task Manager",
         tech: ["PyQt5", "Psutil", "Flask"],
         desc: "Cross-platform resource monitoring tool tracking 15+ system processes in real-time.",
-        link: "https://github.com/abhish3k-397"
+        link: "https://github.com/abhish3k-397/ResFlow.git"
     },
     {
         title: "CyberMusicAi",
         subtitle: "AI Music Assistant",
         tech: ["HTML", "CSS", "JavaScript", "Spotify API"],
         desc: "AI-powered chatbot for music tutoring and recommendations with Spotify integration.",
-        link: "https://github.com/abhish3k-397"
+        link: "https://github.com/abhish3k-397/CyberMusicAI.git"
+    },
+    {
+        title: "Portfolio",
+        subtitle: "Interactive Developer Portfolio",
+        tech: ["React", "GSAP", "TailwindCSS"],
+        desc: "A futuristic, cyberpunk-themed portfolio website featuring interactive animations and 3D elements.",
+        link: "https://github.com/abhish3k-397/PortFolio.git"
     }
 ];
 
@@ -52,7 +59,7 @@ const Projects = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="min-h-screen py-20 px-4 relative z-10">
+        <section id="projects" ref={containerRef} className="min-h-screen py-20 px-4 relative z-10">
             <h2 className={`text-4xl md:text-6xl font-black mb-16 text-center ${theme === 'cyberpunk' ? 'text-cyber-red' : 'text-white'
                 }`}>
                 PROJECT_LOGS

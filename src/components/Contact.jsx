@@ -71,13 +71,13 @@ const Contact = () => {
 
     const socialLinks = [
         { icon: Github, label: "GITHUB", href: "https://github.com/abhish3k-397" },
-        { icon: Linkedin, label: "LINKEDIN", href: "#" },
+        { icon: Linkedin, label: "LINKEDIN", href: "https://www.linkedin.com/in/abhish3k-397" },
         { icon: Twitter, label: "TWITTER", href: "#" },
         { icon: Mail, label: "EMAIL", href: "mailto:contact@example.com" }
     ];
 
     return (
-        <section ref={containerRef} className="min-h-screen py-20 px-4 flex items-center justify-center relative z-10">
+        <section id="contact" ref={containerRef} className="min-h-screen py-20 px-4 flex items-center justify-center relative z-10">
             <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
 
                 {/* Left Side: Info & Socials */}
@@ -98,8 +98,8 @@ const Contact = () => {
                             <a
                                 key={index}
                                 href={link.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                target={link.href.startsWith('mailto:') ? undefined : "_blank"}
+                                rel={link.href.startsWith('mailto:') ? undefined : "noopener noreferrer"}
                                 className={`group flex items-center gap-4 p-4 border transition-all duration-300 ${theme === 'cyberpunk'
                                     ? 'border-white/10 hover:border-cyber-yellow hover:bg-cyber-yellow/10'
                                     : 'border-white/10 hover:border-cyan-400 hover:bg-cyan-400/10'

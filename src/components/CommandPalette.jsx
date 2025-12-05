@@ -7,9 +7,11 @@ import {
     Monitor, Zap, Palette,
     Github, Linkedin, Search
 } from 'lucide-react';
+import TerminalCLI from './TerminalCLI';
 
 const CommandPalette = () => {
     const [open, setOpen] = useState(false);
+    const [mode, setMode] = useState('cli'); // 'cli' or 'gui'
     const { setTheme, theme } = useTheme();
     const { playClick, playHover } = useSoundFX();
 
@@ -18,7 +20,10 @@ const CommandPalette = () => {
         const down = (e) => {
             if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();
-                setOpen((open) => !open);
+                setOpen((open) => {
+                    if (!open) setMode('cli'); // Default to CLI when opening
+                    return !open;
+                });
                 playClick();
             }
         };
@@ -49,6 +54,15 @@ const CommandPalette = () => {
     };
 
     if (!open) return null;
+
+    if (mode === 'cli') {
+        return (
+            <TerminalCLI
+                onClose={() => setOpen(false)}
+                onSwitchToGui={() => setMode('gui')}
+            />
+        );
+    }
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
