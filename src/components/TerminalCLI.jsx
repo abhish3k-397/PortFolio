@@ -41,8 +41,22 @@ AVAILABLE COMMANDS:
   whoami    - Display current user
   date      - Display system time
   exit      - Close terminal
+  download  - Download Resume
   matrix    - ???
 `;
+                break;
+            case 'download':
+                if (args[0] === 'resume') {
+                    const link = document.createElement('a');
+                    link.href = '/resume.pdf';
+                    link.download = 'Abhishek_Krishna_Resume.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    output = 'Initiating download sequence...';
+                } else {
+                    output = 'Usage: download resume';
+                }
                 break;
             case 'gui':
                 onSwitchToGui();

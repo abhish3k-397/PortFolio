@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
-import { Mail, Github, Linkedin, Twitter, Send, Terminal, AlertTriangle } from 'lucide-react';
+import { Mail, Github, Linkedin, Twitter, Send, Terminal, AlertTriangle, FileText, Download } from 'lucide-react';
 import ElectricBorder from './ElectricBorder';
 import MagneticButton from './MagneticButton';
 import emailjs from '@emailjs/browser';
@@ -13,7 +13,7 @@ const Contact = () => {
     const { theme } = useTheme();
     const containerRef = useRef(null);
     const formRef = useRef(null);
-    const [formState, setFormState] = useState({ user_name: '', user_email: '', message: '' });
+    const [formState, setFormState] = useState({ user_name: '', user_email: '', user_phone: '', message: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [status, setStatus] = useState('IDLE'); // IDLE, SENDING, SENT, ERROR
 
@@ -50,7 +50,7 @@ const Contact = () => {
                 console.log(result.text);
                 setIsSubmitting(false);
                 setStatus('SENT');
-                setFormState({ user_name: '', user_email: '', message: '' });
+                setFormState({ user_name: '', user_email: '', user_phone: '', message: '' });
                 setTimeout(() => setStatus('IDLE'), 5000);
             }, (error) => {
                 console.log(error.text);
@@ -112,6 +112,34 @@ const Contact = () => {
                         ))}
                     </div>
 
+                    {/* Resume Download */}
+                    <div className="contact-reveal">
+                        <a
+                            href="/resume.pdf"
+                            download="Abhishek_Krishna_Resume.pdf"
+                            className={`group flex items-center justify-between p-6 border border-dashed transition-all duration-300 ${theme === 'cyberpunk'
+                                ? 'border-cyber-yellow/30 bg-cyber-yellow/5 hover:bg-cyber-yellow/20 hover:border-cyber-yellow'
+                                : 'border-cyan-400/30 bg-cyan-400/5 hover:bg-cyan-400/20 hover:border-cyan-400'
+                                }`}
+                        >
+                            <div className="flex items-center gap-4">
+                                <FileText className={`w-8 h-8 ${theme === 'cyberpunk' ? 'text-cyber-yellow' : 'text-cyan-400'}`} />
+                                <div>
+                                    <h3 className={`font-black tracking-wider text-xl ${theme === 'cyberpunk' ? 'text-white' : 'text-white'}`}>
+                                        ACCESS_DOSSIER
+                                    </h3>
+                                    <p className="text-xs font-mono opacity-60">
+                                        DOWNLOAD_RESUME.PDF (2.4 MB)
+                                    </p>
+                                </div>
+                            </div>
+                            <div className={`p-2 rounded-full transition-transform group-hover:translate-x-1 ${theme === 'cyberpunk' ? 'bg-cyber-yellow text-black' : 'bg-cyan-400 text-black'
+                                }`}>
+                                <Download size={20} />
+                            </div>
+                        </a>
+                    </div>
+
                     {/* Desktop Status Panel */}
                     <div className="hidden lg:block contact-reveal p-6 border border-dashed border-white/20 rounded-lg bg-black/20 backdrop-blur-sm">
                         <div className="flex items-center gap-3 mb-2 text-green-400 font-mono text-sm">
@@ -129,13 +157,13 @@ const Contact = () => {
                 </div>
 
                 {/* Right Side: Form */}
-                <div className="contact-reveal flex flex-col gap-6">
+                <div className="contact-reveal flex flex-col gap-6 h-full">
                     <ElectricBorder
                         color={getThemeColor()}
-                        className="w-full"
-                        innerClassName="bg-black p-8 md:p-10 flex flex-col justify-center"
+                        className="w-full h-full"
+                        innerClassName="bg-black p-8 md:p-10 flex flex-col justify-center h-full"
                     >
-                        <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
+                        <form ref={formRef} onSubmit={handleSubmit} className="space-y-8 w-full">
                             <div className="space-y-2">
                                 <label className="text-xs font-mono opacity-50 ml-1">USER_ID (NAME)</label>
                                 <input
@@ -165,6 +193,21 @@ const Contact = () => {
                                         : 'border-white/20 focus:border-cyan-400 text-cyan-300 placeholder-white/20'
                                         }`}
                                     placeholder="ENTER EMAIL..."
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-xs font-mono opacity-50 ml-1">FREQ_BAND (PHONE)</label>
+                                <input
+                                    type="tel"
+                                    name="user_phone"
+                                    value={formState.user_phone}
+                                    onChange={e => setFormState({ ...formState, user_phone: e.target.value })}
+                                    className={`w-full bg-transparent border-b-2 p-3 font-mono focus:outline-none transition-colors ${theme === 'cyberpunk'
+                                        ? 'border-white/20 focus:border-cyber-yellow text-cyber-yellow placeholder-white/20'
+                                        : 'border-white/20 focus:border-cyan-400 text-cyan-300 placeholder-white/20'
+                                        }`}
+                                    placeholder="ENTER PHONE..."
                                 />
                             </div>
 
