@@ -3,7 +3,7 @@ import { useTheme } from '../context/ThemeContext';
 
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
 
-const DecryptedText = ({ text, className = "", speed = 50, maxIterations = 10 }) => {
+const DecryptedText = ({ text, className = "", speed = 15, maxIterations = 10 }) => {
     const [displayText, setDisplayText] = useState(text);
     const [isVisible, setIsVisible] = useState(false);
     const intervalRef = useRef(null);
@@ -53,10 +53,10 @@ const DecryptedText = ({ text, className = "", speed = 50, maxIterations = 10 })
             );
 
             if (isVisible) {
-                iteration += 1 / 3;
+                iteration += 1;
                 if (iteration >= text.length) clearInterval(intervalRef.current);
             } else {
-                iteration -= 1 / 3;
+                iteration -= 1;
                 if (iteration <= 0) clearInterval(intervalRef.current);
             }
         }, speed);

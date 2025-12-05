@@ -112,7 +112,8 @@ const Contact = () => {
                         ))}
                     </div>
 
-                    <div className="contact-reveal p-6 border border-dashed border-white/20 rounded-lg bg-black/20 backdrop-blur-sm">
+                    {/* Desktop Status Panel */}
+                    <div className="hidden lg:block contact-reveal p-6 border border-dashed border-white/20 rounded-lg bg-black/20 backdrop-blur-sm">
                         <div className="flex items-center gap-3 mb-2 text-green-400 font-mono text-sm">
                             <Terminal size={16} />
                             <span>SYSTEM_STATUS</span>
@@ -123,14 +124,16 @@ const Contact = () => {
                             &gt; LATENCY: 12ms
                         </p>
                     </div>
+
+
                 </div>
 
                 {/* Right Side: Form */}
-                <div className="contact-reveal h-full">
+                <div className="contact-reveal flex flex-col gap-6">
                     <ElectricBorder
                         color={getThemeColor()}
-                        className="h-full"
-                        innerClassName="h-full bg-black p-8 md:p-10 flex flex-col justify-center"
+                        className="w-full"
+                        innerClassName="bg-black p-8 md:p-10 flex flex-col justify-center"
                     >
                         <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
                             <div className="space-y-2">
@@ -209,6 +212,19 @@ const Contact = () => {
                             </div>
                         </form>
                     </ElectricBorder>
+
+                    {/* Mobile Status Panel */}
+                    <div className="lg:hidden p-6 border border-dashed border-white/20 rounded-lg bg-black/20 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-2 text-green-400 font-mono text-sm">
+                            <Terminal size={16} />
+                            <span>SYSTEM_STATUS</span>
+                        </div>
+                        <p className="font-mono text-xs opacity-60">
+                            &gt; PORT 443: OPEN<br />
+                            &gt; ENCRYPTION: AES-256<br />
+                            &gt; LATENCY: 12ms
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
