@@ -310,26 +310,3 @@
 .glitch-text {
   animation: glitch-skew 4s infinite step-end;
 }
-
-/* Mobile Electric Border Animation */
-@keyframes electric-pulse {
-  0%, 100% {
-    box-shadow: 0 0 5px var(--electric-color), 0 0 10px var(--electric-color), inset 0 0 5px var(--electric-color);
-    opacity: 1;
-  }
-  50% {
-    box-shadow: 0 0 2px var(--electric-color), 0 0 5px var(--electric-color), inset 0 0 2px var(--electric-color);
-    opacity: 0.8;
-  }
-  10%, 90% {
-    opacity: 0.9;
-  }
-  30%, 70% {
-    opacity: 1;
-    box-shadow: 0 0 8px var(--electric-color), 0 0 15px var(--electric-color), inset 0 0 8px var(--electric-color);
-  }
-}
-
-.animate-electric-pulse {
-  animation: electric-pulse 0.1s infinite alternate;
-}
