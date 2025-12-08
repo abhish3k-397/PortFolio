@@ -90,11 +90,12 @@ const Layout = ({ children }) => {
                 </MagneticButton>
             </div>
 
-            <main className={`relative z-10 transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px] opacity-50' : 'blur-0 opacity-100'}`}>
-                {children}
-            </main>
-
-            <Footer />
+            <div className={`relative z-10 transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px] opacity-50' : 'blur-0 opacity-100'}`}>
+                <main>
+                    {children}
+                </main>
+                <Footer />
+            </div>
 
             {/* Background Effects */}
             <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px]' : 'blur-0'}`}>
