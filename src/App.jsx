@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ThemeProvider } from './context/ThemeContext'
 import { SoundProvider } from './context/SoundContext'
 import Layout from './components/Layout'
@@ -11,9 +11,22 @@ import Contact from './components/Contact'
 import StartPage from './components/StartPage'
 import Loader from './components/Loader'
 
+import Lenis from '@studio-freight/lenis'
+
 function App() {
     const [hasStarted, setHasStarted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const lenis = new Lenis()
+
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+
+        requestAnimationFrame(raf)
+    }, [])
 
     const handleStart = () => {
         setIsLoading(true);
