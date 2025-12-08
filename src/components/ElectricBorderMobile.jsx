@@ -36,60 +36,37 @@ const ElectricBorderMobile = ({ children, color = '#5227FF', className, innerCla
 
         const ctx = canvas.getContext('2d');
         let animationFrameId;
-        let lastDraw = 0;
-        const fps = 15; // Limit FPS for mobile performance
-        const interval = 1000 / fps;
+        let startTime = Date.now();
 
-        const drawLightningLine = (x1, y1, x2, y2, displacement) => {
-            if (displacement < 2) {
-                ctx.lineTo(x2, y2);
-                return;
-            }
-            const midX = (x1 + x2) / 2;
-            const midY = (y1 + y2) / 2;
-            const normalX = -(y2 - y1);
-            const normalY = x2 - x1;
-            const len = Math.sqrt(normalX * normalX + normalY * normalY);
-
-            // Add random jitter
-            const jitter = (Math.random() - 0.5) * displacement;
-            const dX = (normalX / len) * jitter;
-            const dY = (normalY / len) * jitter;
-
-            drawLightningLine(x1, y1, midX + dX, midY + dY, displacement / 2);
-            drawLightningLine(midX + dX, midY + dY, x2, y2, displacement / 2);
-        };
-
-        const draw = (timestamp) => {
+        const draw = () => {
             animationFrameId = requestAnimationFrame(draw);
 
-            if (timestamp - lastDraw < interval) return;
-            lastDraw = timestamp;
+            const time = (Date.now() - startTime) / 1000;
+            const pulse = (Math.sin(time * 3) + 1) / 2; // 0 to 1
 
             ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+
+            // Draw glowing border
             ctx.beginPath();
             ctx.strokeStyle = activeColor;
             ctx.lineWidth = 2;
-            ctx.shadowBlur = 10;
+            ctx.lineJoin = 'round';
+
+            // Dynamic glow
+            ctx.shadowBlur = 10 + (pulse * 15); // Pulse between 10px and 25px
             ctx.shadowColor = activeColor;
 
-            // Top
-            ctx.moveTo(0, 0);
-            drawLightningLine(0, 0, dimensions.width, 0, 20);
+            // Draw rounded rect path manually or use strokeRect (strokeRect handles corners poorly with shadow sometimes, but okay for simple)
+            // Using a path for better control if needed, but rect is fine for now.
+            // Note: canvas rect doesn't support border-radius directly. 
+            // We'll just draw a rect. If border-radius is needed, we'd need a rounded rect function.
+            // Assuming rectangular for now as most containers are.
 
-            // Right
-            drawLightningLine(dimensions.width, 0, dimensions.width, dimensions.height, 20);
-
-            // Bottom
-            drawLightningLine(dimensions.width, dimensions.height, 0, dimensions.height, 20);
-
-            // Left
-            drawLightningLine(0, dimensions.height, 0, 0, 20);
-
-            ctx.stroke();
+            const padding = 2; // Prevent clipping
+            ctx.strokeRect(padding, padding, dimensions.width - padding * 2, dimensions.height - padding * 2);
         };
 
-        draw(0);
+        draw();
 
         return () => cancelAnimationFrame(animationFrameId);
     }, [dimensions, activeColor]);
