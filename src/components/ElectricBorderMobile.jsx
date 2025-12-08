@@ -41,10 +41,12 @@ const ElectricBorderMobile = ({ children, color = '#5227FF', className, innerCla
         const draw = () => {
             animationFrameId = requestAnimationFrame(draw);
 
-            const time = (Date.now() - startTime) / 1000;
-            const pulse = (Math.sin(time * 3) + 1) / 2; // 0 to 1
-
             ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+
+            // Flicker logic: mostly bright (0.8-1.0), with occasional sharp drops (0.2-0.5)
+            // Simulates a faulty neon connection
+            const isGlitch = Math.random() > 0.92;
+            const flicker = isGlitch ? (Math.random() * 0.5) : (0.8 + Math.random() * 0.2);
 
             // Draw glowing border
             ctx.beginPath();
@@ -52,18 +54,16 @@ const ElectricBorderMobile = ({ children, color = '#5227FF', className, innerCla
             ctx.lineWidth = 2;
             ctx.lineJoin = 'round';
 
-            // Dynamic glow
-            ctx.shadowBlur = 10 + (pulse * 15); // Pulse between 10px and 25px
+            // Apply flicker to glow and opacity
+            ctx.shadowBlur = 10 + (flicker * 10); // Fluctuates between 10 and 20 (drops on glitch)
             ctx.shadowColor = activeColor;
+            ctx.globalAlpha = flicker; // The entire line flickers opacity
 
-            // Draw rounded rect path manually or use strokeRect (strokeRect handles corners poorly with shadow sometimes, but okay for simple)
-            // Using a path for better control if needed, but rect is fine for now.
-            // Note: canvas rect doesn't support border-radius directly. 
-            // We'll just draw a rect. If border-radius is needed, we'd need a rounded rect function.
-            // Assuming rectangular for now as most containers are.
-
-            const padding = 2; // Prevent clipping
+            const padding = 2;
             ctx.strokeRect(padding, padding, dimensions.width - padding * 2, dimensions.height - padding * 2);
+
+            // Reset alpha for next frame (though we clear rect anyway)
+            ctx.globalAlpha = 1;
         };
 
         draw();
