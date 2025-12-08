@@ -8,6 +8,7 @@ import DotGrid from './DotGrid';
 import CommandPalette from './CommandPalette';
 import CyberpunkHUD from './CyberpunkHUD';
 import AccessDenied from './AccessDenied';
+import Footer from './Footer';
 
 const Layout = ({ children }) => {
     const { theme, setTheme } = useTheme();
@@ -92,6 +93,8 @@ const Layout = ({ children }) => {
             <main className={`relative z-10 transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px] opacity-50' : 'blur-0 opacity-100'}`}>
                 {children}
             </main>
+
+            <Footer />
 
             {/* Background Effects */}
             <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px]' : 'blur-0'}`}>
