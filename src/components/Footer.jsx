@@ -33,7 +33,7 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className={`relative z-[60] mt-20 border-t-2 transition-colors duration-500 overflow-hidden ${theme === 'cyberpunk'
+        <footer className={`relative z-[60] md:z-10 mt-20 border-t-2 transition-colors duration-500 overflow-hidden ${theme === 'cyberpunk'
             ? 'border-cyber-yellow/50 bg-black text-cyber-neon'
             : theme === 'futuristic'
                 ? 'border-cyan-500/50 bg-slate-950 text-cyan-400'
