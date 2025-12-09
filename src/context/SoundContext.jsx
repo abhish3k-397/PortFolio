@@ -39,7 +39,10 @@ export const SoundProvider = ({ children }) => {
 
     const playHover = () => {
         if (isMuted) return;
-        const ctx = initAudio();
+        // Only play hover sounds if audio context is already running (user has interacted)
+        if (!audioCtxRef.current || audioCtxRef.current.state !== 'running') return;
+
+        const ctx = audioCtxRef.current;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
@@ -60,6 +63,8 @@ export const SoundProvider = ({ children }) => {
     const playClick = () => {
         if (isMuted) return;
         const ctx = initAudio();
+        if (ctx.state === 'suspended') ctx.resume();
+
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
@@ -80,6 +85,8 @@ export const SoundProvider = ({ children }) => {
     const playThemeSwitch = () => {
         if (isMuted) return;
         const ctx = initAudio();
+        if (ctx.state === 'suspended') ctx.resume();
+
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
@@ -100,6 +107,8 @@ export const SoundProvider = ({ children }) => {
     const playDenied = () => {
         if (isMuted) return;
         const ctx = initAudio();
+        if (ctx.state === 'suspended') ctx.resume();
+
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
