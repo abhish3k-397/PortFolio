@@ -1,4 +1,6 @@
 import React, { useRef, useEffect } from 'react';
+import { Code, Server, Terminal, Cpu, User, Zap } from 'lucide-react';
+import GithubActivity from './GithubActivity';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
@@ -69,6 +71,11 @@ const About = () => {
                         </div>
                     </ElectricBorder>
                 ))}
+            </div>
+
+            {/* GitHub Activity Section */}
+            <div className="mt-16 max-w-6xl w-full skill-category"> {/* 2. Render GithubActivity below skills grid with wrapper div */}
+                <GithubActivity />
             </div>
         </section>
     );

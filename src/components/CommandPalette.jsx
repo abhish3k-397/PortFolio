@@ -4,7 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useSoundFX } from '../context/SoundContext';
 import {
     Home, User, Briefcase, Mail,
-    Monitor, Zap, Palette,
+    Monitor, Zap,
     Github, Linkedin, Search
 } from 'lucide-react';
 import TerminalCLI from './TerminalCLI';
@@ -174,17 +174,7 @@ const CommandPalette = () => {
                                 <Zap size={18} />
                                 <span>Futuristic Mode</span>
                             </Command.Item>
-                            <Command.Item
-                                onSelect={() => handleThemeChange('creative')}
-                                className={`
-                                    flex items-center gap-2 px-3 py-3 rounded-lg cursor-pointer transition-colors mb-1
-                                    aria-selected:bg-white/10 aria-selected:text-white
-                                    ${theme === 'cyberpunk' ? 'aria-selected:bg-cyber-neon/20 aria-selected:text-cyber-neon' : ''}
-                                `}
-                            >
-                                <Palette size={18} />
-                                <span>Creative Mode</span>
-                            </Command.Item>
+
                         </Command.Group>
 
                         <Command.Group heading="Socials" className="text-xs font-bold text-gray-500 mb-2 px-2 mt-4">

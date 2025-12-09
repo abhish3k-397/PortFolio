@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSoundFX } from '../context/SoundContext';
-import { Monitor, Zap, Palette, Volume2, VolumeX } from 'lucide-react';
+import { Monitor, Zap, Volume2, VolumeX } from 'lucide-react';
 import CustomCursor from './CustomCursor';
 import MagneticButton from './MagneticButton';
 import DotGrid from './DotGrid';
@@ -15,6 +15,29 @@ const Layout = ({ children }) => {
     const { isMuted, toggleMute, playHover, playClick, playDenied } = useSoundFX();
     const [isDenied, setIsDenied] = useState(false);
     const [isIdle, setIsIdle] = useState(false);
+
+    // Easter Egg: Konami Code
+    useEffect(() => {
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let cursor = 0;
+
+        const handleKeyDown = (e) => {
+            if (e.key === konamiCode[cursor]) {
+                cursor++;
+                if (cursor === konamiCode.length) {
+                    // Unlock Creative Mode
+                    setTheme('creative');
+                    playClick(); // Or a special unlock sound
+                    cursor = 0;
+                }
+            } else {
+                cursor = 0; // Reset if mistake
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [setTheme, playClick]);
 
     useEffect(() => {
         const handleSecurityBreach = (e) => {
@@ -36,7 +59,6 @@ const Layout = ({ children }) => {
     const themes = [
         { id: 'cyberpunk', icon: Monitor, label: 'Cyber' },
         { id: 'futuristic', icon: Zap, label: 'Future' },
-        { id: 'creative', icon: Palette, label: 'Art' },
     ];
 
     const handleThemeChange = (id) => {

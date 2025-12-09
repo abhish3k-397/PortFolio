@@ -1,29 +1,39 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = useState(() => {
-        return localStorage.getItem('portfolio-theme') || 'cyberpunk';
+        const saved = localStorage.getItem('theme');
+        // Allow creative mode if saved (persistence for the easter egg)
+        return ['cyberpunk', 'futuristic', 'creative'].includes(saved) ? saved : 'cyberpunk';
     });
 
     useEffect(() => {
-        const root = document.documentElement;
-        // Remove all theme classes
-        root.classList.remove('cyberpunk', 'futuristic', 'creative');
-        // Add current theme
-        root.classList.add(theme);
-        // Also set data-theme for attribute selectors if needed
-        root.setAttribute('data-theme', theme);
-
-        localStorage.setItem('portfolio-theme', theme);
+        localStorage.setItem('theme', theme);
+        // Update body class for global styles if needed
+        document.body.className = theme;
     }, [theme]);
 
+    const value = {
+        theme,
+        setTheme,
+        isCyberpunk: theme === 'cyberpunk',
+        isFuturistic: theme === 'futuristic',
+        isCreative: theme === 'creative'
+    };
+
     return (
-        <ThemeContext.Provider value={{ theme, setTheme }}>
+        <ThemeContext.Provider value={value}>
             {children}
         </ThemeContext.Provider>
     );
 };
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+    const context = useContext(ThemeContext);
+    if (context === undefined) {
+        throw new Error('useTheme must be used within a ThemeProvider');
+    }
+    return context;
+};
