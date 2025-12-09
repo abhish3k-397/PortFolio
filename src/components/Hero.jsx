@@ -104,19 +104,19 @@ const Hero = () => {
                                     <div className="relative overflow-hidden">
                                         {/* Red Ghost Layer (Now Cyan for Abhishek) */}
                                         {theme === 'cyberpunk' && (
-                                            <div className="absolute inset-0 text-cyan-400 opacity-70 animate-glitch-1 select-none pointer-events-none z-[-1]" aria-hidden="true">
+                                            <div className="absolute inset-0 text-cyber-red opacity-70 animate-glitch-1 select-none pointer-events-none z-[-1]" aria-hidden="true">
                                                 <h1 className="text-[clamp(2rem,6vw,9rem)] font-black tracking-tighter leading-[1.2] md:leading-[0.9] font-geek-trend glitch-skew origin-center">
                                                     ABHISHEK <br />
-                                                    <span className="text-cyber-yellow">KRISHNA</span>
+                                                    KRISHNA
                                                 </h1>
                                             </div>
                                         )}
 
                                         {/* Cyan Ghost Layer (Now Yellow for Krishna) */}
                                         {theme === 'cyberpunk' && (
-                                            <div className="absolute inset-0 text-cyber-yellow opacity-70 animate-glitch-2 select-none pointer-events-none z-[-2]" aria-hidden="true">
+                                            <div className="absolute inset-0 text-cyan-400 opacity-70 animate-glitch-2 select-none pointer-events-none z-[-2]" aria-hidden="true">
                                                 <h1 className="text-[clamp(2rem,6vw,9rem)] font-black tracking-tighter leading-[1.2] md:leading-[0.9] font-geek-trend glitch-skew origin-center">
-                                                    <span className="text-cyan-400">ABHISHEK</span> <br />
+                                                    ABHISHEK <br />
                                                     KRISHNA
                                                 </h1>
                                             </div>

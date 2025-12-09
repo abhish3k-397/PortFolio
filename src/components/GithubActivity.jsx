@@ -53,7 +53,7 @@ const GithubActivity = () => {
     const recentContributions = data?.contributions?.slice(-59) || [];
 
     return (
-        <TiltCard className="h-full">
+        <TiltCard className="h-full" maxRotation={2}>
             <ElectricBorder
                 color="red"
                 className="rounded-xl h-full"

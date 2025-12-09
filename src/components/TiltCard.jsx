@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { gsap } from 'gsap';
 
-const TiltCard = ({ children, className = "" }) => {
+const TiltCard = ({ children, className = "", maxRotation = 10 }) => {
     const cardRef = useRef(null);
     const glareRef = useRef(null);
     const sweepRef = useRef(null);
@@ -54,8 +54,8 @@ const TiltCard = ({ children, className = "" }) => {
         const centerX = bounds.width / 2;
         const centerY = bounds.height / 2;
 
-        const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
-        const rotateY = ((x - centerX) / centerX) * 10;
+        const rotateX = ((y - centerY) / centerY) * -maxRotation; // Max rotation based on prop
+        const rotateY = ((x - centerX) / centerX) * maxRotation;
 
         gsap.to(cardRef.current, {
             rotationX: rotateX,
