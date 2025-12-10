@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Command } from 'cmdk';
 import { useTheme } from '../context/ThemeContext';
 import { useSoundFX } from '../context/SoundContext';
+import { useAchievements } from '../context/AchievementContext';
 import {
     Home, User, Briefcase, Mail,
     Monitor, Zap,
@@ -14,6 +15,7 @@ const CommandPalette = () => {
     const [mode, setMode] = useState('cli'); // 'cli' or 'gui'
     const { setTheme, theme } = useTheme();
     const { playClick, playHover } = useSoundFX();
+    const { unlockAchievement } = useAchievements();
 
     // Toggle with Cmd+K
     useEffect(() => {
@@ -45,6 +47,7 @@ const CommandPalette = () => {
         setTheme(newTheme);
         setOpen(false);
         playClick();
+        unlockAchievement('theme_shifter');
     };
 
     const openLink = (url) => {
