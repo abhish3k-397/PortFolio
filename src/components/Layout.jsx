@@ -7,6 +7,7 @@ import CustomCursor from './CustomCursor';
 import MagneticButton from './MagneticButton';
 import DotGrid from './DotGrid';
 import CommandPalette from './CommandPalette';
+import MusicPlayer from './MusicPlayer';
 import CyberpunkHUD from './CyberpunkHUD';
 import AccessDenied from './AccessDenied';
 import Footer from './Footer';
@@ -69,6 +70,7 @@ const Layout = ({ children }) => {
     `}>
             <CustomCursor />
             <CommandPalette />
+            <MusicPlayer />
             {theme === 'cyberpunk' && <CyberpunkHUD onIdleChange={setIsIdle} />}
             {isDenied && <AccessDenied onDismiss={() => setIsDenied(false)} />}
 

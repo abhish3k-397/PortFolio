@@ -39,6 +39,12 @@ export const ACHIEVEMENTS = {
         title: 'REALITY_WARP',
         description: 'Changed the visual theme',
         icon: 'zap'
+    },
+    DJ: {
+        id: 'dj',
+        title: 'DISC_JOCKEY',
+        description: 'Played 3 different tracks',
+        icon: 'music'
     }
 };
 
