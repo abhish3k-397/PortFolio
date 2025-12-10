@@ -7,10 +7,11 @@ import CustomCursor from './CustomCursor';
 import MagneticButton from './MagneticButton';
 import DotGrid from './DotGrid';
 import CommandPalette from './CommandPalette';
-import MusicPlayer from './MusicPlayer';
 import CyberpunkHUD from './CyberpunkHUD';
 import AccessDenied from './AccessDenied';
 import Footer from './Footer';
+
+import HackingGame from './HackingGame';
 
 const Layout = ({ children }) => {
     const { theme, setTheme } = useTheme();
@@ -18,6 +19,7 @@ const Layout = ({ children }) => {
     const { unlockAchievement } = useAchievements();
     const [isDenied, setIsDenied] = useState(false);
     const [isIdle, setIsIdle] = useState(false);
+    const [showHackGame, setShowHackGame] = useState(false);
 
     // Easter Egg: Konami Code
     useEffect(() => {
@@ -69,8 +71,8 @@ const Layout = ({ children }) => {
       ${theme === 'creative' ? 'bg-purple-950 text-pink-300' : ''}
     `}>
             <CustomCursor />
-            <CommandPalette />
-            <MusicPlayer />
+            <CommandPalette onStartHack={() => setShowHackGame(true)} />
+            {showHackGame && <HackingGame onClose={() => setShowHackGame(false)} />}
             {theme === 'cyberpunk' && <CyberpunkHUD onIdleChange={setIsIdle} />}
             {isDenied && <AccessDenied onDismiss={() => setIsDenied(false)} />}
 

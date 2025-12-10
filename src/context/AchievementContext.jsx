@@ -40,11 +40,11 @@ export const ACHIEVEMENTS = {
         description: 'Changed the visual theme',
         icon: 'zap'
     },
-    DJ: {
-        id: 'dj',
-        title: 'DISC_JOCKEY',
-        description: 'Played 3 different tracks',
-        icon: 'music'
+    NETRUNNER_ELITE: {
+        id: 'netrunner_elite',
+        title: 'ICE_BREAKER',
+        description: 'Completed the Hacking Gauntlet',
+        icon: 'cpu'
     }
 };
 

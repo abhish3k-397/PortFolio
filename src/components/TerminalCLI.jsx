@@ -4,7 +4,7 @@ import { useSoundFX } from '../context/SoundContext';
 import { useAchievements, ACHIEVEMENTS } from '../context/AchievementContext';
 import ElectricBorder from './ElectricBorder';
 
-const TerminalCLI = ({ onClose, onSwitchToGui }) => {
+const TerminalCLI = ({ onClose, onSwitchToGui, onStartHack }) => {
     const { theme } = useTheme();
     const { playClick } = useSoundFX();
     const { unlockAchievement, unlocked } = useAchievements();
@@ -58,6 +58,17 @@ AVAILABLE COMMANDS:
                         return ach ? `[x] ${ach.title}: ${ach.description}` : `[?] ${id}`;
                     }).join('\n');
                     output = `UNLOCKED ACHIEVEMENTS:\n${list}`;
+                }
+                break;
+            case 'hack':
+                if (onStartHack) {
+                    output = 'Initializing Breach Protocol...';
+                    setTimeout(() => {
+                        onStartHack();
+                        onClose();
+                    }, 1000);
+                } else {
+                    output = 'Error: Breach Protocol module not found.';
                 }
                 break;
             case 'download':
