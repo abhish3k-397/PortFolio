@@ -30,8 +30,18 @@ const CommandPalette = ({ onStartHack }) => {
             }
         };
 
+        const handleOpenTerminal = () => {
+            setOpen(true);
+            setMode('cli');
+            playClick();
+        };
+
         document.addEventListener('keydown', down);
-        return () => document.removeEventListener('keydown', down);
+        window.addEventListener('open-terminal', handleOpenTerminal);
+        return () => {
+            document.removeEventListener('keydown', down);
+            window.removeEventListener('open-terminal', handleOpenTerminal);
+        };
     }, [playClick]);
 
     const scrollToSection = (id) => {

@@ -145,6 +145,18 @@ const Footer = () => {
                         <Coffee size={10} className="text-yellow-500" />
                         <span>IN REACT</span>
                     </div>
+
+                    {/* Mobile Terminal Button */}
+                    <button
+                        onClick={() => window.dispatchEvent(new CustomEvent('open-terminal'))}
+                        className={`md:hidden flex items-center gap-2 px-4 py-2 rounded border ${theme === 'cyberpunk'
+                            ? 'bg-cyber-red/20 border-cyber-red text-cyber-red'
+                            : 'bg-white/10 border-white/20 text-white'
+                            }`}
+                    >
+                        <Zap size={14} />
+                        <span>OPEN TERMINAL</span>
+                    </button>
                 </div>
             </div>
         </footer>
