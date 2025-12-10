@@ -43,16 +43,9 @@ export const ACHIEVEMENTS = {
 };
 
 export const AchievementProvider = ({ children }) => {
-    const [unlocked, setUnlocked] = useState(() => {
-        const saved = localStorage.getItem('achievements');
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [unlocked, setUnlocked] = useState([]);
     const [notification, setNotification] = useState(null);
     const { playClick } = useSoundFX(); // We might want a specific sound later
-
-    useEffect(() => {
-        localStorage.setItem('achievements', JSON.stringify(unlocked));
-    }, [unlocked]);
 
     const unlockAchievement = (id) => {
         if (!unlocked.includes(id)) {

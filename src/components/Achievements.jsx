@@ -43,7 +43,8 @@ const Achievements = () => {
     };
 
     const achievementList = Object.values(ACHIEVEMENTS);
-    const unlockedCount = unlocked.length;
+    // Ensure we only count unlocked achievements that still exist in our definition
+    const validUnlockedCount = unlocked.filter(id => achievementList.find(a => a.id === id)).length;
     const totalCount = achievementList.length;
 
     return (
@@ -55,7 +56,7 @@ const Achievements = () => {
                     </h2>
                     <div className="inline-block px-4 py-2 border border-white/20 rounded bg-black/40 backdrop-blur-md">
                         <span className="font-mono text-xl tracking-widest">
-                            PROGRESS: <span className={theme === 'cyberpunk' ? 'text-cyber-yellow' : 'text-cyan-400'}>{unlockedCount}</span> / {totalCount}
+                            PROGRESS: <span className={theme === 'cyberpunk' ? 'text-cyber-yellow' : 'text-cyan-400'}>{validUnlockedCount}</span> / {totalCount}
                         </span>
                     </div>
                 </div>
@@ -72,8 +73,8 @@ const Achievements = () => {
                                         color={isUnlocked ? (theme === 'cyberpunk' ? 'yellow' : 'cyan') : 'gray'}
                                         className="h-full"
                                         innerClassName={`h-full p-6 flex flex-col items-center justify-center text-center transition-all duration-500 relative overflow-hidden ${isUnlocked
-                                                ? (theme === 'cyberpunk' ? 'bg-black' : 'bg-slate-900/90')
-                                                : 'bg-black/80'
+                                            ? (theme === 'cyberpunk' ? 'bg-black' : 'bg-slate-900/90')
+                                            : 'bg-black/80'
                                             }`}
                                     >
                                         {/* Locked Overlay (Mist) */}
@@ -90,8 +91,8 @@ const Achievements = () => {
                                         {/* Content */}
                                         <div className={`relative z-10 ${!isUnlocked ? 'blur-sm opacity-50 grayscale' : ''}`}>
                                             <div className={`p-4 rounded-full mb-4 inline-flex items-center justify-center ${isUnlocked
-                                                    ? (theme === 'cyberpunk' ? 'bg-cyber-yellow/10 text-cyber-yellow' : 'bg-cyan-400/10 text-cyan-400')
-                                                    : 'bg-white/5 text-white/20'
+                                                ? (theme === 'cyberpunk' ? 'bg-cyber-yellow/10 text-cyber-yellow' : 'bg-cyan-400/10 text-cyan-400')
+                                                : 'bg-white/5 text-white/20'
                                                 }`}>
                                                 <Icon size={32} />
                                             </div>
