@@ -74,8 +74,12 @@ cd PortFolio
 # 3. Install dependencies (Powered by Bun)
 bun install
 
-# 4. Ignite the server
+# 4. Build the base
+bun run build
+ 
+# 5. Ignite the server
 bun run dev
+
 ```
 
 ---
