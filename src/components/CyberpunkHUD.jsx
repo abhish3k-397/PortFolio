@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Battery, BatteryCharging, Wifi } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAchievements } from '../context/AchievementContext';
 
 const useTime = () => {
     const [time, setTime] = useState(new Date());
@@ -13,6 +14,7 @@ const useTime = () => {
 
 const CyberpunkHUD = ({ onIdleChange }) => {
     const { time } = useTime();
+    const { unlockAchievement } = useAchievements();
     const [battery, setBattery] = useState({ level: 100, charging: false });
     const [scrollProgress, setScrollProgress] = useState(0);
     const [isIdle, setIsIdle] = useState(false);
@@ -30,6 +32,7 @@ const CyberpunkHUD = ({ onIdleChange }) => {
             idleTimerRef.current = setTimeout(() => {
                 setIsIdle(true);
                 if (onIdleChange) onIdleChange(true);
+                unlockAchievement('afk');
             }, 15000); // 15 seconds
         };
 

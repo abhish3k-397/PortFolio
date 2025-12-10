@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
+import { useAchievements } from '../context/AchievementContext';
 import { Mail, Github, Linkedin, Twitter, Send, Terminal, AlertTriangle, FileText, Download } from 'lucide-react';
 import ElectricBorder from './ElectricBorder';
 import MagneticButton from './MagneticButton';
@@ -11,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
     const { theme } = useTheme();
+    const { unlockAchievement } = useAchievements();
     const containerRef = useRef(null);
     const formRef = useRef(null);
     const [formState, setFormState] = useState({ user_name: '', user_email: '', user_phone: '', message: '' });
@@ -117,6 +119,7 @@ const Contact = () => {
                         <a
                             href="/resume.pdf"
                             download="Abhishek_Krishna_Resume.pdf"
+                            onClick={() => unlockAchievement('recruiter')}
                             className={`group flex items-center justify-between p-6 border border-dashed transition-all duration-300 ${theme === 'cyberpunk'
                                 ? 'border-cyber-yellow/30 bg-cyber-yellow/5 hover:bg-cyber-yellow/20 hover:border-cyber-yellow'
                                 : 'border-cyan-400/30 bg-cyan-400/5 hover:bg-cyan-400/20 hover:border-cyan-400'

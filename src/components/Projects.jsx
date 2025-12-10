@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
+import { useAchievements } from '../context/AchievementContext';
 import { Github } from 'lucide-react';
 import TiltCard from './TiltCard';
 import ElectricBorder from './ElectricBorder';
@@ -39,6 +40,7 @@ const projects = [
 
 const Projects = () => {
     const { theme } = useTheme();
+    const { unlockAchievement } = useAchievements();
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -103,7 +105,7 @@ const Projects = () => {
                                 </div>
 
                                 <div className="flex gap-4 mt-auto">
-                                    <a href={project.link} className={`flex items-center gap-2 text-sm font-bold ${theme === 'cyberpunk' ? 'text-cyber-neon hover:text-white' : 'text-white hover:text-cyan-300'
+                                    <a href={project.link} onClick={() => unlockAchievement('explorer')} className={`flex items-center gap-2 text-sm font-bold ${theme === 'cyberpunk' ? 'text-cyber-neon hover:text-white' : 'text-white hover:text-cyan-300'
                                         }`}>
                                         <Github size={16} /> CODE
                                     </a>

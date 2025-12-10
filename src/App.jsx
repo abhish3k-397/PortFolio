@@ -7,9 +7,12 @@ import Bio from './components/Bio'
 import About from './components/About'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
+import Achievements from './components/Achievements'
 import Contact from './components/Contact'
 import StartPage from './components/StartPage'
 import Loader from './components/Loader'
+import { AchievementProvider } from './context/AchievementContext'
+import AchievementPopup from './components/AchievementPopup'
 
 import Lenis from '@studio-freight/lenis'
 
@@ -39,24 +42,28 @@ function App() {
     return (
         <ThemeProvider>
             <SoundProvider>
-                {!hasStarted && !isLoading && (
-                    <StartPage onStart={handleStart} />
-                )}
+                <AchievementProvider>
+                    {!hasStarted && !isLoading && (
+                        <StartPage onStart={handleStart} />
+                    )}
 
-                {isLoading && (
-                    <Loader />
-                )}
+                    {isLoading && (
+                        <Loader />
+                    )}
 
-                {hasStarted && (
-                    <Layout>
-                        <Hero />
-                        <Bio />
-                        <About />
-                        <Experience />
-                        <Projects />
-                        <Contact />
-                    </Layout>
-                )}
+                    {hasStarted && (
+                        <Layout>
+                            <AchievementPopup />
+                            <Hero />
+                            <Bio />
+                            <About />
+                            <Experience />
+                            <Projects />
+                            <Achievements />
+                            <Contact />
+                        </Layout>
+                    )}
+                </AchievementProvider>
             </SoundProvider>
         </ThemeProvider>
     )

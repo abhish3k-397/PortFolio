@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSoundFX } from '../context/SoundContext';
+import { useAchievements, ACHIEVEMENTS } from '../context/AchievementContext';
 import ElectricBorder from './ElectricBorder';
 
 const TerminalCLI = ({ onClose, onSwitchToGui }) => {
     const { theme } = useTheme();
     const { playClick } = useSoundFX();
+    const { unlockAchievement, unlocked } = useAchievements();
     const [input, setInput] = useState('');
     const [history, setHistory] = useState([
         { type: 'output', content: 'CYBER_TERMINAL v1.0.4 [CONNECTED]' },
@@ -16,6 +18,7 @@ const TerminalCLI = ({ onClose, onSwitchToGui }) => {
 
     useEffect(() => {
         if (inputRef.current) inputRef.current.focus();
+        unlockAchievement('netrunner');
     }, []);
 
     useEffect(() => {
@@ -42,8 +45,20 @@ AVAILABLE COMMANDS:
   date      - Display system time
   exit      - Close terminal
   download  - Download Resume
+  achievements - List unlocked achievements
   matrix    - ???
 `;
+                break;
+            case 'achievements':
+                if (unlocked.length === 0) {
+                    output = 'No achievements unlocked yet. Explore more!';
+                } else {
+                    const list = unlocked.map(id => {
+                        const ach = Object.values(ACHIEVEMENTS).find(a => a.id === id);
+                        return ach ? `[x] ${ach.title}: ${ach.description}` : `[?] ${id}`;
+                    }).join('\n');
+                    output = `UNLOCKED ACHIEVEMENTS:\n${list}`;
+                }
                 break;
             case 'download':
                 if (args[0] === 'resume') {

@@ -5,7 +5,7 @@ import { useSoundFX } from '../context/SoundContext';
 import {
     Home, User, Briefcase, Mail,
     Monitor, Zap,
-    Github, Linkedin, Search
+    Github, Linkedin, Search, Trophy
 } from 'lucide-react';
 import TerminalCLI from './TerminalCLI';
 
@@ -137,6 +137,17 @@ const CommandPalette = () => {
                             >
                                 <Briefcase size={18} />
                                 <span>Projects</span>
+                            </Command.Item>
+                            <Command.Item
+                                onSelect={() => scrollToSection('achievements')}
+                                className={`
+                                    flex items-center gap-2 px-3 py-3 rounded-lg cursor-pointer transition-colors mb-1
+                                    aria-selected:bg-white/10 aria-selected:text-white
+                                    ${theme === 'cyberpunk' ? 'aria-selected:bg-cyber-neon/20 aria-selected:text-cyber-neon' : ''}
+                                `}
+                            >
+                                <Trophy size={18} />
+                                <span>Achievements</span>
                             </Command.Item>
                             <Command.Item
                                 onSelect={() => scrollToSection('contact')}

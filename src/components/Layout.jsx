@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSoundFX } from '../context/SoundContext';
+import { useAchievements } from '../context/AchievementContext';
 
 import CustomCursor from './CustomCursor';
 import MagneticButton from './MagneticButton';
@@ -13,6 +14,7 @@ import Footer from './Footer';
 const Layout = ({ children }) => {
     const { theme, setTheme } = useTheme();
     const { playHover, playClick, playDenied } = useSoundFX();
+    const { unlockAchievement } = useAchievements();
     const [isDenied, setIsDenied] = useState(false);
     const [isIdle, setIsIdle] = useState(false);
 
@@ -28,6 +30,7 @@ const Layout = ({ children }) => {
                     // Unlock Creative Mode
                     setTheme('creative');
                     playClick(); // Or a special unlock sound
+                    unlockAchievement('konami');
                     cursor = 0;
                 }
             } else {
