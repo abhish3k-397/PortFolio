@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import '../assets/loading/main.css';
+import loader1 from '../assets/loading/loader1.webp';
+import loader2 from '../assets/loading/loader2.webp';
+import loader3 from '../assets/loading/loader3.webp';
+import futureImg from '../assets/loading/future.png';
 
 const AbhishekLoading = ({ onComplete }) => {
     const containerRef = useRef(null);
@@ -200,16 +204,16 @@ const AbhishekLoading = ({ onComplete }) => {
                             <div className="willem__growing-image">
                                 <div className="willem__growing-image-wrap">
                                     <img className="willem__cover-image-extra is--1"
-                                        src="/loader1.webp"
+                                        src={loader1}
                                         loading="lazy" alt="" />
                                     <img className="willem__cover-image-extra is--2"
-                                        src="/loader2.webp"
+                                        src={loader2}
                                         loading="lazy" alt="" />
                                     <img className="willem__cover-image-extra is--3"
-                                        src="/loader3.webp"
+                                        src={loader3}
                                         loading="lazy" alt="" />
                                     <img className="willem__cover-image"
-                                        src="/future.png"
+                                        src={futureImg}
                                         loading="lazy" alt="Portfolio Preview" />
                                 </div>
                             </div>
