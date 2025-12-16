@@ -34,11 +34,14 @@ const AbhishekLoading = ({ onComplete }) => {
 
         /* Start of Timeline */
         if (loadingLetter.length) {
-            tl.from(loadingLetter, {
-                yPercent: 100,
-                stagger: 0.025,
-                duration: 1.25,
-            });
+            tl.fromTo(loadingLetter,
+                { opacity: 0 },
+                {
+                    opacity: 1,
+                    stagger: 0.025,
+                    duration: 1.25,
+                }
+            );
         }
 
         if (box.length) {
