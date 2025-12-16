@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ThemeProvider } from './context/ThemeContext'
 import { SoundProvider } from './context/SoundContext'
-import Layout from './components/Layout'
-import Hero from './components/Hero'
-import Bio from './components/Bio'
-import About from './components/About'
-import Experience from './components/Experience'
-import Projects from './components/Projects'
-import Achievements from './components/Achievements'
-import Contact from './components/Contact'
+import PortfolioContent from './components/PortfolioContent'
 import StartPage from './components/StartPage'
 import Loader from './components/Loader'
 import { AchievementProvider } from './context/AchievementContext'
@@ -33,11 +26,12 @@ function App() {
 
     const handleStart = () => {
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            setHasStarted(true);
-        }, 3000);
     };
+
+    const handleLoadingComplete = React.useCallback(() => {
+        setIsLoading(false);
+        setHasStarted(true);
+    }, []);
 
     return (
         <ThemeProvider>
@@ -47,21 +41,13 @@ function App() {
                         <StartPage onStart={handleStart} />
                     )}
 
-                    {isLoading && (
-                        <Loader />
+                    {/* Render PortfolioContent behind the loader so it's visible during the reveal transition */}
+                    {(isLoading || hasStarted) && (
+                        <PortfolioContent />
                     )}
 
-                    {hasStarted && (
-                        <Layout>
-                            <AchievementPopup />
-                            <Hero />
-                            <Bio />
-                            <About />
-                            <Experience />
-                            <Projects />
-                            <Achievements />
-                            <Contact />
-                        </Layout>
+                    {isLoading && (
+                        <Loader onComplete={handleLoadingComplete} />
                     )}
                 </AchievementProvider>
             </SoundProvider>

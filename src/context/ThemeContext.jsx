@@ -6,7 +6,8 @@ export const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = useState(() => {
         const saved = localStorage.getItem('theme');
         // Allow creative mode if saved (persistence for the easter egg)
-        return ['cyberpunk', 'futuristic', 'creative'].includes(saved) ? saved : 'cyberpunk';
+        // Force samurai theme for now to ensure user sees the new design
+        return 'samurai';
     });
 
     useEffect(() => {
@@ -20,7 +21,8 @@ export const ThemeProvider = ({ children }) => {
         setTheme,
         isCyberpunk: theme === 'cyberpunk',
         isFuturistic: theme === 'futuristic',
-        isCreative: theme === 'creative'
+        isCreative: theme === 'creative',
+        isSamurai: theme === 'samurai'
     };
 
     return (

@@ -82,21 +82,19 @@ const Layout = ({ children }) => {
                 <main>
                     {children}
                 </main>
-                <Footer />
+                {theme !== 'futuristic' && <Footer />}
             </div>
 
             {/* Background Effects */}
             <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px]' : 'blur-0'}`}>
-                <DotGrid />
+                {theme !== 'futuristic' && <DotGrid />}
                 {theme === 'cyberpunk' && (
                     <>
                         <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[1] bg-[length:100%_2px,3px_100%] pointer-events-none animate-scanline" />
                         <div className="absolute inset-0 bg-cyber-blue/90" />
                     </>
                 )}
-                {theme === 'futuristic' && (
-                    <div className="absolute top-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-cyan-500/20 rounded-full blur-[100px]" />
-                )}
+
                 {theme === 'creative' && (
                     <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-purple-900 via-pink-900 to-orange-900 opacity-50" />
                 )}

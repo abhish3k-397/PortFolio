@@ -46,7 +46,7 @@ const StartPage = ({ onStart }) => {
                 setFocusedPill('cyberpunk');
                 playHover();
             } else if (e.key === 'ArrowRight') {
-                setFocusedPill('futuristic');
+                setFocusedPill('samurai');
                 playHover();
             } else if (e.key === 'Enter') {
                 if (focusedPill) {
@@ -72,7 +72,7 @@ const StartPage = ({ onStart }) => {
     }, [step, onStart, selectedPill]);
 
     return (
-        <div className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden transition-colors duration-700 ${focusedPill === 'cyberpunk' ? 'bg-[#0a0000]' : focusedPill === 'futuristic' ? 'bg-[#0f172a]' : 'bg-black'
+        <div className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden transition-colors duration-700 ${focusedPill === 'cyberpunk' ? 'bg-[#0a0000]' : focusedPill === 'samurai' ? 'bg-[#0f172a]' : 'bg-black'
             }`}>
             {/* Background Video - Only visible after choice */}
             <video
@@ -113,22 +113,22 @@ const StartPage = ({ onStart }) => {
 
                     {/* Right Side - Blue Pill (Pleasant/Light) */}
                     <div
-                        className={`relative w-1/2 h-full flex items-center justify-center cursor-pointer transition-all duration-700 group ${focusedPill === 'futuristic' ? 'bg-blue-500/5' : 'hover:bg-blue-900/5'
+                        className={`relative w-1/2 h-full flex items-center justify-center cursor-pointer transition-all duration-700 group ${focusedPill === 'samurai' ? 'bg-blue-500/5' : 'hover:bg-blue-900/5'
                             }`}
-                        onClick={() => handleChoice('futuristic')}
-                        onMouseEnter={() => { setFocusedPill('futuristic'); playHover(); }}
+                        onClick={() => handleChoice('samurai')}
+                        onMouseEnter={() => { setFocusedPill('samurai'); playHover(); }}
                         onMouseLeave={() => setFocusedPill(null)}
                     >
                         {/* Blue Atmosphere */}
-                        <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-slate-950 to-black transition-opacity duration-700 ${focusedPill === 'futuristic' ? 'opacity-100' : 'opacity-0'
+                        <div className={`absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-slate-950 to-black transition-opacity duration-700 ${focusedPill === 'samurai' ? 'opacity-100' : 'opacity-0'
                             }`} />
 
                         {/* Blue Glow Effect */}
-                        <div className={`absolute inset-0 bg-cyan-400/10 blur-[120px] transition-all duration-700 ${focusedPill === 'futuristic' ? 'opacity-100 scale-125' : 'opacity-0 group-hover:opacity-30'
+                        <div className={`absolute inset-0 bg-cyan-400/10 blur-[120px] transition-all duration-700 ${focusedPill === 'samurai' ? 'opacity-100 scale-125' : 'opacity-0 group-hover:opacity-30'
                             }`} />
 
                         {/* The Blue Pill */}
-                        <div className={`relative w-16 h-32 md:w-24 md:h-48 rounded-full bg-gradient-to-b from-cyan-300 to-blue-600 shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all duration-500 z-10 ${focusedPill === 'futuristic' ? 'scale-110 shadow-[0_0_120px_rgba(34,211,238,0.6)] -rotate-3' : 'scale-100 group-hover:scale-105 grayscale-[0.5] group-hover:grayscale-0'
+                        <div className={`relative w-16 h-32 md:w-24 md:h-48 rounded-full bg-gradient-to-b from-cyan-300 to-blue-600 shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all duration-500 z-10 ${focusedPill === 'samurai' ? 'scale-110 shadow-[0_0_120px_rgba(34,211,238,0.6)] -rotate-3' : 'scale-100 group-hover:scale-105 grayscale-[0.5] group-hover:grayscale-0'
                             }`}>
                             <div className="absolute top-1/4 left-1/4 w-1/2 h-1/4 bg-white/40 rounded-full blur-md" />
                         </div>
@@ -138,20 +138,20 @@ const StartPage = ({ onStart }) => {
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
                         <div className="text-center transition-all duration-500">
                             <h1 className={`text-4xl md:text-7xl font-black tracking-tighter transition-all duration-500 ${focusedPill === 'cyberpunk'
-                                    ? 'text-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,0.8)] scale-110 font-mono'
-                                    : focusedPill === 'futuristic'
-                                        ? 'text-cyan-200 drop-shadow-[0_0_30px_rgba(34,211,238,0.6)] scale-105 font-sans tracking-[0.2em]'
-                                        : 'text-white/20 scale-100'
+                                ? 'text-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,0.8)] scale-110 font-mono'
+                                : focusedPill === 'samurai'
+                                    ? 'text-cyan-200 drop-shadow-[0_0_30px_rgba(34,211,238,0.6)] scale-105 font-sans tracking-[0.2em]'
+                                    : 'text-white/20 scale-100'
                                 }`}>
-                                {focusedPill === 'cyberpunk' ? 'WAKE_UP' : focusedPill === 'futuristic' ? 'ASCEND' : 'CHOOSE'}
+                                {focusedPill === 'cyberpunk' ? 'WAKE_UP' : focusedPill === 'samurai' ? 'ASCEND' : 'CHOOSE'}
                             </h1>
                             <p className={`text-sm md:text-xl mt-4 transition-all duration-500 ${focusedPill === 'cyberpunk'
-                                    ? 'text-red-500/80 font-mono tracking-widest animate-pulse'
-                                    : focusedPill === 'futuristic'
-                                        ? 'text-cyan-300/80 font-light tracking-[0.5em]'
-                                        : 'text-white/10'
+                                ? 'text-red-500/80 font-mono tracking-widest animate-pulse'
+                                : focusedPill === 'samurai'
+                                    ? 'text-cyan-300/80 font-light tracking-[0.5em]'
+                                    : 'text-white/10'
                                 }`}>
-                                {focusedPill === 'cyberpunk' ? 'EMBRACE THE CHAOS' : focusedPill === 'futuristic' ? 'DESIGN THE FUTURE' : 'YOUR DESTINY'}
+                                {focusedPill === 'cyberpunk' ? 'EMBRACE THE CHAOS' : focusedPill === 'samurai' ? 'DESIGN THE FUTURE' : 'YOUR DESTINY'}
                             </p>
                         </div>
                     </div>

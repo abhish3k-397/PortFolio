@@ -1,24 +1,43 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTheme } from '../context/ThemeContext';
+import AbhishekLoading from './AbhishekLoading';
 
-const Loader = () => {
-    return (
-        <StyledWrapper>
-            <div className="loader-wrapper">
-                <span className="loader-letter">G</span>
-                <span className="loader-letter">e</span>
-                <span className="loader-letter">n</span>
-                <span className="loader-letter">e</span>
-                <span className="loader-letter">r</span>
-                <span className="loader-letter">a</span>
-                <span className="loader-letter">t</span>
-                <span className="loader-letter">i</span>
-                <span className="loader-letter">n</span>
-                <span className="loader-letter">g</span>
-                <div className="loader" />
-            </div>
-        </StyledWrapper>
-    );
+const DefaultLoader = ({ onComplete }) => {
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      onComplete && onComplete();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  return (
+    <StyledWrapper>
+      <div className="loader-wrapper">
+        <span className="loader-letter">G</span>
+        <span className="loader-letter">e</span>
+        <span className="loader-letter">n</span>
+        <span className="loader-letter">e</span>
+        <span className="loader-letter">r</span>
+        <span className="loader-letter">a</span>
+        <span className="loader-letter">t</span>
+        <span className="loader-letter">i</span>
+        <span className="loader-letter">n</span>
+        <span className="loader-letter">g</span>
+        <div className="loader" />
+      </div>
+    </StyledWrapper>
+  );
+};
+
+const Loader = ({ onComplete }) => {
+  const { isFuturistic, isSamurai } = useTheme();
+
+  if (isFuturistic || isSamurai) {
+    return <AbhishekLoading onComplete={onComplete} />;
+  }
+
+  return <DefaultLoader onComplete={onComplete} />;
 }
 
 const StyledWrapper = styled.div`
@@ -74,7 +93,7 @@ const StyledWrapper = styled.div`
       box-shadow:
         0 10px 20px 0 #fff inset,
         0 20px 10px 0 #d60a47 inset,
-        0 40px 60px 0 #311e80 inset;
+        0 40px 60px 0 #ec008c inset;
     }
     100% {
       transform: rotate(450deg);
