@@ -94,6 +94,7 @@ main:has(.willem-header.is--loading) {
   justify-content: center;
   align-items: center;
   width: 0;
+  height: 1em;
   display: flex;
   position: relative;
   transform: translateY(14vh);
