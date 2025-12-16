@@ -56,9 +56,10 @@ main:has(.willem-header.is--loading) {
 .willem__h1 {
   white-space: nowrap;
   justify-content: center;
+  align-items: center;
   font-size: 12.5em;
   font-weight: 500;
-  line-height: .75;
+  line-height: 1;
   display: flex;
   position: relative;
 }
