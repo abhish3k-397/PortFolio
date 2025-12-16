@@ -50,7 +50,7 @@ main:has(.willem-header.is--loading) {
   top: 0;
   left: 0;
   overflow: hidden;
-  padding-bottom: 30vh;
+  padding-bottom: 0;
 }
 
 .willem__h1 {
@@ -94,10 +94,10 @@ main:has(.willem-header.is--loading) {
   justify-content: center;
   align-items: center;
   width: 0;
-  height: 1em;
+  height: 1.2em;
   display: flex;
   position: relative;
-  transform: translateY(14vh);
+  transform: none;
 }
 
 .willem-loader__box-inner {
