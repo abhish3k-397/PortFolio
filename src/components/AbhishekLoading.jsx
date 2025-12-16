@@ -48,7 +48,7 @@ const AbhishekLoading = ({ onComplete }) => {
             tl.fromTo(
                 box,
                 { width: '0em' },
-                { width: '1em', duration: 1.25 },
+                { width: '1.28em', duration: 1.25 },
                 '< 1.25'
             );
         }

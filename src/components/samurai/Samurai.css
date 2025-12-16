@@ -146,7 +146,7 @@
     width: 100vw;
     height: 100vh;
     color: #fff;
-    background: #0f0f0f;
+    background: url('/future.png') no-repeat center center/cover;
     clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 0);
     padding: 0.9375rem 1.875rem 0.9375rem 0.9375rem;
     cursor: pointer;
