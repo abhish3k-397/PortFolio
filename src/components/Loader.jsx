@@ -51,6 +51,7 @@ const StyledWrapper = styled.div`
   top: 0;
   left: 0;
   z-index: 9999;
+  box-sizing: border-box;
 
   .loader-wrapper {
     position: relative;
@@ -59,6 +60,7 @@ const StyledWrapper = styled.div`
     justify-content: center;
     width: 180px;
     height: 180px;
+    flex-shrink: 0;
     font-family: "Inter", sans-serif;
     font-size: 1.2em;
     font-weight: 300;
@@ -73,7 +75,7 @@ const StyledWrapper = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     border-radius: 50%;
     background-color: transparent;
     animation: loader-rotate 2s linear infinite;
@@ -93,7 +95,7 @@ const StyledWrapper = styled.div`
       box-shadow:
         0 10px 20px 0 #fff inset,
         0 20px 10px 0 #d60a47 inset,
-        0 40px 60px 0 #ec008c inset;
+        0 40px 60px 0 #311e80 inset;
     }
     100% {
       transform: rotate(450deg);

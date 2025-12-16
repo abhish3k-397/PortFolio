@@ -41,8 +41,8 @@ function App() {
                         <StartPage onStart={handleStart} />
                     )}
 
-                    {/* Render PortfolioContent behind the loader so it's visible during the reveal transition */}
-                    {(isLoading || hasStarted) && (
+                    {/* Render PortfolioContent only after loader is complete so animations play correctly */}
+                    {hasStarted && (
                         <PortfolioContent />
                     )}
 
