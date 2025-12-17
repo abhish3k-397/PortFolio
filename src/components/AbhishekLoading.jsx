@@ -4,7 +4,6 @@ import '../assets/loading/main.css';
 import loader1 from '../assets/loading/loader1.webp';
 import loader2 from '../assets/loading/loader2.webp';
 import loader3 from '../assets/loading/loader3.webp';
-import futureImg from '../assets/loading/future.webp';
 
 const AbhishekLoading = ({ onComplete }) => {
     const containerRef = useRef(null);
@@ -94,27 +93,11 @@ const AbhishekLoading = ({ onComplete }) => {
             );
         }
 
-        if (growingImage.length) {
-            tl.to(
-                growingImage,
-                {
-                    width: '100vw',
-                    height: '100dvh',
-                    duration: 2,
-                },
-                '< 1.25'
-            );
-        }
+        // Removed intermediate growingImage expansion to avoid conflict
 
         if (box.length) {
-            tl.to(
-                box,
-                {
-                    width: '110vw',
-                    duration: 2,
-                },
-                '<'
-            );
+            // Initial expansion for text reveal
+            // We keep this but ensure aspect ratio is respected
         }
 
         if (headerLetter.length) {
@@ -143,29 +126,22 @@ const AbhishekLoading = ({ onComplete }) => {
             );
         }
 
-        // Expand the growing image to fill screen
-        if (growingImage.length) {
-            tl.to(growingImage, {
-                width: '100vw',
-                height: '100vh',
-                duration: 1.5,
-                ease: "power2.inOut",
-            }, "<");
-
-            // Scale up the image inside to create "entering" effect
-            tl.to(container.querySelectorAll('.willem__cover-image'), {
-                scale: 1,
-                duration: 1.5,
-                ease: "power2.inOut",
-            }, "<");
-        }
-
-        // Expand the box to push text away
+        // Expand the box to fill screen (maintaining 16:9)
         if (box.length) {
             tl.to(box, {
-                width: '100vw',
-                duration: 1.5,
+                width: '200vmax', // Huge width to ensure coverage
+                height: '112.5vmax', // Explicit height to maintain 16:9 (200 * 9/16)
+                duration: 2,
                 ease: "power2.inOut",
+            }, "< 1.25");
+        }
+
+        // Ensure growing image fills the box
+        if (growingImage.length) {
+            tl.to(growingImage, {
+                width: '100%',
+                height: '100%',
+                duration: 0.1, // Instant update
             }, "<");
         }
 
@@ -192,19 +168,20 @@ const AbhishekLoading = ({ onComplete }) => {
             width: '100%',
             height: '100%',
             zIndex: 9999,
-            backgroundColor: '#000000'
+            backgroundColor: 'transparent',
+            pointerEvents: 'none'
         }}>
-            <div className="willem-loader" style={{ zIndex: 20 }}>
+            <div className="willem-loader" style={{ zIndex: 20, pointerEvents: 'auto' }}>
                 <div className="willem__h1">
-                    <div className="willem__h1-start">
+                    <div className="willem__h1-start" style={{ position: 'relative', zIndex: 50 }}>
                         <span className="willem__letter">A</span>
                         <span className="willem__letter">B</span>
                         <span className="willem__letter">H</span>
                         <span className="willem__letter">I</span>
                     </div>
-                    <div className="willem-loader__box">
-                        <div className="willem-loader__box-inner">
-                            <div className="willem__growing-image">
+                    <div className="willem-loader__box" style={{ overflow: 'visible', background: 'transparent', boxShadow: '0 0 0 200vmax #000', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div className="willem-loader__box-inner" style={{ overflow: 'visible', background: 'transparent', width: '100%', height: '100%' }}>
+                            <div className="willem__growing-image" style={{ background: 'transparent', width: '100%', height: '100%' }}>
                                 <div className="willem__growing-image-wrap">
                                     <img className="willem__cover-image-extra is--1"
                                         src={loader1}
@@ -215,14 +192,11 @@ const AbhishekLoading = ({ onComplete }) => {
                                     <img className="willem__cover-image-extra is--3"
                                         src={loader3}
                                         loading="lazy" alt="" />
-                                    <img className="willem__cover-image"
-                                        src={futureImg}
-                                        loading="lazy" alt="Portfolio Preview" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="willem__h1-end">
+                    <div className="willem__h1-end" style={{ position: 'relative', zIndex: 50 }}>
                         <span className="willem__letter">S</span>
                         <span className="willem__letter">H</span>
                         <span className="willem__letter">E</span>

@@ -1,14 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import './Samurai.css';
-
-// Import assets (assuming they are in src/assets/samurai)
-// Note: In a real scenario, we might want to move these to public for easier referencing if there are many.
-// For now, I'll use relative paths assuming Vite handles them or I'll use a placeholder if imports fail.
-// A better approach for this "drop-in" might be to move assets to public/samurai.
-// Let's assume I'll move them to public in the next step for easier pathing, 
-// so I will use /samurai/img/... paths.
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,8 +11,49 @@ const SamuraiLayout = () => {
     const overlayRef = useRef(null);
     const loaderRef = useRef(null);
     const containerRef = useRef(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const isNavigating = useRef(false);
+    const [direction, setDirection] = useState(0);
+    const [isEntered, setIsEntered] = useState(false);
+
+    const routes = ['/samurai', '/samurai/projects', '/samurai/experience', '/samurai/about', '/samurai/contact'];
 
     useEffect(() => {
+        const handleWheel = (e) => {
+            if (isNavigating.current) return;
+
+            const currentPath = location.pathname;
+            const currentIndex = routes.indexOf(currentPath);
+
+            if (currentIndex === -1) return;
+
+            if (e.deltaY > 0) {
+                // Scroll Down -> Next Route
+                if (currentIndex < routes.length - 1) {
+                    isNavigating.current = true;
+                    setDirection(1);
+                    navigate(routes[currentIndex + 1]);
+                    setTimeout(() => isNavigating.current = false, 1500); // Increased debounce for animation
+                }
+            } else if (e.deltaY < 0) {
+                // Scroll Up -> Previous Route
+                if (currentIndex > 0) {
+                    isNavigating.current = true;
+                    setDirection(-1);
+                    navigate(routes[currentIndex - 1]);
+                    setTimeout(() => isNavigating.current = false, 1500);
+                }
+            }
+        };
+
+        window.addEventListener('wheel', handleWheel);
+        return () => window.removeEventListener('wheel', handleWheel);
+    }, [location.pathname, navigate]);
+
+    useLayoutEffect(() => {
+        let timer;
+
         const ctx = gsap.context(() => {
             // Initial Animation
             gsap.from("h2 div", {
@@ -73,58 +109,95 @@ const SamuraiLayout = () => {
                     clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
                     duration: 2,
                     ease: "power4.inOut",
-                    delay: 2
+                    delay: 2,
+                    onStart: () => setIsEntered(true) // Show Navbar when animation starts
                 });
             };
 
-            overlayRef.current.addEventListener('click', handleOverlayClick);
+            if (overlayRef.current) {
+                overlayRef.current.addEventListener('click', handleOverlayClick);
+            }
 
-            // Scroll Animations for Sections
-            const sections = document.querySelectorAll(".block");
-            sections.forEach((section) => {
-                ScrollTrigger.create({
-                    trigger: section,
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true,
-                    pin: true,
-                    pinSpacing: false,
-                    snap: {
-                        snapTo: 1,
-                        duration: 0.5,
-                        delay: 0.1,
-                        ease: "power1.inOut"
-                    }
+            // Scroll Animations for Sections (Re-run on route change)
+            // We need a slight delay to allow the new page content to render
+            timer = setTimeout(() => {
+                ctx.add(() => {
+                    const sections = document.querySelectorAll(".block");
+                    sections.forEach((section) => {
+                        ScrollTrigger.create({
+                            trigger: section,
+                            start: "top top",
+                            end: "bottom top",
+                            scrub: true,
+                            snap: {
+                                snapTo: 1,
+                                duration: 0.5,
+                                delay: 0.1,
+                                ease: "power1.inOut"
+                            }
+                        });
+                    });
+                    ScrollTrigger.refresh();
                 });
-            });
-
-            // Refresh ScrollTrigger to ensure positions are correct after render
-            ScrollTrigger.refresh();
+            }, 500);
 
             return () => {
                 overlayRef.current?.removeEventListener('click', handleOverlayClick);
             };
         }, containerRef);
 
-        return () => ctx.revert();
-    }, []);
+        return () => {
+            clearTimeout(timer);
+            ScrollTrigger.getAll().forEach(t => t.kill());
+            ctx.revert();
+        };
+    }, [location.pathname]); // Re-run animations when route changes
+
+    const cubeVariants = {
+        initial: (direction) => ({
+            rotateX: direction > 0 ? -90 : 90,
+            opacity: 0,
+            y: direction > 0 ? '100%' : '-100%',
+            scale: 0.8
+        }),
+        animate: {
+            rotateX: 0,
+            opacity: 1,
+            y: '0%',
+            scale: 1,
+            transition: {
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1] // Custom cubic bezier for smooth feel
+            }
+        },
+        exit: (direction) => ({
+            rotateX: direction > 0 ? 90 : -90,
+            opacity: 0,
+            y: direction > 0 ? '-100%' : '100%',
+            scale: 0.8,
+            transition: {
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1]
+            }
+        })
+    };
 
     return (
         <div className="wrapper samurai-theme" ref={containerRef}>
             {/* HEADER */}
-            <header className="header">
+            <header className="header" style={{ opacity: isEntered ? 1 : 0, pointerEvents: isEntered ? 'all' : 'none' }}>
                 <div className="header__container">
-                    <a href="#" className="header__logo">
+                    <Link to="/samurai" className="header__logo">
                         <img src="/samurai/img/logo.svg" alt="logo" />
-                    </a>
+                    </Link>
                     <div className="header__menu menu">
                         <nav className="menu__body">
                             <ul className="menu__list">
-                                <li className="menu__item"><a href="#" className="menu__link">ホームページ (Home)</a></li>
-                                <li className="menu__item"><a href="#" className="menu__link">侍の歴史 (History)</a></li>
-                                <li className="menu__item"><a href="#" className="menu__link">有名な侍 (Famous)</a></li>
-                                <li className="menu__item"><a href="#" className="menu__link">侍の文化 (Culture)</a></li>
-                                <li className="menu__item"><a href="#" className="menu__link">ギャラリー (Gallery)</a></li>
+                                <li className="menu__item"><Link to="/samurai" className="menu__link">ホームページ (Home)</Link></li>
+                                <li className="menu__item"><Link to="/samurai/projects" className="menu__link">プロジェクト (Projects)</Link></li>
+                                <li className="menu__item"><Link to="/samurai/experience" className="menu__link">経験 (Experience)</Link></li>
+                                <li className="menu__item"><Link to="/samurai/about" className="menu__link">私について (About)</Link></li>
+                                <li className="menu__item"><Link to="/samurai/contact" className="menu__link">連絡先 (Contact)</Link></li>
                             </ul>
                         </nav>
                         <div className="header__actions action-header">
@@ -139,115 +212,59 @@ const SamuraiLayout = () => {
                 </div>
             </header>
 
-            <main className="page">
-                {/* LOADER */}
-                <div className="loader" ref={loaderRef}>
-                    {[1, 2, 3, 4, 5, 6].map((num) => (
-                        <div key={num} className="loader__img">
-                            <picture>
-                                <source media="(max-width: 600px)" srcSet={`/samurai/img/preloader/preloader-${num}-600.webp`} type="image/webp" />
-                                <source media="(max-width: 1200px)" srcSet={`/samurai/img/preloader/preloader-${num}-1200.webp`} type="image/webp" />
-                                <img alt="" src={`/samurai/img/preloader/preloader-${num}.webp`} />
-                            </picture>
-                        </div>
-                    ))}
-                    <div className="loader__img reveal">
-                        <img src="/samurai/img/preloader/preloader-7.png" alt="" />
+            {/* LOADER */}
+            <div className="loader" ref={loaderRef} style={{ zIndex: 1001 }}>
+                {[1, 2, 3, 4, 5, 6].map((num) => (
+                    <div key={num} className="loader__img">
+                        <picture>
+                            <source media="(max-width: 600px)" srcSet={`/samurai/img/preloader/preloader-${num}-600.webp`} type="image/webp" />
+                            <source media="(max-width: 1200px)" srcSet={`/samurai/img/preloader/preloader-${num}-1200.webp`} type="image/webp" />
+                            <img alt="" src={`/samurai/img/preloader/preloader-${num}.webp`} />
+                        </picture>
                     </div>
+                ))}
+                <div className="loader__img reveal">
+                    <img src="/samurai/img/preloader/preloader-6.webp" alt="" />
                 </div>
+            </div>
 
-                {/* OVERLAY */}
-                <div className="overlay" ref={overlayRef}>
-                    <div className="overlay__column">
-                        <h2 className="overlay__text"><div>ABHISHEK</div></h2>
-                        <h2 className="overlay__text"><div>CYBER SECURITY</div></h2>
-                        <h2 className="overlay__text"><div>SPECIALIST</div></h2>
-                    </div>
-                    <div className="overlay__column overlay__column--cta">
-                        <h2 className="overlay__text">
-                            <div><span>click</span> anywhere to enter</div>
-                        </h2>
-                    </div>
+            {/* OVERLAY */}
+            <div className="overlay" ref={overlayRef}>
+                <div className="overlay__column">
+                    <h2 className="overlay__text"><div>ABHISHEK</div></h2>
+                    <h2 className="overlay__text"><div>CYBER SECURITY</div></h2>
+                    <h2 className="overlay__text"><div>SPECIALIST</div></h2>
                 </div>
+                <div className="overlay__column overlay__column--cta">
+                    <h2 className="overlay__text">
+                        <div><span>click</span> anywhere to enter</div>
+                    </h2>
+                </div>
+            </div>
 
-                {/* SECTION 1 */}
-                <section className="block">
-                    <picture>
-                        <source media="(max-width: 600px)" srcSet="/samurai/img/preloader/preloader-1-600.webp" type="image/webp" />
-                        <source media="(max-width: 1200px)" srcSet="/samurai/img/preloader/preloader-1-1200.webp" type="image/webp" />
-                        <img className="block__background" alt="" src="/samurai/img/preloader/preloader-1.webp" />
-                    </picture>
-                    <div className="block__container">
-                        <div className="block__content">
-                            <p className="block__text">
-                                I am a Cyber Security Specialist and Full Stack Developer.
-                                Architecting robust, scalable systems and securing digital infrastructures.
-                            </p>
-                            <p className="block__text">
-                                Based in India_Server_01.
-                            </p>
-                        </div>
-                    </div>
-                </section>
+            <main className="page" style={{ perspective: '1500px', overflow: 'hidden', position: 'relative', height: '100vh', width: '100vw' }}>
 
-                {/* SECTION 2 */}
-                <section className="block">
-                    <picture>
-                        <source media="(max-width: 600px)" srcSet="/samurai/img/preloader/preloader-2-600.webp" type="image/webp" />
-                        <source media="(max-width: 1200px)" srcSet="/samurai/img/preloader/preloader-2-1200.webp" type="image/webp" />
-                        <img className="block__background" alt="" src="/samurai/img/preloader/preloader-2.webp" />
-                    </picture>
-                    <div className="block__container">
-                        <div className="block__content block__content--center">
-                            <p className="block__text">
-                                Like a modern Samurai, I serve the code.
-                                Discipline, precision, and continuous improvement are my way of the warrior.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-
-                {/* SECTION 3 */}
-                <section className="block">
-                    <picture>
-                        <source media="(max-width: 600px)" srcSet="/samurai/img/preloader/preloader-3-600.webp" type="image/webp" />
-                        <source media="(max-width: 1200px)" srcSet="/samurai/img/preloader/preloader-3-1200.webp" type="image/webp" />
-                        <img className="block__background" alt="" src="/samurai/img/preloader/preloader-3.webp" />
-                    </picture>
-                    <div className="block__container">
-                        <div className="block__content">
-                            <p className="block__text">
-                                <strong>FlashCardsDual:</strong> Multiplayer gaming with &lt; 150ms latency.
-                                <br /><br />
-                                <strong>Res-Flow:</strong> Real-time system resource monitoring.
-                            </p>
-                            <p className="block__text">
-                                <strong>CyberMusicAi:</strong> AI-powered music tutoring.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-
-                {/* SECTION 4 */}
-                <section className="block">
-                    <picture>
-                        <source media="(max-width: 600px)" srcSet="/samurai/img/preloader/preloader-4-600.webp" type="image/webp" />
-                        <source media="(max-width: 1200px)" srcSet="/samurai/img/preloader/preloader-4-1200.webp" type="image/webp" />
-                        <img className="block__background" alt="" src="/samurai/img/preloader/preloader-4.webp" />
-                    </picture>
-                    <div className="block__container">
-                        <div className="block__content">
-                            <p className="block__text">
-                                Ready to forge something legendary?
-                                <br />
-                                Let's connect.
-                            </p>
-                            <p className="block__text">
-                                contact@example.com
-                            </p>
-                        </div>
-                    </div>
-                </section>
+                {/* DYNAMIC CONTENT WITH 3D TRANSITION */}
+                <AnimatePresence mode="popLayout" custom={direction}>
+                    <motion.div
+                        key={location.pathname}
+                        custom={direction}
+                        variants={cubeVariants}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            transformStyle: 'preserve-3d',
+                            position: 'absolute', // Essential for overlap if using popLayout, but good for stability here
+                            top: 0,
+                            left: 0
+                        }}
+                    >
+                        <Outlet />
+                    </motion.div>
+                </AnimatePresence>
 
             </main>
         </div>
