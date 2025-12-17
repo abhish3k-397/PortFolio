@@ -248,7 +248,7 @@ const GlassBentoLayout = () => {
     // ... (existing state)
 
     return (
-        <div className="h-screen w-full bg-[#F5F5F7] text-gray-900 font-sans relative selection:bg-[#8B5CF6] selection:text-white overflow-hidden flex flex-col">
+        <div className="min-h-screen w-full bg-[#F5F5F7] text-gray-900 font-sans relative selection:bg-[#8B5CF6] selection:text-white overflow-x-hidden flex flex-col">
 
             {/* LIGHT AURORA BACKGROUND */}
             <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
@@ -262,7 +262,7 @@ const GlassBentoLayout = () => {
             <Navbar />
 
             {/* CONTENT GRID (Single View) */}
-            <div className="relative z-10 w-full flex-1 p-4 md:p-8 md:pb-8 overflow-hidden">
+            <div className="relative z-10 w-full flex-1 p-4 md:p-8 md:pb-8">
                 <HeroBento />
             </div>
         </div>
