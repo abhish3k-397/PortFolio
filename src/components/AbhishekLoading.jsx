@@ -32,13 +32,40 @@ const AbhishekLoading = ({ onComplete }) => {
         });
 
         /* Start of Timeline */
+        const svgText = container.querySelectorAll('.willem__svg-letter text');
+
+        if (svgText.length) {
+            // Reset initial state
+            gsap.set(svgText, { strokeDashoffset: 1000, fill: 'transparent' });
+
+            // Animate stroke (Draw)
+            tl.to(svgText, {
+                strokeDashoffset: 0,
+                stagger: 0.1,
+                duration: 1.5,
+                ease: "power2.out",
+            });
+
+            // Animate fill (Color in)
+            tl.to(svgText, {
+                fill: 'white',
+                stagger: 0.1,
+                duration: 0.5,
+                ease: "power2.out",
+            }, "< 1");
+        }
+
         if (loadingLetter.length) {
             tl.fromTo(loadingLetter,
-                { opacity: 0 },
                 {
-                    opacity: 1,
-                    stagger: 0.025,
-                    duration: 1.25,
+                    clipPath: 'inset(0 100% 0 0)',
+                    opacity: 1
+                },
+                {
+                    clipPath: 'inset(0 0% 0 0)',
+                    stagger: 0.1,
+                    duration: 0.5,
+                    ease: "power2.out",
                 }
             );
         }
@@ -174,10 +201,20 @@ const AbhishekLoading = ({ onComplete }) => {
             <div className="willem-loader" style={{ zIndex: 20, pointerEvents: 'auto' }}>
                 <div className="willem__h1">
                     <div className="willem__h1-start" style={{ position: 'relative', zIndex: 50 }}>
-                        <span className="willem__letter">A</span>
-                        <span className="willem__letter">B</span>
-                        <span className="willem__letter">H</span>
-                        <span className="willem__letter">I</span>
+                        {['A', 'B', 'H', 'I'].map((char, i) => (
+                            <span key={i} className="willem__letter" style={{ position: 'relative', display: 'inline-block' }}>
+                                <span style={{ opacity: 0 }}>{char}</span>
+                                <svg className="willem__svg-letter" style={{
+                                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'visible'
+                                }}>
+                                    <text x="50%" y="82%" textAnchor="middle" fill="transparent" stroke="white" strokeWidth="2px"
+                                        style={{ fontFamily: 'Moon Walk', fontSize: '1em' }}
+                                        strokeDasharray="1000" strokeDashoffset="1000">
+                                        {char}
+                                    </text>
+                                </svg>
+                            </span>
+                        ))}
                     </div>
                     <div className="willem-loader__box" style={{ overflow: 'visible', background: 'transparent', boxShadow: '0 0 0 200vmax #000', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <div className="willem-loader__box-inner" style={{ overflow: 'visible', background: 'transparent', width: '100%', height: '100%' }}>
@@ -197,10 +234,20 @@ const AbhishekLoading = ({ onComplete }) => {
                         </div>
                     </div>
                     <div className="willem__h1-end" style={{ position: 'relative', zIndex: 50 }}>
-                        <span className="willem__letter">S</span>
-                        <span className="willem__letter">H</span>
-                        <span className="willem__letter">E</span>
-                        <span className="willem__letter">K</span>
+                        {['S', 'H', 'E', 'K'].map((char, i) => (
+                            <span key={i} className="willem__letter" style={{ position: 'relative', display: 'inline-block' }}>
+                                <span style={{ opacity: 0 }}>{char}</span>
+                                <svg className="willem__svg-letter" style={{
+                                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'visible'
+                                }}>
+                                    <text x="50%" y="82%" textAnchor="middle" fill="transparent" stroke="white" strokeWidth="2px"
+                                        style={{ fontFamily: 'Moon Walk', fontSize: '1em' }}
+                                        strokeDasharray="1000" strokeDashoffset="1000">
+                                        {char}
+                                    </text>
+                                </svg>
+                            </span>
+                        ))}
                     </div>
                 </div>
             </div>
