@@ -65,7 +65,7 @@ const MagicBentoLayout = () => {
 
                     <div className="space-y-4 z-10">
                         <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-black/5 group-hover:border-black/20 transition-colors">
-                            <img src="/profile.jpg" alt="Profile" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                            <img src="/profile.webp" alt="Profile" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                         </div>
                         <div>
                             <h1 className="text-4xl font-bold tracking-tight mb-2 text-black">Abhishek Krishna</h1>

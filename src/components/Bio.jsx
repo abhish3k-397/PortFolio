@@ -68,7 +68,7 @@ const Bio = () => {
                         {/* The Image with Cyberpunk Filters */}
                         <div className="relative w-full h-full overflow-hidden">
                             <img
-                                src="/profile.jpg"
+                                src="/profile.webp"
                                 alt="Abhishek Krishna"
                                 className={`w-full h-full object-cover transition-all duration-500 
                                     grayscale contrast-125 brightness-90 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100

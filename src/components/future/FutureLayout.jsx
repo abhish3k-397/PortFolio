@@ -291,7 +291,7 @@ const MobileLayout = () => (
     <div className="min-h-screen flex flex-col relative pb-24 bg-white text-gray-900">
         {/* 1. TOP IMAGE */}
         <div className="h-[45vh] w-full relative overflow-hidden shrink-0">
-            <img src="/profile.jpg" alt="Profile" className="absolute inset-0 w-full h-full object-cover" />
+            <img src="/profile.webp" alt="Profile" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white" />
             <div className="absolute top-6 left-6 right-6 flex justify-between items-center text-white z-10">
                 <div className="font-bold tracking-widest uppercase text-sm">ABHISHEK</div>

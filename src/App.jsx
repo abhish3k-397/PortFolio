@@ -6,23 +6,11 @@ import StartPage from './components/StartPage'
 import Loader from './components/Loader'
 import { AchievementProvider } from './context/AchievementContext'
 import AchievementPopup from './components/AchievementPopup'
-
-import Lenis from '@studio-freight/lenis'
+import SmoothScroll from './components/SmoothScroll'
 
 function App() {
     const [hasStarted, setHasStarted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        const lenis = new Lenis()
-
-        function raf(time) {
-            lenis.raf(time)
-            requestAnimationFrame(raf)
-        }
-
-        requestAnimationFrame(raf)
-    }, [])
 
     const handleStart = () => {
         setIsLoading(true);
@@ -37,6 +25,7 @@ function App() {
         <ThemeProvider>
             <SoundProvider>
                 <AchievementProvider>
+                    <SmoothScroll />
                     {!hasStarted && !isLoading && (
                         <StartPage onStart={handleStart} />
                     )}

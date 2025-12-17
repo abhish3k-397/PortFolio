@@ -4,7 +4,7 @@ import '../assets/loading/main.css';
 import loader1 from '../assets/loading/loader1.webp';
 import loader2 from '../assets/loading/loader2.webp';
 import loader3 from '../assets/loading/loader3.webp';
-import futureImg from '../assets/loading/future.png';
+import futureImg from '../assets/loading/future.webp';
 
 const AbhishekLoading = ({ onComplete }) => {
     const containerRef = useRef(null);
