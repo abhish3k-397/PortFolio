@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  portfolio:
+    build: .
+    container_name: portfolio-app
+    ports:
+      - "3000:80"
+    restart: always
+    environment:
+      - NODE_ENV=production
+    # Load env variables if they exist
+    env_file:
+      - .env
+    networks:
+      - portfolio-network
+
+networks:
+  portfolio-network:
+    driver: bridge
