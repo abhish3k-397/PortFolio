@@ -1,6 +1,11 @@
 # Build stage
-FROM oven/bun:latest AS build
+FROM node:20-slim AS build
 WORKDIR /app
+
+# Install bun dependencies and bun itself
+RUN apt-get update && apt-get install -y curl unzip && \
+    curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
 
 # Copy package files and lockfile
 COPY package.json bun.lock ./
@@ -13,7 +18,6 @@ COPY . .
 
 # Build the project
 RUN bun run build
-
 # Production stage
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
