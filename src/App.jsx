@@ -21,8 +21,6 @@ const AppContent = () => {
     const [hasStarted, setHasStarted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { theme } = useTheme();
-    const location = useLocation();
-    const navigate = useNavigate();
 
     const handleStart = () => {
         setIsLoading(true);
@@ -31,20 +29,7 @@ const AppContent = () => {
     const handleLoadingComplete = React.useCallback(() => {
         setIsLoading(false);
         setHasStarted(true);
-        // Ensure we are at the right base path for Ink & Paper
-        if (theme === 'inkpaper') {
-            navigate('/inkpaper', { replace: true });
-        }
-    }, [theme, navigate, setIsLoading, setHasStarted]);
-
-    // Force redirect to root on refresh if the app hasn't "started"
-    // This solves the issue where refreshing on a sub-route (like /inkpaper/about)
-    // would show the StartPage but leave the URL at the sub-route.
-    useEffect(() => {
-        if (!hasStarted && !isLoading && location.pathname !== '/') {
-            navigate('/', { replace: true });
-        }
-    }, [hasStarted, isLoading, location.pathname, navigate]);
+    }, []);
 
     // If theme is Ink & Paper, we use the Router structure
     if (theme === 'inkpaper') {
