@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 const education = [
@@ -34,7 +34,7 @@ const education = [
 const InkPaperExperience = () => {
     const sectionRef = useRef(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const el = sectionRef.current;
         if (!el) return;
 

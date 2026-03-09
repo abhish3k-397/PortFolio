@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 
 const projects = [
@@ -44,7 +44,7 @@ const InkPaperProjects = () => {
     const sectionRef = useRef(null);
     const [hoveredId, setHoveredId] = useState(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const el = sectionRef.current;
         if (!el) return;
 

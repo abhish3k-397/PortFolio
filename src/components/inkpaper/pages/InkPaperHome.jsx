@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { useOutletContext } from 'react-router-dom';
 import SakuraBranch from '../SakuraBranch';
 
 const BRANCH_DURATION = 3;
@@ -8,11 +7,10 @@ const BRANCH_START = 0.3;
 
 const InkPaperHome = () => {
     const sectionRef = useRef(null);
-    const { isEntered } = useOutletContext();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const el = sectionRef.current;
-        if (!el || !isEntered) return;
+        if (!el) return;
 
         const ctx = gsap.context(() => {
 
@@ -147,7 +145,7 @@ const InkPaperHome = () => {
         }, el);
 
         return () => ctx.revert();
-    }, [isEntered]);
+    }, []);
 
     return (
         <section ref={sectionRef} className="inkpaper-section" style={{ overflow: 'hidden' }}>

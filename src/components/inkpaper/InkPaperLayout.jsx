@@ -89,6 +89,15 @@ const InkPaperLayout = () => {
                 { opacity: 0 },
                 { opacity: 1, duration: 1.5, delay: 1.2, ease: 'power2.out' }
             );
+
+            // Image reveal
+            const img = overlay.querySelector('.inkpaper-overlay__image');
+            if (img) {
+                gsap.fromTo(img,
+                    { clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', scale: 1.1 },
+                    { clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0 100%)', scale: 1, duration: 2, ease: 'power4.out', delay: 0.3 }
+                );
+            }
         }, overlay);
 
         // Click handler
@@ -113,8 +122,18 @@ const InkPaperLayout = () => {
                 gsap.to(overlay.querySelector('.inkpaper-overlay__cta'), {
                     opacity: 0,
                     duration: 0.5,
-                    ease: 'power2.inOut',
                 });
+
+                // Hide image
+                const img = overlay.querySelector('.inkpaper-overlay__image');
+                if (img) {
+                    gsap.to(img, {
+                        clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)',
+                        y: -50,
+                        duration: 1.2,
+                        ease: 'power4.inOut'
+                    });
+                }
 
                 // Wipe overlay away from bottom to top
                 gsap.to(overlay, {
@@ -185,6 +204,9 @@ const InkPaperLayout = () => {
                                 <div>ポートフォリオ</div>
                             </h2>
                         </div>
+                        <div className="inkpaper-overlay__image-wrapper">
+                            <img src="/profile.webp" alt="Abhishek Krishna" className="inkpaper-overlay__image" />
+                        </div>
                         <div className="inkpaper-overlay__right">
                             <p className="inkpaper-overlay__cta">
                                 <span className="inkpaper-overlay__cta-jp">入る</span>
@@ -248,7 +270,7 @@ const InkPaperLayout = () => {
                             overflow: 'visible',
                         }}
                     >
-                        <Outlet context={{ isEntered }} />
+                        {isEntered && <Outlet context={{ isEntered }} />}
                     </motion.div>
                 </AnimatePresence>
             </main>
