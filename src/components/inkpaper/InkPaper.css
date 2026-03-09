@@ -1,0 +1,720 @@
+/* ========================================
+   INK & PAPER THEME
+   Japanese Minimalism / Wabi-Sabi Aesthetic
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Noto+Sans+JP:wght@100;300;400;500;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --ink-bg: #FAF7F2;
+    --ink-bg-warm: #F5F0E8;
+    --ink-charcoal: #1A1A1A;
+    --ink-charcoal-soft: #2D2D2D;
+    --ink-vermillion: #C62828;
+    --ink-vermillion-soft: #D44A4A;
+    --ink-stone: #8C8377;
+    --ink-stone-light: #B8B0A4;
+    --ink-cream: #EDE8DF;
+    --ink-wash: rgba(26, 26, 26, 0.04);
+    --ink-serif: 'Cormorant Garamond', 'Shippori Mincho', serif;
+    --ink-sans: 'DM Sans', sans-serif;
+    --ink-jp: 'Noto Sans JP', 'Shippori Mincho', sans-serif;
+}
+
+/* ========================================
+   DARK MODE — Sumi Ink on Aged Parchment
+   ======================================== */
+.inkpaper-dark {
+    --ink-bg: #111110;
+    --ink-bg-warm: #1A1918;
+    --ink-charcoal: #E8E4DD;
+    --ink-charcoal-soft: #D4CFC6;
+    --ink-vermillion: #E53935;
+    --ink-vermillion-soft: #EF5350;
+    --ink-stone: #9A9590;
+    --ink-stone-light: #5C5752;
+    --ink-cream: #2A2826;
+    --ink-wash: rgba(232, 228, 221, 0.04);
+}
+
+/* Dark mode washi texture needs to be lighter */
+.inkpaper-dark.inkpaper-wrapper::before {
+    background-image:
+        url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+}
+
+/* Dark mode stamp hover invert */
+.inkpaper-dark .inkpaper-stamp:hover {
+    background-color: var(--ink-charcoal);
+    color: var(--ink-bg);
+}
+
+/* Dark mode CTA adjustments */
+.inkpaper-dark .inkpaper-cta {
+    color: #111110;
+}
+
+.inkpaper-dark .inkpaper-cta::before {
+    background-color: var(--ink-charcoal);
+}
+
+.inkpaper-dark .inkpaper-cta:hover {
+    color: #111110;
+}
+
+/* Dark mode social link hover */
+.inkpaper-dark .inkpaper-social__link:hover {
+    color: var(--ink-charcoal);
+}
+
+/* ---- DARK MODE TOGGLE ---- */
+.inkpaper-mode-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 3rem;
+    z-index: 200;
+    width: 44px;
+    height: 22px;
+    border-radius: 11px;
+    background-color: var(--ink-cream);
+    border: 1px solid var(--ink-stone-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.inkpaper-mode-toggle__knob {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--ink-charcoal);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+}
+
+.inkpaper-dark .inkpaper-mode-toggle {
+    background-color: #2A2826;
+    border-color: #3D3A37;
+}
+
+.inkpaper-dark .inkpaper-mode-toggle__knob {
+    transform: translateX(22px);
+    background-color: var(--ink-vermillion);
+    box-shadow: 0 0 8px rgba(229, 57, 53, 0.4);
+}
+
+/* Responsive toggle position */
+@media (max-width: 768px) {
+    .inkpaper-mode-toggle {
+        top: 1rem;
+        right: 1.5rem;
+    }
+}
+
+/* ---- WRAPPER ---- */
+.inkpaper-wrapper {
+    background-color: var(--ink-bg);
+    color: var(--ink-charcoal);
+    font-family: var(--ink-sans);
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+    cursor: default;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Washi paper texture overlay */
+.inkpaper-wrapper::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.7;
+}
+
+/* ---- HEADER / NAV ---- */
+.inkpaper-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: difference;
+    transition: opacity 0.8s ease;
+}
+
+.inkpaper-header__logo {
+    font-family: var(--ink-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.inkpaper-nav {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.inkpaper-nav__link {
+    font-family: var(--ink-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+    transition: opacity 0.4s ease;
+}
+
+.inkpaper-nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: white;
+    transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.inkpaper-nav__link:hover::after,
+.inkpaper-nav__link.active::after {
+    width: 100%;
+}
+
+.inkpaper-nav__jp {
+    font-family: var(--ink-jp);
+    font-size: 0.6rem;
+    color: white;
+    opacity: 0.4;
+    margin-left: 0.4rem;
+    letter-spacing: 0.05em;
+}
+
+/* ---- PAGE SECTION (full viewport) ---- */
+.inkpaper-section {
+    width: 100vw;
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: var(--ink-bg);
+}
+
+.inkpaper-section__inner {
+    width: 100%;
+    max-width: 1200px;
+    padding: 6rem 3rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* ---- INK BRUSH STROKE SVG ---- */
+.ink-stroke {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.06;
+}
+
+.ink-stroke path {
+    stroke: var(--ink-charcoal);
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+}
+
+.ink-stroke.is-visible path {
+    animation: inkDraw 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes inkDraw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* ---- TYPOGRAPHY ---- */
+.inkpaper-heading {
+    font-family: var(--ink-serif);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink-charcoal);
+}
+
+.inkpaper-heading--hero {
+    font-size: clamp(3.5rem, 10vw, 9rem);
+}
+
+.inkpaper-heading--section {
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin-bottom: 3rem;
+}
+
+.inkpaper-heading--sub {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 400;
+}
+
+.inkpaper-body {
+    font-family: var(--ink-sans);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--ink-stone);
+    max-width: 52ch;
+}
+
+.inkpaper-jp {
+    font-family: var(--ink-jp);
+    color: var(--ink-stone-light);
+}
+
+.inkpaper-jp--label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+/* ---- VERMILLION ACCENT ---- */
+.ink-vermillion-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--ink-vermillion);
+    margin-left: 0.5rem;
+    vertical-align: super;
+}
+
+.ink-vermillion-line {
+    width: 40px;
+    height: 2px;
+    background-color: var(--ink-vermillion);
+    margin: 1.5rem 0;
+}
+
+/* ---- PROJECT CARDS ---- */
+.inkpaper-project {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--ink-cream);
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.inkpaper-project::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--ink-wash);
+    transform: translateX(-101%);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.inkpaper-project:hover::before {
+    transform: translateX(0);
+}
+
+.inkpaper-project:hover {
+    padding-left: 1.5rem;
+}
+
+.inkpaper-project__number {
+    font-family: var(--ink-serif);
+    font-size: 4rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ink-cream);
+    transition: color 0.5s ease;
+    min-width: 5rem;
+}
+
+.inkpaper-project:hover .inkpaper-project__number {
+    color: var(--ink-vermillion);
+}
+
+.inkpaper-project__title {
+    font-family: var(--ink-serif);
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--ink-charcoal);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.inkpaper-project__desc {
+    font-family: var(--ink-sans);
+    font-size: 0.9rem;
+    color: var(--ink-stone);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.inkpaper-project__tech {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.inkpaper-project__tag {
+    font-family: var(--ink-sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-stone);
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--ink-cream);
+    transition: all 0.4s ease;
+}
+
+.inkpaper-project:hover .inkpaper-project__tag {
+    border-color: var(--ink-stone-light);
+}
+
+/* ---- TIMELINE ---- */
+.inkpaper-timeline {
+    position: relative;
+    padding-left: 3rem;
+}
+
+.inkpaper-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom,
+            transparent,
+            var(--ink-stone-light) 20%,
+            var(--ink-stone-light) 80%,
+            transparent);
+}
+
+.inkpaper-timeline__item {
+    position: relative;
+    padding-bottom: 3rem;
+}
+
+.inkpaper-timeline__item:last-child {
+    padding-bottom: 0;
+}
+
+.inkpaper-timeline__dot {
+    position: absolute;
+    left: -3rem;
+    top: 0.35rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--ink-vermillion);
+    transform: translateX(-50%);
+}
+
+.inkpaper-timeline__period {
+    font-family: var(--ink-sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-stone-light);
+    margin-bottom: 0.5rem;
+}
+
+.inkpaper-timeline__role {
+    font-family: var(--ink-serif);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--ink-charcoal);
+    margin-bottom: 0.25rem;
+}
+
+.inkpaper-timeline__company {
+    font-family: var(--ink-sans);
+    font-size: 0.85rem;
+    color: var(--ink-stone);
+    margin-bottom: 0.75rem;
+}
+
+.inkpaper-timeline__desc {
+    font-family: var(--ink-sans);
+    font-size: 0.9rem;
+    color: var(--ink-stone);
+    line-height: 1.7;
+    max-width: 45ch;
+}
+
+/* ---- SKILLS / INK STAMPS ---- */
+.inkpaper-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.inkpaper-stamp {
+    font-family: var(--ink-serif);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0.6rem 1.2rem;
+    border: 1.5px solid var(--ink-charcoal);
+    color: var(--ink-charcoal);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: rotate(var(--stamp-rotation, 0deg));
+}
+
+.inkpaper-stamp:nth-child(odd) {
+    --stamp-rotation: -1deg;
+}
+
+.inkpaper-stamp:nth-child(even) {
+    --stamp-rotation: 1.5deg;
+}
+
+.inkpaper-stamp:nth-child(3n) {
+    --stamp-rotation: -0.5deg;
+}
+
+.inkpaper-stamp:hover {
+    background-color: var(--ink-charcoal);
+    color: var(--ink-bg);
+}
+
+/* ---- CONTACT / CTA ---- */
+.inkpaper-cta {
+    display: inline-block;
+    font-family: var(--ink-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--ink-bg);
+    background-color: var(--ink-vermillion);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.inkpaper-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--ink-charcoal);
+    transform: translateY(101%);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.inkpaper-cta:hover::before {
+    transform: translateY(0);
+}
+
+.inkpaper-cta span {
+    position: relative;
+    z-index: 1;
+}
+
+.inkpaper-social {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.inkpaper-social__link {
+    font-family: var(--ink-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-stone-light);
+    text-decoration: none;
+    transition: color 0.4s ease;
+}
+
+.inkpaper-social__link:hover {
+    color: var(--ink-charcoal);
+}
+
+/* ---- DIVIDERS ---- */
+.inkpaper-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right,
+            transparent,
+            var(--ink-cream) 20%,
+            var(--ink-cream) 80%,
+            transparent);
+    margin: 0;
+}
+
+/* ---- SCROLL INDICATOR ---- */
+.inkpaper-scroll-hint {
+    position: fixed;
+    bottom: 2rem;
+    right: 3rem;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    mix-blend-mode: difference;
+}
+
+.inkpaper-scroll-hint__text {
+    font-family: var(--ink-sans);
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: white;
+    writing-mode: vertical-rl;
+}
+
+.inkpaper-scroll-hint__line {
+    width: 1px;
+    height: 60px;
+    background: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.inkpaper-scroll-hint__line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--ink-vermillion);
+    animation: scrollPulse 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes scrollPulse {
+    0% {
+        top: -100%;
+    }
+
+    50% {
+        top: 100%;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+/* ---- PAGE TRANSITION ---- */
+.inkpaper-page-enter {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.inkpaper-page-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- INK REVEAL ANIMATION ---- */
+.ink-reveal {
+    clip-path: inset(0 100% 0 0);
+}
+
+.ink-reveal.is-visible {
+    animation: inkReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes inkReveal {
+    to {
+        clip-path: inset(0 0% 0 0);
+    }
+}
+
+/* ---- FADE UP ANIMATION ---- */
+.ink-fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.ink-fade-up.is-visible {
+    animation: inkFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes inkFadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+    .inkpaper-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .inkpaper-nav {
+        gap: 1.5rem;
+    }
+
+    .inkpaper-nav__jp {
+        display: none;
+    }
+
+    .inkpaper-section__inner {
+        padding: 5rem 1.5rem;
+    }
+
+    .inkpaper-project {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .inkpaper-project__number {
+        font-size: 2.5rem;
+    }
+
+    .inkpaper-scroll-hint {
+        display: none;
+    }
+
+    .inkpaper-social {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+}

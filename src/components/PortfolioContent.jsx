@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '../context/ThemeContext';
 import Layout from './Layout';
 import FutureLayout from './future/FutureLayout';
-import SamuraiLayout from './samurai/SamuraiLayout';
+import InkPaperLayout from './inkpaper/InkPaperLayout';
 
 // Import all standard components
 import Hero from './Hero';
@@ -17,9 +17,9 @@ import AchievementPopup from './AchievementPopup';
 const PortfolioContent = () => {
     const { theme } = useTheme();
 
-    // If theme is 'samurai', render the Samurai Layout
-    if (theme === 'samurai') {
-        return <SamuraiLayout />;
+    // If theme is 'inkpaper', render the Ink & Paper Layout
+    if (theme === 'inkpaper') {
+        return <InkPaperLayout />;
     }
 
     // If theme is 'futuristic', render the new Future Layout

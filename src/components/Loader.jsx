@@ -31,9 +31,9 @@ const DefaultLoader = ({ onComplete }) => {
 };
 
 const Loader = ({ onComplete }) => {
-  const { isFuturistic, isSamurai } = useTheme();
+  const { isFuturistic, isInkPaper } = useTheme();
 
-  if (isFuturistic || isSamurai) {
+  if (isFuturistic || isInkPaper) {
     return <AbhishekLoading onComplete={onComplete} />;
   }
 

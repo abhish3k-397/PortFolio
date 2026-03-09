@@ -9,13 +9,13 @@ import { AchievementProvider } from './context/AchievementContext'
 import AchievementPopup from './components/AchievementPopup'
 import SmoothScroll from './components/SmoothScroll'
 
-// Samurai Pages
-import SamuraiLayout from './components/samurai/SamuraiLayout'
-import SamuraiHome from './components/samurai/pages/SamuraiHome'
-import SamuraiProjects from './components/samurai/pages/SamuraiProjects'
-import SamuraiExperience from './components/samurai/pages/SamuraiExperience'
-import SamuraiAbout from './components/samurai/pages/SamuraiAbout'
-import SamuraiContact from './components/samurai/pages/SamuraiContact'
+// Ink & Paper Pages
+import InkPaperLayout from './components/inkpaper/InkPaperLayout'
+import InkPaperHome from './components/inkpaper/pages/InkPaperHome'
+import InkPaperProjects from './components/inkpaper/pages/InkPaperProjects'
+import InkPaperExperience from './components/inkpaper/pages/InkPaperExperience'
+import InkPaperAbout from './components/inkpaper/pages/InkPaperAbout'
+import InkPaperContact from './components/inkpaper/pages/InkPaperContact'
 
 const AppContent = () => {
     const [hasStarted, setHasStarted] = useState(false);
@@ -31,27 +31,27 @@ const AppContent = () => {
         setHasStarted(true);
     }, []);
 
-    // If theme is Samurai, we use the Router structure
-    if (theme === 'samurai') {
+    // If theme is Ink & Paper, we use the Router structure
+    if (theme === 'inkpaper') {
         return (
             <>
                 <SmoothScroll />
-                {/* Render Samurai Layout immediately so it's visible under the transparent loader */}
+                {/* Render Ink & Paper Layout immediately so it's visible under the transparent loader */}
                 {(hasStarted || isLoading) && (
                     <Routes>
-                        <Route path="/samurai" element={<SamuraiLayout />}>
-                            <Route index element={<SamuraiHome />} />
-                            <Route path="projects" element={<SamuraiProjects />} />
-                            <Route path="experience" element={<SamuraiExperience />} />
-                            <Route path="about" element={<SamuraiAbout />} />
-                            <Route path="contact" element={<SamuraiContact />} />
+                        <Route path="/inkpaper" element={<InkPaperLayout />}>
+                            <Route index element={<InkPaperHome />} />
+                            <Route path="projects" element={<InkPaperProjects />} />
+                            <Route path="experience" element={<InkPaperExperience />} />
+                            <Route path="about" element={<InkPaperAbout />} />
+                            <Route path="contact" element={<InkPaperContact />} />
                         </Route>
-                        {/* Redirect root to samurai home if in samurai theme */}
-                        <Route path="*" element={<Navigate to="/samurai" replace />} />
+                        {/* Redirect root to inkpaper home if in inkpaper theme */}
+                        <Route path="*" element={<Navigate to="/inkpaper" replace />} />
                     </Routes>
                 )}
 
-                {/* Start Page for Samurai Theme */}
+                {/* Start Page for Ink & Paper Theme */}
                 {!hasStarted && !isLoading && (
                     <StartPage onStart={handleStart} />
                 )}
