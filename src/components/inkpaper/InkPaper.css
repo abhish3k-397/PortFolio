@@ -70,13 +70,10 @@
 
 /* ---- DARK MODE TOGGLE ---- */
 .inkpaper-mode-toggle {
-    position: fixed;
-    top: 1.5rem;
-    right: 3rem;
-    z-index: 200;
-    width: 44px;
-    height: 22px;
-    border-radius: 11px;
+    position: relative;
+    width: 40px;
+    height: 20px;
+    border-radius: 10px;
     background-color: var(--ink-cream);
     border: 1px solid var(--ink-stone-light);
     cursor: pointer;
@@ -84,6 +81,8 @@
     align-items: center;
     padding: 2px;
     transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    margin-left: 1rem;
+    flex-shrink: 0;
 }
 
 .inkpaper-mode-toggle__knob {
@@ -101,7 +100,7 @@
 }
 
 .inkpaper-dark .inkpaper-mode-toggle__knob {
-    transform: translateX(22px);
+    transform: translateX(20px);
     background-color: var(--ink-vermillion);
     box-shadow: 0 0 8px rgba(229, 57, 53, 0.4);
 }
@@ -515,7 +514,133 @@
     color: var(--ink-bg);
 }
 
-/* ---- CONTACT / CTA ---- */
+/* ---- TAGS (subject / category) ---- */
+.inkpaper-tag {
+    font-family: var(--ink-sans);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-stone);
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--ink-cream);
+    transition: all 0.3s ease;
+}
+
+/* ---- GRADE BADGE ---- */
+.inkpaper-grade {
+    font-family: var(--ink-serif);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-vermillion);
+    padding: 0.15rem 0.6rem;
+    border: 1px solid var(--ink-vermillion);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+/* ---- SKILL GROUP HEADER ---- */
+.inkpaper-skill-group {
+    font-family: var(--ink-jp);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-stone-light);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--ink-cream);
+}
+
+/* ---- AVAILABILITY STATUS ---- */
+.inkpaper-availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--ink-sans);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-stone);
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--ink-cream);
+}
+
+.inkpaper-availability__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--ink-vermillion);
+    animation: availPulse 2s ease-in-out infinite;
+}
+
+@keyframes availPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.4);
+    }
+
+    50% {
+        opacity: 0.7;
+        box-shadow: 0 0 0 6px rgba(198, 40, 40, 0);
+    }
+}
+
+/* ---- RESUME DOWNLOAD BUTTON ---- */
+.inkpaper-resume-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--ink-serif);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink-charcoal);
+    padding: 0.85rem 2rem;
+    border: 1.5px solid var(--ink-charcoal);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.inkpaper-resume-btn span {
+    font-family: var(--ink-jp);
+    font-size: 0.7rem;
+    opacity: 0.4;
+}
+
+.inkpaper-resume-btn:hover {
+    background-color: var(--ink-charcoal);
+    color: var(--ink-bg);
+}
+
+/* ---- PROJECT IMAGE PREVIEW ---- */
+.inkpaper-project-preview {
+    position: fixed;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+    width: 280px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+    z-index: 0;
+    pointer-events: none;
+    filter: grayscale(100%) contrast(1.2);
+    transition: opacity 0.6s ease;
+    mix-blend-mode: multiply;
+}
+
+.inkpaper-dark .inkpaper-project-preview {
+    filter: grayscale(100%) contrast(1.2) invert(1);
+    opacity: 0.08;
+    mix-blend-mode: screen;
+}
+
 .inkpaper-cta {
     display: inline-block;
     font-family: var(--ink-serif);

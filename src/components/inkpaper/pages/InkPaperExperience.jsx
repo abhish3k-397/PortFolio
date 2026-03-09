@@ -8,6 +8,8 @@ const education = [
         role: 'B.Tech in Computer Science',
         company: 'University of Technology',
         desc: 'Specializing in Full Stack Development, Artificial Intelligence, and System Architecture.',
+        grade: 'CGPA: 9.2',
+        tags: ['DSA', 'Web Dev', 'Database']
     },
     {
         id: 2,
@@ -15,6 +17,17 @@ const education = [
         role: 'Higher Secondary (XII)',
         company: 'City High School',
         desc: 'Science stream (PCM). Built strong foundation in Mathematics and Computer Science basics.',
+        grade: '94%',
+        tags: ['Physics', 'Maths', 'C++']
+    },
+    {
+        id: 3,
+        period: '2018 — 2019',
+        role: 'Secondary Education (X)',
+        company: 'City High School',
+        desc: 'Completed with distinction. Active member of Computer Club and Science Society.',
+        grade: '98%',
+        tags: ['Science', 'Maths', 'Logic']
     }
 ];
 
@@ -61,10 +74,18 @@ const InkPaperExperience = () => {
                     {education.map((edu) => (
                         <div key={edu.id} className="inkpaper-timeline__item">
                             <div className="inkpaper-timeline__dot" />
-                            <div className="inkpaper-timeline__period">{edu.period}</div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                <div className="inkpaper-timeline__period">{edu.period}</div>
+                                <span className="inkpaper-grade">{edu.grade}</span>
+                            </div>
                             <div className="inkpaper-timeline__role">{edu.role}</div>
                             <div className="inkpaper-timeline__company">{edu.company}</div>
                             <p className="inkpaper-timeline__desc">{edu.desc}</p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem' }}>
+                                {edu.tags.map((tag, i) => (
+                                    <span key={i} className="inkpaper-tag">{tag}</span>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>

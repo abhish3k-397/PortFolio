@@ -73,10 +73,13 @@ const InkPaperContact = () => {
                     </p>
                 </div>
 
-                {/* CTA Button */}
-                <div className="ink-contact-reveal">
+                {/* CTA Buttons */}
+                <div className="ink-contact-reveal" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
                     <a href="mailto:contact@example.com" className="inkpaper-cta">
                         <span>Send Message</span>
+                    </a>
+                    <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="inkpaper-resume-btn">
+                        <span>履歴書</span> Download Resume
                     </a>
                 </div>
 

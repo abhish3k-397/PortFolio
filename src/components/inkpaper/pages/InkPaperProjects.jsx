@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 
 const projects = [
@@ -7,6 +7,7 @@ const projects = [
         title: "FlashCardsDual",
         category: "Multiplayer Game",
         url: "https://uno.dev.p1ng.me",
+        img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
         desc: "Browser-based multiplayer game supporting 6 concurrent players with <150ms latency using socket programming.",
         tech: ["Node.js", "WebSockets", "Docker"]
     },
@@ -15,6 +16,7 @@ const projects = [
         title: "Res-Flow",
         category: "System Tool",
         url: "https://github.com/abhish3k-397/ResFlow.git",
+        img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2670&auto=format&fit=crop",
         desc: "Cross-platform resource monitoring tool tracking 15+ system processes in real-time.",
         tech: ["Python", "PyQt5", "Psutil"]
     },
@@ -23,6 +25,7 @@ const projects = [
         title: "CyberMusicAi",
         category: "AI Assistant",
         url: "https://github.com/abhish3k-397/CyberMusicAI.git",
+        img: "https://images.unsplash.com/photo-1558494949-efdeb6bf80a1?q=80&w=2669&auto=format&fit=crop",
         desc: "AI-powered chatbot for music tutoring and recommendations with Spotify integration.",
         tech: ["JS", "Spotify API", "AI"]
     },
@@ -31,6 +34,7 @@ const projects = [
         title: "Portfolio",
         category: "Interactive Web",
         url: "https://github.com/abhish3k-397/PortFolio.git",
+        img: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1470&auto=format&fit=crop",
         desc: "Futuristic, cyberpunk-themed portfolio website featuring interactive animations and 3D elements.",
         tech: ["React", "GSAP", "Tailwind"]
     },
@@ -38,6 +42,7 @@ const projects = [
 
 const InkPaperProjects = () => {
     const sectionRef = useRef(null);
+    const [hoveredId, setHoveredId] = useState(null);
 
     useEffect(() => {
         const el = sectionRef.current;
@@ -76,6 +81,16 @@ const InkPaperProjects = () => {
                 />
             </svg>
 
+            {/* Hover image preview */}
+            {hoveredId && (
+                <div
+                    className="inkpaper-project-preview"
+                    style={{
+                        backgroundImage: `url(${projects.find(p => p.id === hoveredId)?.img})`,
+                    }}
+                />
+            )}
+
             <div className="inkpaper-section__inner" style={{ paddingTop: '8rem' }}>
 
                 {/* Section Label */}
@@ -96,12 +111,17 @@ const InkPaperProjects = () => {
                             key={project.id}
                             className="inkpaper-project"
                             onClick={() => window.open(project.url, '_blank')}
+                            onMouseEnter={() => setHoveredId(project.id)}
+                            onMouseLeave={() => setHoveredId(null)}
                         >
                             <div className="inkpaper-project__number">
                                 {String(index + 1).padStart(2, '0')}
                             </div>
                             <div>
-                                <div className="inkpaper-project__title">{project.title}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+                                    <div className="inkpaper-project__title">{project.title}</div>
+                                    <span className="inkpaper-tag">{project.category}</span>
+                                </div>
                                 <div className="inkpaper-project__desc">{project.desc}</div>
                                 <div className="inkpaper-project__tech">
                                     {project.tech.map((t, i) => (

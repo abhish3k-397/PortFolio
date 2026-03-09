@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-const skills = [
-    'C++', 'Python', 'Java', 'JavaScript', 'React',
-    'Node.js', 'Docker', 'Linux', 'Socket Programming',
-    'Network Defense', 'CTF Operations', 'GSAP',
-    'Tailwind CSS', 'System Architecture', 'AI Integration'
-];
+const skills = {
+    '言語 — Languages': ['C++ (DSA)', 'Python', 'C', 'Java (OOP)', 'JavaScript'],
+    '技術 — Technologies': ['Linux (Arch)', 'Node.js', 'Socket Programming', 'React', 'Tailwind'],
+    '道具 — Tools': ['Docker', 'Git', 'ngrok', 'RESTful API', 'Postman'],
+    '能力 — Soft Skills': ['Problem-Solving', 'Team Collaboration', 'Analytical Thinking']
+};
 
 const InkPaperAbout = () => {
     const sectionRef = useRef(null);
@@ -23,7 +23,7 @@ const InkPaperAbout = () => {
 
             gsap.fromTo(el.querySelectorAll('.inkpaper-stamp'),
                 { scale: 0.8, opacity: 0 },
-                { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.7)', stagger: 0.05, delay: 0.8 }
+                { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.7)', stagger: 0.04, delay: 0.8 }
             );
         }, el);
 
@@ -61,7 +61,7 @@ const InkPaperAbout = () => {
                     </h2>
                 </div>
 
-                {/* About Text */}
+                {/* About Text + Skills Grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'start' }}>
                     <div>
                         <p className="inkpaper-body ink-about-reveal" style={{ marginBottom: '1.5rem' }}>
@@ -82,25 +82,21 @@ const InkPaperAbout = () => {
                     </div>
 
                     <div>
-                        <div className="ink-about-reveal" style={{ marginBottom: '1rem' }}>
-                            <span style={{
-                                fontFamily: 'var(--ink-sans)',
-                                fontSize: '0.65rem',
-                                fontWeight: 500,
-                                letterSpacing: '0.2em',
-                                textTransform: 'uppercase',
-                                color: 'var(--ink-stone-light)'
-                            }}>
-                                Technical Arsenal
-                            </span>
-                        </div>
-                        <div className="inkpaper-skills">
-                            {skills.map((skill, i) => (
-                                <span key={i} className="inkpaper-stamp">
-                                    {skill}
-                                </span>
-                            ))}
-                        </div>
+                        {/* Categorized Skills */}
+                        {Object.entries(skills).map(([category, items]) => (
+                            <div key={category} className="ink-about-reveal" style={{ marginBottom: '2rem' }}>
+                                <div className="inkpaper-skill-group">
+                                    {category}
+                                </div>
+                                <div className="inkpaper-skills" style={{ marginTop: '0.75rem' }}>
+                                    {items.map((skill, i) => (
+                                        <span key={i} className="inkpaper-stamp">
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

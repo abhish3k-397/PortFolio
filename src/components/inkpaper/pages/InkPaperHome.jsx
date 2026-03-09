@@ -9,7 +9,6 @@ const InkPaperHome = () => {
         if (!el) return;
 
         const ctx = gsap.context(() => {
-            // Stagger reveal for text elements
             gsap.fromTo(el.querySelectorAll('.ink-home-reveal'),
                 { y: 40, opacity: 0 },
                 {
@@ -22,7 +21,6 @@ const InkPaperHome = () => {
                 }
             );
 
-            // Ink brush stroke draw animation
             const strokePath = el.querySelector('.ink-home-stroke path');
             if (strokePath) {
                 gsap.fromTo(strokePath,
@@ -31,7 +29,6 @@ const InkPaperHome = () => {
                 );
             }
 
-            // Vermillion circle scale-in
             const circle = el.querySelector('.ink-home-circle');
             if (circle) {
                 gsap.fromTo(circle,
@@ -80,8 +77,16 @@ const InkPaperHome = () => {
 
             <div className="inkpaper-section__inner" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '100vh' }}>
 
-                {/* Japanese label */}
+                {/* Availability badge */}
                 <div className="ink-home-reveal" style={{ marginBottom: '2rem' }}>
+                    <div className="inkpaper-availability">
+                        <span className="inkpaper-availability__dot" />
+                        募集中 — Available for Work
+                    </div>
+                </div>
+
+                {/* Japanese label */}
+                <div className="ink-home-reveal" style={{ marginBottom: '1.5rem' }}>
                     <span className="inkpaper-jp inkpaper-jp--label" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <span style={{ width: '30px', height: '1px', background: 'var(--ink-stone-light)' }} />
                         ポートフォリオ — Portfolio
@@ -97,7 +102,7 @@ const InkPaperHome = () => {
                 </h1>
 
                 {/* Subtitle */}
-                <div className="ink-home-reveal" style={{ marginTop: '2rem', maxWidth: '500px' }}>
+                <div className="ink-home-reveal" style={{ marginTop: '2rem', maxWidth: '550px' }}>
                     <div className="ink-vermillion-line" />
                     <p className="inkpaper-body">
                         Cyber Security Specialist & Full Stack Developer.

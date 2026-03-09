@@ -95,18 +95,9 @@ const InkPaperLayout = () => {
 
     return (
         <div className={`inkpaper-wrapper ${isDark ? 'inkpaper-dark' : ''}`} ref={containerRef}>
-            {/* DARK MODE TOGGLE */}
-            <button
-                className="inkpaper-mode-toggle"
-                onClick={() => setIsDark(!isDark)}
-                aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-                title={isDark ? '光 Light' : '闇 Dark'}
-            >
-                <div className="inkpaper-mode-toggle__knob" />
-            </button>
-
             {/* HEADER / NAV */}
             <header className="inkpaper-header" style={{ opacity: isEntered ? 1 : 0, pointerEvents: isEntered ? 'all' : 'none' }}>
+
                 <Link to="/inkpaper" className="inkpaper-header__logo">
                     Abhishek Krishna
                 </Link>
@@ -125,6 +116,16 @@ const InkPaperLayout = () => {
                             <span className="inkpaper-nav__jp">{item.jp}</span>
                         </Link>
                     ))}
+
+                    {/* DARK MODE TOGGLE */}
+                    <button
+                        className="inkpaper-mode-toggle"
+                        onClick={() => setIsDark(!isDark)}
+                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                        title={isDark ? '光 Light' : '闇 Dark'}
+                    >
+                        <div className="inkpaper-mode-toggle__knob" />
+                    </button>
                 </nav>
             </header>
 
