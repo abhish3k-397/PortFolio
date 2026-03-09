@@ -93,26 +93,31 @@ const InkPaperLayout = () => {
             checkNavigation();
         };
 
+        let touchStartY = 0;
+
         const handleTouchStart = (e) => {
-            lastTouchY = e.touches[0].clientY;
+            touchStartY = e.touches[0].clientY;
+            accumulatedDelta = 0; // Reset on new swipe
         };
 
         const handleTouchMove = (e) => {
             if (isNavigating.current) return;
             const currentY = e.touches[0].clientY;
-            const deltaY = lastTouchY - currentY;
-            lastTouchY = currentY;
 
+            // Calculate total swipe distance from the start
+            const deltaY = touchStartY - currentY;
+
+            // Allow normal scroll if we aren't at the edges
             const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.body.scrollHeight - 10;
             const isAtTop = window.scrollY <= 10;
 
+            // Notice deltaY is positive when swiping UP (scrolling down the page)
             if (deltaY > 0 && isAtBottom) {
-                accumulatedDelta += deltaY;
+                accumulatedDelta = deltaY;
             } else if (deltaY < 0 && isAtTop) {
-                accumulatedDelta += deltaY;
+                accumulatedDelta = deltaY;
             } else {
                 accumulatedDelta = 0;
-                return;
             }
 
             checkNavigation();
