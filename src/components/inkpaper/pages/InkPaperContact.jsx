@@ -131,8 +131,6 @@ const InkPaperContact = () => {
                             objectFit: 'cover',
                             filter: 'grayscale(100%) sepia(20%) contrast(1.2)',
                             mixBlendMode: 'multiply',
-                            WebkitMaskImage: 'radial-gradient(circle, black 20%, rgba(0, 0, 0, 0.4) 60%, transparent 95%)',
-                            maskImage: 'radial-gradient(circle, black 20%, rgba(0, 0, 0, 0.4) 60%, transparent 95%)',
                             opacity: 0, // Handled by GSAP
                         }}
                     />
