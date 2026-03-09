@@ -26,105 +26,48 @@ const InkPaperHome = () => {
                 { opacity: 1, x: 0, duration: 1.5, ease: 'power3.out', delay: BRANCH_START - 0.2 }
             );
 
-            // ---- Main branch stroke-draw ----
-            const mainPath = el.querySelector('.sakura-branch-main');
-            if (mainPath) {
-                const len = mainPath.getTotalLength();
-                gsap.fromTo(mainPath,
-                    { strokeDasharray: len, strokeDashoffset: len },
-                    { strokeDashoffset: 0, duration: BRANCH_DURATION, ease: 'power2.inOut', delay: BRANCH_START }
-                );
-            }
+            // ---- Dynamic Branches Stroke-Draw ----
+            el.querySelectorAll('.sakura-branch').forEach((branch) => {
+                const len = branch.getTotalLength();
+                // We stored the drawing delay on the element
+                const delayStr = branch.getAttribute('data-branch-delay') || '0';
+                const delay = parseFloat(delayStr);
 
-            // ---- Sub-branch A (forks at ~22%) ----
-            const sub1 = el.querySelector('.sakura-branch-sub1');
-            if (sub1) {
-                const len = sub1.getTotalLength();
-                gsap.fromTo(sub1,
+                // Animating stroke offset
+                gsap.fromTo(branch,
                     { strokeDasharray: len, strokeDashoffset: len },
-                    { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut', delay: BRANCH_START + 0.22 * BRANCH_DURATION }
-                );
-            }
-
-            // ---- Sub-branch B (forks at ~40%) ----
-            const sub2 = el.querySelector('.sakura-branch-sub2');
-            if (sub2) {
-                const len = sub2.getTotalLength();
-                gsap.fromTo(sub2,
-                    { strokeDasharray: len, strokeDashoffset: len },
-                    { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut', delay: BRANCH_START + 0.40 * BRANCH_DURATION }
-                );
-            }
-
-            // ---- Sub-branch C (forks at ~58%) ----
-            const sub3 = el.querySelector('.sakura-branch-sub3');
-            if (sub3) {
-                const len = sub3.getTotalLength();
-                gsap.fromTo(sub3,
-                    { strokeDasharray: len, strokeDashoffset: len },
-                    { strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut', delay: BRANCH_START + 0.58 * BRANCH_DURATION }
-                );
-            }
-
-            // ---- Sub-branch D (forks at ~72%) ----
-            const sub4 = el.querySelector('.sakura-branch-sub4');
-            if (sub4) {
-                const len = sub4.getTotalLength();
-                gsap.fromTo(sub4,
-                    { strokeDasharray: len, strokeDashoffset: len },
-                    { strokeDashoffset: 0, duration: 1.5, ease: 'power2.inOut', delay: BRANCH_START + 0.72 * BRANCH_DURATION }
-                );
-            }
-
-            // ---- Sub-branch E (short spur from sub-A) ----
-            const sub5 = el.querySelector('.sakura-branch-sub5');
-            if (sub5) {
-                const len = sub5.getTotalLength();
-                gsap.fromTo(sub5,
-                    { strokeDasharray: len, strokeDashoffset: len },
-                    { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut', delay: BRANCH_START + 0.35 * BRANCH_DURATION }
-                );
-            }
-
-            // ---- Twigs ----
-            el.querySelectorAll('.sakura-twig').forEach((twig, i) => {
-                const len = twig.getTotalLength();
-                gsap.fromTo(twig,
-                    { strokeDasharray: len, strokeDashoffset: len },
-                    { strokeDashoffset: 0, duration: 0.7, ease: 'power2.out', delay: BRANCH_START + 0.15 * BRANCH_DURATION + i * 0.1 }
+                    { strokeDashoffset: 0, duration: 1.5, ease: 'power2.inOut', delay: BRANCH_START + delay }
                 );
             });
 
-            // ---- Bark texture ----
-            el.querySelectorAll('.sakura-bark').forEach((bark) => {
-                gsap.fromTo(bark,
-                    { opacity: 0 },
-                    { opacity: 1, duration: 1.2, ease: 'power2.out', delay: BRANCH_START + 0.15 }
-                );
-            });
+            // ---- Dynamic Blossoms Bloom ----
+            // The prompt requested that branches appear BEFORE flowers!
+            // Branches take ~1.5 seconds to draw.
+            const BLOSSOM_DELAY_OFFSET = 1.0;
 
-            // ---- Blossoms bloom as branch reaches them ----
             el.querySelectorAll('.sakura-blossom').forEach((blossom) => {
-                const bloomDelay = parseFloat(blossom.getAttribute('data-bloom-delay') || 0);
-                const absoluteDelay = BRANCH_START + bloomDelay * BRANCH_DURATION;
+                const bloomDelay = parseFloat(blossom.getAttribute('data-bloom-delay') || '0');
+
+                // Delay them so they happen clearly after the branch has reached their coordinate
+                const absoluteDelay = BRANCH_START + BLOSSOM_DELAY_OFFSET + (bloomDelay * 3.5);
 
                 gsap.fromTo(blossom,
                     { scale: 0, opacity: 0, transformOrigin: 'center center' },
                     {
                         scale: 1,
                         opacity: parseFloat(blossom.getAttribute('opacity')) || 1,
-                        duration: 0.5,
+                        duration: 0.8,
                         ease: 'back.out(2.5)',
                         delay: absoluteDelay,
                     }
                 );
             });
 
-            // ---- Falling SVG petals — appear after branch finishes ----
+            // ---- Falling SVG petals — appear at the very end ----
             el.querySelectorAll('.sakura-falling-petal').forEach((petal) => {
                 gsap.fromTo(petal,
                     { opacity: 0 },
-                    { opacity: 1, duration: 0.5, delay: BRANCH_START + BRANCH_DURATION + 0.5 }
+                    { opacity: 1, duration: 0.8, delay: BRANCH_START + 4.0 }
                 );
             });
 
