@@ -31,15 +31,13 @@ COPY --from=build /app/dist .
 # Add nginx config to support React Router SPA and prevent HTML caching
 RUN echo 'server { \
     listen 80; \
+    root /usr/share/nginx/html; \
+    index index.html; \
     location / { \
-        root /usr/share/nginx/html; \
-        index index.html index.htm; \
         try_files $uri $uri/ /index.html; \
     } \
-    location ~* \.html$ { \
-        root /usr/share/nginx/html; \
+    location = /index.html { \
         add_header Cache-Control "no-store, no-cache, must-revalidate"; \
-        try_files $uri $uri/ /index.html; \
     } \
 }' > /etc/nginx/conf.d/default.conf
 
