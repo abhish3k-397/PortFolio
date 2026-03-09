@@ -212,14 +212,11 @@
 .inkpaper-section {
     width: 100vw;
     min-height: 100vh;
-    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     z-index: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
     background-color: var(--ink-bg);
 }
 

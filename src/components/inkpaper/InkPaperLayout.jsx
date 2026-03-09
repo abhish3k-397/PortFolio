@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import Lenis from 'lenis';
 import './InkPaper.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,11 +20,17 @@ const InkPaperLayout = () => {
         const saved = localStorage.getItem('inkpaper-dark');
         return saved === 'true';
     });
+    const locationRef = useRef(location.pathname);
 
-    // Persist dark mode preference
+    // Persist dark mode and handle route jump
     useEffect(() => {
         localStorage.setItem('inkpaper-dark', isDark);
     }, [isDark]);
+
+    useLayoutEffect(() => {
+        locationRef.current = location.pathname;
+        window.scrollTo(0, 0); // Always snap back to top on exact route change
+    }, [location.pathname]);
 
     const routes = ['/inkpaper', '/inkpaper/projects', '/inkpaper/experience', '/inkpaper/about', '/inkpaper/contact'];
 
@@ -35,31 +42,94 @@ const InkPaperLayout = () => {
         { path: '/inkpaper/contact', label: 'Contact', jp: '連絡' },
     ];
 
-    // Scroll-based route navigation
+    // Central Scroll and Lenis Integrator
     useEffect(() => {
-        const handleWheel = (e) => {
-            if (isNavigating.current) return;
+        // Initialize GSAP integrated Lenis instance
+        const lenis = new Lenis({ autoRaf: true, smoothWheel: true });
+        lenis.on('scroll', ScrollTrigger.update);
+        const tick = (time) => lenis.raf(time * 1000);
+        gsap.ticker.add(tick);
+        gsap.ticker.lagSmoothing(0);
 
-            const currentPath = location.pathname;
-            const currentIndex = routes.indexOf(currentPath);
-            if (currentIndex === -1) return;
+        let accumulatedDelta = 0;
+        let lastTouchY = 0;
 
-            if (e.deltaY > 0 && currentIndex < routes.length - 1) {
-                isNavigating.current = true;
-                setDirection(1);
-                navigate(routes[currentIndex + 1]);
-                setTimeout(() => isNavigating.current = false, 1800);
-            } else if (e.deltaY < 0 && currentIndex > 0) {
-                isNavigating.current = true;
-                setDirection(-1);
-                navigate(routes[currentIndex - 1]);
-                setTimeout(() => isNavigating.current = false, 1800);
+        const checkNavigation = () => {
+            if (Math.abs(accumulatedDelta) > 120) {
+                const currentPath = locationRef.current;
+                const currentIndex = routes.indexOf(currentPath);
+                if (currentIndex === -1) return;
+
+                if (accumulatedDelta > 0 && currentIndex < routes.length - 1) {
+                    isNavigating.current = true;
+                    setDirection(1);
+                    navigate(routes[currentIndex + 1]);
+                    setTimeout(() => isNavigating.current = false, 1500);
+                } else if (accumulatedDelta < 0 && currentIndex > 0) {
+                    isNavigating.current = true;
+                    setDirection(-1);
+                    navigate(routes[currentIndex - 1]);
+                    setTimeout(() => isNavigating.current = false, 1500);
+                }
+                accumulatedDelta = 0;
             }
         };
 
-        window.addEventListener('wheel', handleWheel);
-        return () => window.removeEventListener('wheel', handleWheel);
-    }, [location.pathname, navigate]);
+        const handleWheel = (e) => {
+            if (isNavigating.current) return;
+
+            const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.body.scrollHeight - 10;
+            const isAtTop = window.scrollY <= 10;
+
+            if (e.deltaY > 0 && isAtBottom) {
+                accumulatedDelta += e.deltaY;
+            } else if (e.deltaY < 0 && isAtTop) {
+                accumulatedDelta += e.deltaY;
+            } else {
+                accumulatedDelta = 0;
+                return;
+            }
+
+            checkNavigation();
+        };
+
+        const handleTouchStart = (e) => {
+            lastTouchY = e.touches[0].clientY;
+        };
+
+        const handleTouchMove = (e) => {
+            if (isNavigating.current) return;
+            const currentY = e.touches[0].clientY;
+            const deltaY = lastTouchY - currentY;
+            lastTouchY = currentY;
+
+            const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.body.scrollHeight - 10;
+            const isAtTop = window.scrollY <= 10;
+
+            if (deltaY > 0 && isAtBottom) {
+                accumulatedDelta += deltaY;
+            } else if (deltaY < 0 && isAtTop) {
+                accumulatedDelta += deltaY;
+            } else {
+                accumulatedDelta = 0;
+                return;
+            }
+
+            checkNavigation();
+        };
+
+        window.addEventListener('wheel', handleWheel, { passive: true });
+        window.addEventListener('touchstart', handleTouchStart, { passive: true });
+        window.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+        return () => {
+            lenis.destroy();
+            gsap.ticker.remove(tick);
+            window.removeEventListener('wheel', handleWheel);
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchmove', handleTouchMove);
+        };
+    }, [navigate]);
 
     // Overlay entrance animation (text reveal) on mount
     useLayoutEffect(() => {
@@ -159,28 +229,25 @@ const InkPaperLayout = () => {
     // Ink-bleed page transition variants
     const pageVariants = {
         initial: (dir) => ({
-            opacity: 0,
-            y: dir > 0 ? '8%' : '-8%',
-            scale: 0.98,
-            filter: 'blur(4px)'
+            opacity: 1,
+            y: dir > 0 ? '100vh' : '-100vh',
+            filter: 'brightness(1)'
         }),
         animate: {
             opacity: 1,
-            y: '0%',
-            scale: 1,
-            filter: 'blur(0px)',
+            y: '0vh',
+            filter: 'brightness(1)',
             transition: {
-                duration: 1,
+                duration: 1.2,
                 ease: [0.22, 1, 0.36, 1]
             }
         },
         exit: (dir) => ({
-            opacity: 0,
-            y: dir > 0 ? '-8%' : '8%',
-            scale: 0.98,
-            filter: 'blur(4px)',
+            opacity: 1,
+            y: dir > 0 ? '-20vh' : '20vh',
+            filter: 'brightness(0.5)',
             transition: {
-                duration: 0.8,
+                duration: 1.2,
                 ease: [0.22, 1, 0.36, 1]
             }
         })
@@ -252,7 +319,7 @@ const InkPaperLayout = () => {
             </header>
 
             {/* MAIN CONTENT WITH TRANSITIONS */}
-            <main style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'visible' }}>
+            <main style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', position: 'relative' }}>
                 <AnimatePresence mode="popLayout" custom={direction}>
                     <motion.div
                         key={location.pathname}
@@ -263,11 +330,10 @@ const InkPaperLayout = () => {
                         exit="exit"
                         style={{
                             width: '100%',
-                            height: '100%',
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            overflow: 'visible',
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            transformOrigin: 'top center'
                         }}
                     >
                         {isEntered && <Outlet context={{ isEntered }} />}
