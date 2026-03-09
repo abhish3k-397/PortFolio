@@ -9,11 +9,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const InkPaperLayout = () => {
     const containerRef = useRef(null);
+    const overlayRef = useRef(null);
     const location = useLocation();
     const navigate = useNavigate();
     const isNavigating = useRef(false);
     const [direction, setDirection] = useState(0);
-    const [isEntered, setIsEntered] = useState(true);
+    const [isEntered, setIsEntered] = useState(false);
     const [isDark, setIsDark] = useState(() => {
         const saved = localStorage.getItem('inkpaper-dark');
         return saved === 'true';
@@ -60,6 +61,82 @@ const InkPaperLayout = () => {
         return () => window.removeEventListener('wheel', handleWheel);
     }, [location.pathname, navigate]);
 
+    // Overlay entrance animation (text reveal) on mount
+    useLayoutEffect(() => {
+        if (isEntered) return; // Already entered, skip
+
+        const overlay = overlayRef.current;
+        if (!overlay) return;
+
+        const ctx = gsap.context(() => {
+            // Reveal each text line from below
+            gsap.from(overlay.querySelectorAll('.inkpaper-overlay__text div'), {
+                yPercent: 100,
+                duration: 1.5,
+                ease: 'power4.inOut',
+                stagger: 0.15,
+            });
+
+            gsap.to(overlay.querySelectorAll('.inkpaper-overlay__text'), {
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                duration: 1.5,
+                ease: 'power4.inOut',
+                stagger: 0.15,
+            });
+
+            // Pulse effect on CTA
+            gsap.fromTo(overlay.querySelector('.inkpaper-overlay__cta'),
+                { opacity: 0 },
+                { opacity: 1, duration: 1.5, delay: 1.2, ease: 'power2.out' }
+            );
+        }, overlay);
+
+        // Click handler
+        const handleClick = () => {
+            const ctx2 = gsap.context(() => {
+                // Slide text out
+                gsap.to(overlay.querySelectorAll('.inkpaper-overlay__text div'), {
+                    yPercent: -120,
+                    duration: 1.2,
+                    ease: 'power4.inOut',
+                    stagger: 0.1,
+                });
+
+                gsap.to(overlay.querySelectorAll('.inkpaper-overlay__text'), {
+                    clipPath: 'polygon(0 0%, 100% 0%, 100% 0%, 0 0%)',
+                    duration: 1.2,
+                    ease: 'power4.inOut',
+                    stagger: 0.1,
+                });
+
+                // Fade CTA
+                gsap.to(overlay.querySelector('.inkpaper-overlay__cta'), {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: 'power2.inOut',
+                });
+
+                // Wipe overlay away from bottom to top
+                gsap.to(overlay, {
+                    clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
+                    duration: 1.5,
+                    ease: 'power4.inOut',
+                    delay: 0.5,
+                    onComplete: () => {
+                        setIsEntered(true);
+                    },
+                });
+            }, overlay);
+        };
+
+        overlay.addEventListener('click', handleClick);
+
+        return () => {
+            overlay.removeEventListener('click', handleClick);
+            ctx.revert();
+        };
+    }, [isEntered]);
+
     // Ink-bleed page transition variants
     const pageVariants = {
         initial: (dir) => ({
@@ -95,8 +172,31 @@ const InkPaperLayout = () => {
 
     return (
         <div className={`inkpaper-wrapper ${isDark ? 'inkpaper-dark' : ''}`} ref={containerRef}>
+
+            {/* ===== CLICK-TO-ENTER OVERLAY ===== */}
+            {!isEntered && (
+                <div className="inkpaper-overlay" ref={overlayRef}>
+                    <div className="inkpaper-overlay__content">
+                        <div className="inkpaper-overlay__left">
+                            <h2 className="inkpaper-overlay__text"><div>Abhishek</div></h2>
+                            <h2 className="inkpaper-overlay__text"><div>Krishna</div></h2>
+                            <div className="inkpaper-overlay__line" />
+                            <h2 className="inkpaper-overlay__text inkpaper-overlay__text--sub">
+                                <div>ポートフォリオ</div>
+                            </h2>
+                        </div>
+                        <div className="inkpaper-overlay__right">
+                            <p className="inkpaper-overlay__cta">
+                                <span className="inkpaper-overlay__cta-jp">入る</span>
+                                <span className="inkpaper-overlay__cta-en">click anywhere to enter</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* HEADER / NAV */}
-            <header className="inkpaper-header" style={{ opacity: isEntered ? 1 : 0, pointerEvents: isEntered ? 'all' : 'none' }}>
+            <header className="inkpaper-header" style={{ opacity: isEntered ? 1 : 0, pointerEvents: isEntered ? 'all' : 'none', transition: 'opacity 0.8s ease' }}>
 
                 <Link to="/inkpaper" className="inkpaper-header__logo">
                     Abhishek Krishna
@@ -148,7 +248,7 @@ const InkPaperLayout = () => {
                             overflow: 'visible',
                         }}
                     >
-                        <Outlet />
+                        <Outlet context={{ isEntered }} />
                     </motion.div>
                 </AnimatePresence>
             </main>

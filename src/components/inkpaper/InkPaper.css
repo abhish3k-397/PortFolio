@@ -843,3 +843,249 @@
         gap: 1.5rem;
     }
 }
+
+/* ========================================
+   SAKURA DESIGN SYSTEM
+   ======================================== */
+
+/* Pink moon circle */
+.sakura-moon {
+    position: absolute;
+    top: 6%;
+    right: 10%;
+    width: clamp(80px, 10vw, 140px);
+    height: clamp(80px, 10vw, 140px);
+    border-radius: 50%;
+    background: radial-gradient(circle,
+            rgba(232, 180, 180, 0.25) 0%,
+            rgba(232, 180, 180, 0.08) 60%,
+            transparent 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Decorative curve */
+.sakura-curve {
+    position: absolute;
+    right: 12%;
+    top: 30%;
+    width: 25%;
+    height: 60%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.06;
+}
+
+/* ===== CLICK-TO-ENTER OVERLAY ===== */
+.inkpaper-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2000;
+    background-color: var(--ink-bg, #FAF7F2);
+    clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 0);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inkpaper-overlay__content {
+    display: flex;
+    width: 100%;
+    max-width: 70rem;
+    padding: 2rem 4rem;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.inkpaper-overlay__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.inkpaper-overlay__text {
+    font-family: var(--ink-serif);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 300;
+    color: var(--ink-stone);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    overflow: hidden;
+}
+
+.inkpaper-overlay__text--sub {
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    color: var(--ink-stone-light);
+    margin-top: 0.5rem;
+}
+
+.inkpaper-overlay__line {
+    width: 60px;
+    height: 2px;
+    background-color: var(--ink-vermillion);
+    margin: 1.5rem 0;
+    opacity: 0.7;
+}
+
+.inkpaper-overlay__right {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 0.5rem;
+}
+
+.inkpaper-overlay__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    opacity: 0;
+}
+
+.inkpaper-overlay__cta-jp {
+    font-family: var(--ink-serif);
+    font-size: 1.2rem;
+    color: var(--ink-vermillion);
+    letter-spacing: 0.2em;
+}
+
+.inkpaper-overlay__cta-en {
+    font-family: var(--ink-sans);
+    font-size: 0.75rem;
+    color: var(--ink-stone-light);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: ctaPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes ctaPulse {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Overlay responsive */
+@media (max-width: 48rem) {
+    .inkpaper-overlay__content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .inkpaper-overlay__right {
+        padding-bottom: 0;
+    }
+
+    .inkpaper-overlay__cta {
+        align-items: center;
+    }
+
+    .inkpaper-overlay__line {
+        margin: 1rem auto;
+    }
+}
+
+/* Dark mode overlay */
+.inkpaper-dark .inkpaper-overlay {
+    background-color: var(--ink-bg, #111110);
+}
+
+.inkpaper-dark .inkpaper-overlay__text {
+    color: var(--ink-charcoal);
+}
+
+.inkpaper-dark .inkpaper-overlay__text--sub {
+    color: var(--ink-stone-light);
+}
+
+.inkpaper-dark .inkpaper-overlay__cta-en {
+    color: var(--ink-stone-light);
+}
+
+/* Falling petals — SVG ellipses at blossom positions */
+.sakura-falling-petal {
+    opacity: 0;
+    animation: svgPetalFall 8s ease-in-out infinite;
+}
+
+@keyframes svgPetalFall {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 0.7;
+    }
+
+    25% {
+        transform: translateY(15vh) translateX(calc(-10vw + var(--fall-drift, 15px))) rotate(90deg);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: translateY(35vh) translateX(calc(-25vw + calc(var(--fall-drift, 15px) * -1))) rotate(180deg);
+        opacity: 0.5;
+    }
+
+    75% {
+        transform: translateY(60vh) translateX(calc(-45vw + var(--fall-drift, 15px))) rotate(270deg);
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: translateY(85vh) translateX(calc(-65vw + calc(var(--fall-drift, 15px) * -0.5))) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ---- DARK MODE — Sakura ---- */
+.inkpaper-dark .sakura-svg {
+    opacity: 0.45;
+    filter: saturate(0.4) brightness(0.8);
+}
+
+.inkpaper-dark .sakura-moon {
+    background: radial-gradient(circle,
+            rgba(180, 130, 130, 0.1) 0%,
+            rgba(180, 130, 130, 0.03) 60%,
+            transparent 100%);
+}
+
+.inkpaper-dark .sakura-falling-petal {
+    background-color: rgba(180, 130, 130, 0.2);
+}
+
+/* ---- RESPONSIVE — Sakura ---- */
+@media (max-width: 768px) {
+    .sakura-svg {
+        width: clamp(180px, 35vw, 260px) !important;
+        top: -3% !important;
+        right: -8% !important;
+        opacity: 0.7;
+    }
+
+    .sakura-moon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .sakura-falling-petal,
+    .sakura-curve {
+        display: none;
+    }
+}
