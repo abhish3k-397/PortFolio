@@ -154,9 +154,38 @@ const InkPaperLayout = () => {
             checkNavigation();
         };
 
+        const handleKeyDown = (e) => {
+            if (isNavigating.current) return;
+            if (e.altKey || e.ctrlKey || e.metaKey) return;
+            const target = e.target;
+            if (target instanceof HTMLElement) {
+                const tag = target.tagName;
+                if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable) return;
+            }
+
+            const isDown = e.key === 'ArrowDown' || e.key === 'PageDown';
+            const isUp = e.key === 'ArrowUp' || e.key === 'PageUp';
+            if (!isDown && !isUp) return;
+
+            const lenis = lenisRef.current;
+            const limit = lenis ? lenis.limit : (document.documentElement.scrollHeight - window.innerHeight);
+            const scroll = lenis ? lenis.scroll : window.scrollY;
+            const isAtBottom = scroll >= limit - 40;
+            const isAtTop = scroll <= 40;
+
+            // Only use keys for route navigation when you're at bounds, otherwise let them scroll normally.
+            if ((isDown && isAtBottom) || (isUp && isAtTop)) {
+                accumulatedDelta = isDown ? 999 : -999; // exceed threshold to trigger navigation
+                checkNavigation();
+                // prevent native "bump" scroll at the bounds
+                e.preventDefault();
+            }
+        };
+
         window.addEventListener('wheel', handleWheel, { passive: true });
         window.addEventListener('touchstart', handleTouchStart, { passive: true });
         window.addEventListener('touchmove', handleTouchMove, { passive: true });
+        window.addEventListener('keydown', handleKeyDown, { passive: false });
 
         return () => {
             resizeObserver.disconnect();
@@ -165,6 +194,7 @@ const InkPaperLayout = () => {
             window.removeEventListener('wheel', handleWheel);
             window.removeEventListener('touchstart', handleTouchStart);
             window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('keydown', handleKeyDown);
         };
     }, [navigate]);
 

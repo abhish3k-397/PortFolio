@@ -38,6 +38,15 @@ const projects = [
         desc: "Futuristic, cyberpunk-themed portfolio website featuring interactive animations and 3D elements.",
         tech: ["React", "GSAP", "Tailwind"]
     },
+    {
+        id: 5,
+        title: "Ascii_ART-GEN",
+        category: "Generative Tool",
+        url: "https://github.com/abhish3k-397/Ascii_ART-GEN.git",
+        img: "https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=2670&auto=format&fit=crop",
+        desc: "Pure Python BMP-to-ASCII converter built from scratch. Translates raw image bytes into dynamic terminal art without external libraries.",
+        tech: ["Python", "Algorithms", "CLI"]
+    },
 ];
 
 const InkPaperProjects = () => {
