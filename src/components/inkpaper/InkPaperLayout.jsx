@@ -59,6 +59,7 @@ const InkPaperLayout = () => {
 
         let accumulatedDelta = 0;
         let lastTouchY = 0;
+        let wheelTimeout;
 
         const checkNavigation = () => {
             if (Math.abs(accumulatedDelta) > 120) {
@@ -84,19 +85,24 @@ const InkPaperLayout = () => {
         const handleWheel = (e) => {
             if (isNavigating.current) return;
 
-            const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.body.scrollHeight - 10;
-            const isAtTop = window.scrollY <= 10;
+            // Use documentElement for cross-browser reliability, and adding a 40px forgiveness threshold 
+            // since Lenis smooth scroll interpolates actual window.scrollY and can lag behind limits
+            const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 40;
+            const isAtTop = window.scrollY <= 40;
 
             if (e.deltaY > 0 && isAtBottom) {
                 accumulatedDelta += e.deltaY;
             } else if (e.deltaY < 0 && isAtTop) {
                 accumulatedDelta += e.deltaY;
-            } else {
-                accumulatedDelta = 0;
-                return;
             }
 
             checkNavigation();
+
+            // Clear delta after 400ms of no scrolling to prevent stale accumulations across sessions
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                accumulatedDelta = 0;
+            }, 400);
         };
 
         let touchStartY = 0;
@@ -113,9 +119,8 @@ const InkPaperLayout = () => {
             // Calculate total swipe distance from the start
             const deltaY = touchStartY - currentY;
 
-            // Allow normal scroll if we aren't at the edges
-            const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.body.scrollHeight - 10;
-            const isAtTop = window.scrollY <= 10;
+            const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 40;
+            const isAtTop = window.scrollY <= 40;
 
             // Notice deltaY is positive when swiping UP (scrolling down the page)
             if (deltaY > 0 && isAtBottom) {
@@ -345,10 +350,6 @@ const InkPaperLayout = () => {
                             display: 'flex',
                             flexDirection: 'column',
                             transformOrigin: 'top center',
-                            position: 'absolute', // Keep this to ensure they overlap cleanly when mode isn't wait
-                            top: 0,
-                            left: 0,
-                            minHeight: '100vh',
                         }}
                     >
                         {isEntered && <Outlet context={{ isEntered }} />}
