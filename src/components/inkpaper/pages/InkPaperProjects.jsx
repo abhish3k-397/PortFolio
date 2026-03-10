@@ -100,7 +100,7 @@ const InkPaperProjects = () => {
                 />
             )}
 
-            <div className="inkpaper-section__inner" style={{ paddingTop: '8rem' }}>
+            <div className="inkpaper-section__inner inkpaper-projects-inner">
 
                 {/* Section Label */}
                 <div className="ink-project-header">

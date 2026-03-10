@@ -30,33 +30,11 @@ const InkPaperContact = () => {
         <section ref={sectionRef} className="inkpaper-section">
 
             {/* Large decorative character */}
-            <div style={{
-                position: 'absolute',
-                right: '8%',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                fontFamily: 'var(--ink-jp)',
-                fontSize: 'clamp(8rem, 20vw, 18rem)',
-                fontWeight: 100,
-                color: 'var(--ink-charcoal)',
-                opacity: 0.03,
-                lineHeight: 1,
-                userSelect: 'none',
-                pointerEvents: 'none',
-                zIndex: 0,
-            }}>
+            <div className="inkpaper-contact-kanji">
                 絆
             </div>
 
-            <div className="inkpaper-section__inner" style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'stretch',
-                gap: '4rem',
-                width: '100%',
-                maxWidth: '70rem'
-            }}>
+            <div className="inkpaper-section__inner inkpaper-contact-inner">
                 {/* Left Text Column */}
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                     {/* Section Label */}
@@ -115,12 +93,7 @@ const InkPaperContact = () => {
                 </div>
 
                 {/* Right Image Column */}
-                <div className="inkpaper-contact__image-wrapper" style={{
-                    flex: '0 0 35%',
-                    display: 'flex',
-                    alignItems: 'stretch',
-                    position: 'relative'
-                }}>
+                <div className="inkpaper-contact__image-wrapper inkpaper-contact-image-wrapper">
                     <img
                         src="/profile.webp"
                         alt="Portrait"
