@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate, useOutlet } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from 'lenis';
 import './InkPaper.css';
@@ -13,6 +13,7 @@ const InkPaperLayout = () => {
     const overlayRef = useRef(null);
     const location = useLocation();
     const navigate = useNavigate();
+    const outlet = useOutlet();
     const isNavigating = useRef(false);
     const lenisRef = useRef(null);
     const [direction, setDirection] = useState(0);
@@ -49,8 +50,8 @@ const InkPaperLayout = () => {
 
     // Central Scroll and Lenis Integrator
     useEffect(() => {
-        // Initialize GSAP integrated Lenis instance
-        const lenis = new Lenis({ autoRaf: true, smoothWheel: true });
+        // Initialize Lenis and drive it via GSAP ticker (single RAF loop)
+        const lenis = new Lenis({ autoRaf: false, smoothWheel: true });
         lenisRef.current = lenis;
         lenis.on('scroll', ScrollTrigger.update);
         const tick = (time) => lenis.raf(time * 1000);
@@ -60,6 +61,17 @@ const InkPaperLayout = () => {
         let accumulatedDelta = 0;
         let lastTouchY = 0;
         let wheelTimeout;
+
+        // Force Lenis to recalculate limits when React DOM changes height
+        const resizeObserver = new ResizeObserver(() => {
+            if (lenisRef.current) {
+                lenisRef.current.resize();
+            }
+        });
+        
+        if (containerRef.current) {
+            resizeObserver.observe(containerRef.current);
+        }
 
         const checkNavigation = () => {
             if (Math.abs(accumulatedDelta) > 120) {
@@ -85,10 +97,13 @@ const InkPaperLayout = () => {
         const handleWheel = (e) => {
             if (isNavigating.current) return;
 
-            // Use documentElement for cross-browser reliability, and adding a 40px forgiveness threshold 
-            // since Lenis smooth scroll interpolates actual window.scrollY and can lag behind limits
-            const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 40;
-            const isAtTop = window.scrollY <= 40;
+            // Query Lenis directly for perfect bounds regardless of React DOM resizing during transition states
+            const lenis = lenisRef.current;
+            const limit = lenis ? lenis.limit : (document.documentElement.scrollHeight - window.innerHeight);
+            const scroll = lenis ? lenis.scroll : window.scrollY;
+
+            const isAtBottom = scroll >= limit - 40;
+            const isAtTop = scroll <= 40;
 
             if (e.deltaY > 0 && isAtBottom) {
                 accumulatedDelta += e.deltaY;
@@ -119,8 +134,13 @@ const InkPaperLayout = () => {
             // Calculate total swipe distance from the start
             const deltaY = touchStartY - currentY;
 
-            const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 40;
-            const isAtTop = window.scrollY <= 40;
+            // Query Lenis for bounds
+            const lenis = lenisRef.current;
+            const limit = lenis ? lenis.limit : (document.documentElement.scrollHeight - window.innerHeight);
+            const scroll = lenis ? lenis.scroll : window.scrollY;
+
+            const isAtBottom = scroll >= limit - 40;
+            const isAtTop = scroll <= 40;
 
             // Notice deltaY is positive when swiping UP (scrolling down the page)
             if (deltaY > 0 && isAtBottom) {
@@ -139,6 +159,7 @@ const InkPaperLayout = () => {
         window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
         return () => {
+            resizeObserver.disconnect();
             lenis.destroy();
             gsap.ticker.remove(tick);
             window.removeEventListener('wheel', handleWheel);
@@ -352,7 +373,7 @@ const InkPaperLayout = () => {
                             transformOrigin: 'top center',
                         }}
                     >
-                        {isEntered && <Outlet context={{ isEntered }} />}
+                        {isEntered && outlet && React.cloneElement(outlet, { key: location.pathname })}
                     </motion.div>
                 </AnimatePresence>
             </main>

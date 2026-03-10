@@ -35,7 +35,7 @@ const AppContent = () => {
     if (theme === 'inkpaper') {
         return (
             <>
-                <SmoothScroll />
+                {/* Ink & Paper owns its own Lenis instance (avoid double Lenis loops). */}
                 {/* Render Ink & Paper Layout immediately so it's visible under the transparent loader */}
                 {(hasStarted || isLoading) && (
                     <Routes>
