@@ -208,6 +208,24 @@
     letter-spacing: 0.05em;
 }
 
+/* ---- PREVENT FOUC (GHOST FLASH) FOR ALL GSAP REVEALS ---- */
+.ink-home-reveal,
+.ink-project-header,
+.inkpaper-project,
+.ink-exp-header,
+.inkpaper-timeline__item,
+.ink-about-reveal,
+.inkpaper-stamp,
+.ink-contact-reveal,
+.sakura-moon {
+    opacity: 0;
+}
+
+/* Also hide sakura components initially */
+.sakura-svg {
+    opacity: 0;
+}
+
 /* ---- PAGE SECTION (full viewport) ---- */
 .inkpaper-section {
     width: 100vw;

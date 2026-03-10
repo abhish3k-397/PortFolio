@@ -14,6 +14,7 @@ const InkPaperLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const isNavigating = useRef(false);
+    const lenisRef = useRef(null);
     const [direction, setDirection] = useState(0);
     const [isEntered, setIsEntered] = useState(false);
     const [isDark, setIsDark] = useState(() => {
@@ -29,7 +30,11 @@ const InkPaperLayout = () => {
 
     useLayoutEffect(() => {
         locationRef.current = location.pathname;
-        window.scrollTo(0, 0); // Always snap back to top on exact route change
+        if (lenisRef.current) {
+            lenisRef.current.scrollTo(0, { immediate: true });
+        } else {
+            window.scrollTo(0, 0); // Always snap back to top on exact route change
+        }
     }, [location.pathname]);
 
     const routes = ['/inkpaper', '/inkpaper/projects', '/inkpaper/experience', '/inkpaper/about', '/inkpaper/contact'];
@@ -46,6 +51,7 @@ const InkPaperLayout = () => {
     useEffect(() => {
         // Initialize GSAP integrated Lenis instance
         const lenis = new Lenis({ autoRaf: true, smoothWheel: true });
+        lenisRef.current = lenis;
         lenis.on('scroll', ScrollTrigger.update);
         const tick = (time) => lenis.raf(time * 1000);
         gsap.ticker.add(tick);
@@ -234,7 +240,7 @@ const InkPaperLayout = () => {
     // Ink-bleed page transition variants
     const pageVariants = {
         initial: (dir) => ({
-            opacity: 1,
+            opacity: 0,
             y: dir > 0 ? '100vh' : '-100vh',
             filter: 'brightness(1)'
         }),
@@ -243,16 +249,16 @@ const InkPaperLayout = () => {
             y: '0vh',
             filter: 'brightness(1)',
             transition: {
-                duration: 1.2,
+                duration: 1.0,
                 ease: [0.22, 1, 0.36, 1]
             }
         },
         exit: (dir) => ({
-            opacity: 1,
+            opacity: 0,
             y: dir > 0 ? '-20vh' : '20vh',
             filter: 'brightness(0.5)',
             transition: {
-                duration: 1.2,
+                duration: 0.8,
                 ease: [0.22, 1, 0.36, 1]
             }
         })
@@ -325,7 +331,7 @@ const InkPaperLayout = () => {
 
             {/* MAIN CONTENT WITH TRANSITIONS */}
             <main style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                <AnimatePresence mode="popLayout" custom={direction}>
+                <AnimatePresence mode="wait" custom={direction}>
                     <motion.div
                         key={location.pathname}
                         custom={direction}
@@ -338,7 +344,11 @@ const InkPaperLayout = () => {
                             flex: 1,
                             display: 'flex',
                             flexDirection: 'column',
-                            transformOrigin: 'top center'
+                            transformOrigin: 'top center',
+                            position: 'absolute', // Keep this to ensure they overlap cleanly when mode isn't wait
+                            top: 0,
+                            left: 0,
+                            minHeight: '100vh',
                         }}
                     >
                         {isEntered && <Outlet context={{ isEntered }} />}
