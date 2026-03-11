@@ -8,7 +8,7 @@ const education = [
         role: 'B.Tech in Computer Science',
         company: 'University of Technology',
         desc: 'Specializing in Full Stack Development, Artificial Intelligence, and System Architecture.',
-        grade: 'CGPA: 9.2',
+        grade: 'CGPA: 8.22',
         tags: ['DSA', 'Web Dev', 'Database']
     },
     {
