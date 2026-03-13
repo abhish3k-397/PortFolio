@@ -8,6 +8,25 @@ import './InkPaper.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ===== 8B — HANKO SEAL COMPONENT ===== */
+const HankoSeal = ({ className = '' }) => (
+    <div className={`inkpaper-hanko ${className}`}>
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            {/* Outer circle — slightly irregular for organic feel */}
+            <circle cx="30" cy="30" r="27" fill="none" stroke="#C62828" strokeWidth="2.5"
+                strokeDasharray="2 0.5" opacity="0.85" />
+            {/* Inner border ring */}
+            <circle cx="30" cy="30" r="22" fill="none" stroke="#C62828" strokeWidth="0.8"
+                opacity="0.4" />
+            {/* Initials — AK */}
+            <text x="30" y="34" textAnchor="middle" fontFamily="'Cormorant Garamond', serif"
+                fontSize="16" fontWeight="600" fill="#C62828" letterSpacing="1">
+                AK
+            </text>
+        </svg>
+    </div>
+);
+
 const InkPaperLayout = () => {
     const containerRef = useRef(null);
     const overlayRef = useRef(null);
@@ -18,6 +37,7 @@ const InkPaperLayout = () => {
     const lenisRef = useRef(null);
     const [direction, setDirection] = useState(0);
     const [isEntered, setIsEntered] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isDark, setIsDark] = useState(() => {
         const saved = localStorage.getItem('inkpaper-dark');
         return saved === 'true';
@@ -31,6 +51,8 @@ const InkPaperLayout = () => {
 
     useLayoutEffect(() => {
         locationRef.current = location.pathname;
+        // Close mobile menu on navigation
+        setMobileMenuOpen(false);
         if (lenisRef.current) {
             lenisRef.current.scrollTo(0, { immediate: true });
         } else {
@@ -348,6 +370,9 @@ const InkPaperLayout = () => {
                             </p>
                         </div>
                     </div>
+
+                    {/* 8B — Hanko seal on overlay */}
+                    <HankoSeal className="inkpaper-hanko--overlay" />
                 </div>
             )}
 
@@ -357,6 +382,8 @@ const InkPaperLayout = () => {
                 <Link to="/inkpaper" className="inkpaper-header__logo">
                     Abhishek Krishna
                 </Link>
+
+                {/* Desktop nav */}
                 <nav className="inkpaper-nav">
                     {navItems.map((item) => (
                         <Link
@@ -383,7 +410,52 @@ const InkPaperLayout = () => {
                         <div className="inkpaper-mode-toggle__knob" />
                     </button>
                 </nav>
+
+                {/* 8E — Mobile hamburger button */}
+                <button
+                    className={`inkpaper-hamburger ${mobileMenuOpen ? 'is-open' : ''}`}
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                >
+                    <span className="inkpaper-hamburger__line" />
+                    <span className="inkpaper-hamburger__line" />
+                    <span className="inkpaper-hamburger__line" />
+                </button>
             </header>
+
+            {/* 8E — Full-screen mobile nav overlay */}
+            <div className={`inkpaper-mobile-nav ${mobileMenuOpen ? 'is-open' : ''}`}>
+                <div className="inkpaper-mobile-nav__kanji">和</div>
+                <div className="inkpaper-mobile-nav__links">
+                    {navItems.map((item) => (
+                        <Link
+                            key={item.path}
+                            to={item.path}
+                            className={`inkpaper-mobile-nav__link ${location.pathname === item.path ? 'active' : ''}`}
+                            onClick={() => {
+                                const idx = routes.indexOf(item.path);
+                                setDirection(idx > currentIndex ? 1 : -1);
+                                setMobileMenuOpen(false);
+                            }}
+                        >
+                            {item.label}
+                            <span className="inkpaper-mobile-nav__link-jp">{item.jp}</span>
+                        </Link>
+                    ))}
+                </div>
+                <div className="inkpaper-mobile-nav__footer">
+                    <span className="inkpaper-mobile-nav__footer-label">
+                        {isDark ? '光 Light' : '闇 Dark'}
+                    </span>
+                    <button
+                        className="inkpaper-mode-toggle"
+                        onClick={() => setIsDark(!isDark)}
+                        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                    >
+                        <div className="inkpaper-mode-toggle__knob" />
+                    </button>
+                </div>
+            </div>
 
             {/* MAIN CONTENT WITH TRANSITIONS */}
             <main style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', position: 'relative' }}>

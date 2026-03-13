@@ -56,6 +56,9 @@ const InkPaperExperience = () => {
     return (
         <section ref={sectionRef} className="inkpaper-section">
 
+            {/* Kanji watermark */}
+            <div className="inkpaper-watermark inkpaper-watermark--right">道</div>
+
             <div className="inkpaper-section__inner">
 
                 {/* Section Label */}

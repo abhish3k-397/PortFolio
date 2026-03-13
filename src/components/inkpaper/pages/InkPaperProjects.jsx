@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 const projects = [
@@ -51,7 +51,6 @@ const projects = [
 
 const InkPaperProjects = () => {
     const sectionRef = useRef(null);
-    const [hoveredId, setHoveredId] = useState(null);
 
     useLayoutEffect(() => {
         const el = sectionRef.current;
@@ -75,6 +74,9 @@ const InkPaperProjects = () => {
     return (
         <section ref={sectionRef} className="inkpaper-section" style={{ alignItems: 'flex-start' }}>
 
+            {/* Kanji watermark */}
+            <div className="inkpaper-watermark inkpaper-watermark--right">作</div>
+
             {/* Subtle decorative element */}
             <svg
                 className="ink-stroke"
@@ -89,16 +91,6 @@ const InkPaperProjects = () => {
                     strokeDashoffset="0"
                 />
             </svg>
-
-            {/* Hover image preview */}
-            {hoveredId && (
-                <div
-                    className="inkpaper-project-preview"
-                    style={{
-                        backgroundImage: `url(${projects.find(p => p.id === hoveredId)?.img})`,
-                    }}
-                />
-            )}
 
             <div className="inkpaper-section__inner inkpaper-projects-inner">
 
@@ -120,9 +112,17 @@ const InkPaperProjects = () => {
                             key={project.id}
                             className="inkpaper-project"
                             onClick={() => window.open(project.url, '_blank')}
-                            onMouseEnter={() => setHoveredId(project.id)}
-                            onMouseLeave={() => setHoveredId(null)}
                         >
+                            {/* Ink-bleed image reveal */}
+                            <div className="inkpaper-project__image-wrap">
+                                <img
+                                    src={project.img}
+                                    alt=""
+                                    className="inkpaper-project__image"
+                                    loading="lazy"
+                                />
+                            </div>
+
                             <div className="inkpaper-project__number">
                                 {String(index + 1).padStart(2, '0')}
                             </div>

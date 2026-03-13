@@ -93,6 +93,9 @@ const InkPaperHome = () => {
     return (
         <section ref={sectionRef} className="inkpaper-section" style={{ overflow: 'hidden' }}>
 
+            {/* ========== KANJI WATERMARK ========== */}
+            <div className="inkpaper-watermark inkpaper-watermark--right">墨</div>
+
             {/* ========== SVG SAKURA BRANCH ========== */}
             <SakuraBranch />
 

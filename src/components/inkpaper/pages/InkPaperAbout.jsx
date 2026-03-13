@@ -2,10 +2,32 @@ import React, { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 const skills = {
-    '言語 — Languages': ['C++ (DSA)', 'Python', 'C', 'Java (OOP)', 'JavaScript'],
-    '技術 — Technologies': ['Linux (Arch)', 'Node.js', 'Socket Programming', 'React', 'Tailwind'],
-    '道具 — Tools': ['Docker', 'Git', 'ngrok', 'RESTful API', 'Postman'],
-    '能力 — Soft Skills': ['Problem-Solving', 'Team Collaboration', 'Analytical Thinking']
+    '言語 — Languages': [
+        { name: 'C++ (DSA)', desc: 'Data structures & competitive programming' },
+        { name: 'Python', desc: 'Scripting, automation, AI/ML' },
+        { name: 'C', desc: 'Systems programming & memory management' },
+        { name: 'Java (OOP)', desc: 'Object-oriented design patterns' },
+        { name: 'JavaScript', desc: 'Full-stack web development' },
+    ],
+    '技術 — Technologies': [
+        { name: 'Linux (Arch)', desc: 'System administration & kernel tuning' },
+        { name: 'Node.js', desc: 'Server-side runtime & APIs' },
+        { name: 'Socket Programming', desc: 'Real-time network communication' },
+        { name: 'React', desc: 'Component-driven UI architecture' },
+        { name: 'Tailwind', desc: 'Utility-first CSS framework' },
+    ],
+    '道具 — Tools': [
+        { name: 'Docker', desc: 'Containerization & orchestration' },
+        { name: 'Git', desc: 'Version control & collaboration' },
+        { name: 'ngrok', desc: 'Secure tunneling for local servers' },
+        { name: 'RESTful API', desc: 'Stateless service architecture' },
+        { name: 'Postman', desc: 'API testing & documentation' },
+    ],
+    '能力 — Soft Skills': [
+        { name: 'Problem-Solving', desc: 'Breaking down complex challenges' },
+        { name: 'Team Collaboration', desc: 'Agile workflows & communication' },
+        { name: 'Analytical Thinking', desc: 'Data-driven decision making' },
+    ],
 };
 
 const InkPaperAbout = () => {
@@ -32,6 +54,9 @@ const InkPaperAbout = () => {
 
     return (
         <section ref={sectionRef} className="inkpaper-section">
+
+            {/* Kanji watermark */}
+            <div className="inkpaper-watermark inkpaper-watermark--left">匠</div>
 
             {/* Decorative stroke */}
             <svg
@@ -91,7 +116,8 @@ const InkPaperAbout = () => {
                                 <div className="inkpaper-skills" style={{ marginTop: '0.75rem' }}>
                                     {items.map((skill, i) => (
                                         <span key={i} className="inkpaper-stamp">
-                                            {skill}
+                                            {skill.name}
+                                            <span className="inkpaper-stamp__tooltip">{skill.desc}</span>
                                         </span>
                                     ))}
                                 </div>
