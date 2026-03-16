@@ -1,8 +1,10 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import ContactModal from '../../ContactModal';
 
 const InkPaperContact = () => {
     const sectionRef = useRef(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useLayoutEffect(() => {
         const el = sectionRef.current;
@@ -70,9 +72,9 @@ const InkPaperContact = () => {
 
                     {/* CTA Buttons */}
                     <div className="ink-contact-reveal" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                        <a href="mailto:contact@example.com" className="inkpaper-cta">
+                        <button onClick={() => setIsModalOpen(true)} className="inkpaper-cta" style={{ border: 'none', cursor: 'pointer' }}>
                             <span>Send Message</span>
-                        </a>
+                        </button>
                         <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="inkpaper-resume-btn">
                             <span>履歴書</span> Download Resume
                         </a>
@@ -116,6 +118,8 @@ const InkPaperContact = () => {
                     デザイン＆開発 — Abhishek Krishna M
                 </span>
             </div>
+            
+            <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} theme="inkpaper" />
         </section >
     );
 };

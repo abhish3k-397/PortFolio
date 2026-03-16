@@ -77,6 +77,16 @@ const InkPaperProjects = () => {
             {/* Kanji watermark */}
             <div className="inkpaper-watermark inkpaper-watermark--right">作</div>
 
+            {/* Organic Ink Bleed Filter */}
+            <svg style={{ position: 'absolute', width: 0, height: 0, pointerEvents: 'none' }}>
+                <defs>
+                    <filter id="ink-bleed">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="35" xChannelSelector="R" yChannelSelector="G" />
+                    </filter>
+                </defs>
+            </svg>
+
             {/* Subtle decorative element */}
             <svg
                 className="ink-stroke"

@@ -1496,12 +1496,13 @@
     inset: 0;
     z-index: 0;
     overflow: hidden;
-    clip-path: circle(0% at 85% 50%);
-    transition: clip-path 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    clip-path: circle(0% at 95% 50%);
+    filter: url(#ink-bleed);
+    transition: clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .inkpaper-project:hover .inkpaper-project__image-wrap {
-    clip-path: circle(80% at 85% 50%);
+    clip-path: circle(120% at 85% 50%);
 }
 
 .inkpaper-project__image {
@@ -1551,35 +1552,9 @@
     overflow: visible;
 }
 
-/* Ink splat ring on hover */
-.inkpaper-stamp::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border: 1.5px solid var(--ink-vermillion);
-    opacity: 0;
-    transform: scale(0.85);
-    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-}
-
-.inkpaper-stamp:hover::after {
-    opacity: 0.5;
-    transform: scale(1.08) rotate(var(--stamp-rotation, 0deg));
-}
-
-/* Jitter animation on hover */
-.inkpaper-stamp:hover {
-    animation: stampJitter 0.3s ease forwards;
-}
-
-@keyframes stampJitter {
-    0% { transform: rotate(var(--stamp-rotation, 0deg)); }
-    20% { transform: rotate(calc(var(--stamp-rotation, 0deg) + 3deg)) translateY(-2px); }
-    40% { transform: rotate(calc(var(--stamp-rotation, 0deg) - 2deg)) translateY(1px); }
-    60% { transform: rotate(calc(var(--stamp-rotation, 0deg) + 1deg)); }
-    80% { transform: rotate(calc(var(--stamp-rotation, 0deg) - 0.5deg)); }
-    100% { transform: rotate(var(--stamp-rotation, 0deg)); }
+.inkpaper-stamp__text {
+    position: relative;
+    z-index: 1;
 }
 
 /* Tooltip */
@@ -1789,4 +1764,154 @@
     .inkpaper-hamburger {
         display: flex;
     }
+}
+/* ---- KINTSUGI BUTTON ---- */
+.inkpaper-kintsugi-btn {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--ink-charcoal);
+    color: var(--ink-bg);
+    border: none;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
+}
+
+.inkpaper-kintsugi-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    /* Base texture overlay */
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 0.5;
+}
+
+/* The Crack SVG */
+.inkpaper-kintsugi-crack {
+    position: absolute;
+    top: -10%;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.2;
+    transition: opacity 0.5s ease;
+}
+
+.inkpaper-kintsugi-crack path {
+    stroke: var(--ink-stone-light);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* On Hover: The Golden Repair illuminates */
+.inkpaper-kintsugi-btn:hover {
+    background-color: #111;
+    box-shadow: 0 10px 30px -10px rgba(198, 40, 40, 0.3);
+}
+
+.inkpaper-kintsugi-btn:hover .inkpaper-kintsugi-crack {
+    opacity: 1;
+}
+
+.inkpaper-kintsugi-btn:hover .inkpaper-kintsugi-crack path {
+    stroke: var(--ink-vermillion);
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 6px var(--ink-vermillion));
+    /* Draw animation effect */
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
+    animation: kintsugiDraw 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes kintsugiDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Text needs to stay above the crack */
+.inkpaper-kintsugi-btn span {
+    position: relative;
+    z-index: 2;
+    transition: letter-spacing 0.4s ease;
+}
+
+.inkpaper-kintsugi-btn:hover span {
+    letter-spacing: 0.18em;
+}
+
+.inkpaper-dark .inkpaper-kintsugi-btn {
+    background-color: var(--ink-cream);
+    color: var(--ink-charcoal);
+}
+
+.inkpaper-dark .inkpaper-kintsugi-btn:hover {
+    background-color: #1a1a1a;
+    color: var(--ink-bg);
+}
+
+/* ---- MINIMALIST SUBMIT BUTTON ---- */
+.inkpaper-minimal-btn {
+    position: relative;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: var(--ink-charcoal);
+    font-family: var(--ink-sans);
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    padding: 1.25rem 0;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+}
+
+.inkpaper-minimal-btn .line {
+    position: absolute;
+    bottom: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background-color: var(--ink-vermillion);
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0.6;
+}
+
+.inkpaper-minimal-btn:hover {
+    color: var(--ink-vermillion);
+    letter-spacing: 0.3em;
+    background-color: var(--ink-wash);
+    border-color: rgba(198, 40, 40, 0.1);
+}
+
+.inkpaper-minimal-btn:hover .line {
+    width: 160px;
+    opacity: 1;
+}
+
+.inkpaper-dark .inkpaper-minimal-btn {
+    color: var(--ink-charcoal-soft);
+}
+
+.inkpaper-dark .inkpaper-minimal-btn:hover {
+    color: var(--ink-vermillion);
+    background-color: rgba(232, 228, 221, 0.03);
+    border-color: rgba(229, 57, 53, 0.15);
+}
+
+.inkpaper-minimal-btn.is-loading {
+    pointer-events: none;
+    color: var(--ink-stone-light);
+    letter-spacing: 0.15em;
 }

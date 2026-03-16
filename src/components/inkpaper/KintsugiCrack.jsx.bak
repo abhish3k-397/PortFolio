@@ -1,0 +1,95 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const KintsugiCrack = () => {
+    const pathRef = useRef(null);
+    const containerRef = useRef(null);
+    const [isPulsing, setIsPulsing] = useState(false);
+
+    useEffect(() => {
+        // Handle global pulse events
+        const handlePulseStart = () => setIsPulsing(true);
+        const handlePulseEnd = () => setIsPulsing(false);
+
+        window.addEventListener('kintsugi-pulse-start', handlePulseStart);
+        window.addEventListener('kintsugi-pulse-end', handlePulseEnd);
+
+        return () => {
+            window.removeEventListener('kintsugi-pulse-start', handlePulseStart);
+            window.removeEventListener('kintsugi-pulse-end', handlePulseEnd);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!pathRef.current || !containerRef.current) return;
+
+        const path = pathRef.current;
+        const length = path.getTotalLength();
+
+        // Initially hide the path
+        gsap.set(path, {
+            strokeDasharray: length,
+            strokeDashoffset: length
+        });
+
+        // Create ScrollTrigger to draw the line as you scroll
+        const st = ScrollTrigger.create({
+            trigger: document.body, // Track the whole body
+            start: "top top",
+            end: "bottom bottom",
+            onUpdate: (self) => {
+                // Map scroll progress to stroke offset
+                // Add a small offset so it's slightly ahead of the scroll
+                const progress = Math.min(1, self.progress * 1.5);
+                gsap.set(path, {
+                    strokeDashoffset: length - (progress * length)
+                });
+            }
+        });
+
+        return () => {
+            st.kill();
+        };
+    }, []);
+
+    return (
+        <div ref={containerRef} className="kintsugi-container">
+            <svg
+                className={`kintsugi-svg ${isPulsing ? 'is-pulsing' : ''}`}
+                viewBox="0 0 100 4000"
+                preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                {/* The organic crack path */}
+                <path
+                    ref={pathRef}
+                    d="M50,0
+                       C45,100 55,200 40,300
+                       S30,450 60,550
+                       C80,600 75,700 50,800
+                       S20,950 45,1050
+                       C60,1100 30,1200 50,1300
+                       S70,1450 40,1550
+                       C20,1650 65,1750 45,1850
+                       S25,2000 55,2100
+                       C80,2200 35,2300 50,2400
+                       S70,2550 40,2650
+                       C20,2750 65,2850 45,2950
+                       S30,3100 60,3200
+                       C80,3300 35,3400 50,3500
+                       S70,3650 40,3750
+                       C20,3850 60,3950 50,4000"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="kintsugi-path"
+                />
+            </svg>
+        </div>
+    );
+};
+
+export default KintsugiCrack;

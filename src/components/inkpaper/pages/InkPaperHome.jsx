@@ -93,9 +93,6 @@ const InkPaperHome = () => {
     return (
         <section ref={sectionRef} className="inkpaper-section" style={{ overflow: 'hidden' }}>
 
-            {/* ========== KANJI WATERMARK ========== */}
-            <div className="inkpaper-watermark inkpaper-watermark--right">墨</div>
-
             {/* ========== SVG SAKURA BRANCH ========== */}
             <SakuraBranch />
 
@@ -134,9 +131,11 @@ const InkPaperHome = () => {
                 <h1 className="inkpaper-heading inkpaper-heading--hero ink-home-reveal">
                     Abhishek
                 </h1>
-                <h1 className="inkpaper-heading inkpaper-heading--hero ink-home-reveal" style={{ marginTop: '-0.2em' }}>
-                    Krishna<span className="ink-vermillion-dot" />
-                </h1>
+                <div className="ink-home-reveal" style={{ display: 'flex', alignItems: 'flex-end', gap: '1.5rem', marginTop: '-0.2em' }}>
+                    <h1 className="inkpaper-heading inkpaper-heading--hero" style={{ margin: 0 }}>
+                        Krishna<span className="ink-vermillion-dot" />
+                    </h1>
+                </div>
 
                 <div className="ink-home-reveal" style={{ marginTop: '2rem', maxWidth: '550px' }}>
                     <div className="ink-vermillion-line" />

@@ -53,11 +53,7 @@ const InkPaperLayout = () => {
         locationRef.current = location.pathname;
         // Close mobile menu on navigation
         setMobileMenuOpen(false);
-        if (lenisRef.current) {
-            lenisRef.current.scrollTo(0, { immediate: true });
-        } else {
-            window.scrollTo(0, 0); // Always snap back to top on exact route change
-        }
+        // Scroll reset is now handled in AnimatePresence onExitComplete to avoid visual jumps
     }, [location.pathname]);
 
     const routes = ['/inkpaper', '/inkpaper/projects', '/inkpaper/experience', '/inkpaper/about', '/inkpaper/contact'];
@@ -370,9 +366,6 @@ const InkPaperLayout = () => {
                             </p>
                         </div>
                     </div>
-
-                    {/* 8B — Hanko seal on overlay */}
-                    <HankoSeal className="inkpaper-hanko--overlay" />
                 </div>
             )}
 
@@ -459,7 +452,19 @@ const InkPaperLayout = () => {
 
             {/* MAIN CONTENT WITH TRANSITIONS */}
             <main style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                <AnimatePresence mode="wait" custom={direction}>
+                <AnimatePresence 
+                    mode="wait" 
+                    custom={direction}
+                    onExitComplete={() => {
+                        if (lenisRef.current) {
+                            lenisRef.current.scrollTo(0, { immediate: true });
+                        } else {
+                            window.scrollTo(0, 0);
+                        }
+                        // Ensure ScrollTrigger gets updated to new page layout
+                        setTimeout(() => ScrollTrigger.refresh(), 100);
+                    }}
+                >
                     <motion.div
                         key={location.pathname}
                         custom={direction}

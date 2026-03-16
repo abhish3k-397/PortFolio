@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ContactModal from '../../ContactModal';
 
 const SamuraiContact = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <section className="block">
             <picture>
@@ -15,9 +18,9 @@ const SamuraiContact = () => {
                         <p className="text-2xl font-light text-white mb-8">
                             Ready to forge something legendary?
                         </p>
-                        <a href="mailto:contact@example.com" className="inline-block px-8 py-4 bg-white text-black font-bold tracking-widest hover:bg-cyan-400 transition-colors">
+                        <button onClick={() => setIsModalOpen(true)} className="inline-block px-8 py-4 bg-white text-black font-bold tracking-widest hover:bg-cyan-400 transition-colors uppercase cursor-pointer">
                             SEND MESSAGE
-                        </a>
+                        </button>
                         <div className="mt-12 flex justify-center gap-8">
                             <a href="https://github.com/abhish3k-397" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">GITHUB</a>
                             <a href="#" className="text-gray-400 hover:text-white transition-colors">LINKEDIN</a>
@@ -26,6 +29,7 @@ const SamuraiContact = () => {
                     </div>
                 </div>
             </div>
+            <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </section>
     );
 };

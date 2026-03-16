@@ -116,7 +116,7 @@ const InkPaperAbout = () => {
                                 <div className="inkpaper-skills" style={{ marginTop: '0.75rem' }}>
                                     {items.map((skill, i) => (
                                         <span key={i} className="inkpaper-stamp">
-                                            {skill.name}
+                                            <span className="inkpaper-stamp__text">{skill.name}</span>
                                             <span className="inkpaper-stamp__tooltip">{skill.desc}</span>
                                         </span>
                                     ))}
