@@ -95,127 +95,143 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
     // Ink Paper Theme specific rendering
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300" style={{ backgroundColor: 'var(--ink-wash)' }}>
-            <div 
-                className="relative w-full max-w-md shadow-2xl overflow-hidden p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200" 
-                style={{ 
-                    backgroundColor: 'var(--ink-bg)', 
-                    border: '1px solid var(--ink-cream)',
-                    color: 'var(--ink-charcoal)',
-                    fontFamily: 'var(--ink-sans)'
-                }}
-            >
-                {/* Close Button */}
-                <button 
-                    onClick={onClose}
-                    className="absolute top-4 right-4 transition-colors"
-                    style={{ color: 'var(--ink-stone)' }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = 'var(--ink-vermillion)'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = 'var(--ink-stone)'}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
+            
+            {/* SVG Filter for Torn Paper Edge */}
+            <svg style={{ position: 'absolute', width: 0, height: 0 }} xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <defs>
+                    <filter id="torn-edge" x="-5%" y="-5%" width="110%" height="110%">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+                    </filter>
+                </defs>
+            </svg>
 
-                <h3 className="text-2xl font-light mb-6 tracking-wide" style={{ fontFamily: 'var(--ink-serif)', color: 'var(--ink-charcoal)' }}>
-                    連絡 — Send Message
-                </h3>
-
-                {status === 'success' ? (
-                    <div className="text-center py-10">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: 'var(--ink-wash)', color: 'var(--ink-vermillion)' }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <h4 className="text-xl mb-2" style={{ fontFamily: 'var(--ink-serif)' }}>Message Sent!</h4>
-                        <p style={{ color: 'var(--ink-stone)' }}>I'll get back to you soon.</p>
-                    </div>
-                ) : (
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label htmlFor="name" className="block text-sm font-medium mb-1" style={{ color: 'var(--ink-stone-light)' }}>Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                required
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-sm focus:outline-none transition-colors"
-                                style={{ 
-                                    backgroundColor: 'var(--ink-bg-warm)', 
-                                    borderColor: 'var(--ink-cream)', 
-                                    color: 'var(--ink-charcoal)' 
-                                }}
-                                onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
-                                onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
-                                placeholder="Your Name"
-                            />
-                        </div>
-                        
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium mb-1" style={{ color: 'var(--ink-stone-light)' }}>Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                required
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-sm focus:outline-none transition-colors"
-                                style={{ 
-                                    backgroundColor: 'var(--ink-bg-warm)', 
-                                    borderColor: 'var(--ink-cream)', 
-                                    color: 'var(--ink-charcoal)' 
-                                }}
-                                onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
-                                onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
-                                placeholder="your@email.com"
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="message" className="block text-sm font-medium mb-1" style={{ color: 'var(--ink-stone-light)' }}>Message</label>
-                            <textarea
-                                id="message"
-                                name="message"
-                                required
-                                rows="4"
-                                value={formData.message}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border rounded-sm focus:outline-none transition-colors resize-none"
-                                style={{ 
-                                    backgroundColor: 'var(--ink-bg-warm)', 
-                                    borderColor: 'var(--ink-cream)', 
-                                    color: 'var(--ink-charcoal)' 
-                                }}
-                                onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
-                                onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
-                                placeholder="How can I help you?"
-                            ></textarea>
-                        </div>
-
-                        {status === 'error' && (
-                            <div className="text-sm p-3 rounded" style={{ color: 'var(--ink-vermillion)', backgroundColor: 'var(--ink-wash)' }}>
-                                {errorMessage}
-                            </div>
-                        )}
-
-                        <button
-                            type="submit"
-                            disabled={status === 'loading'}
-                            className={`inkpaper-minimal-btn ${status === 'loading' ? 'is-loading' : ''}`}
+            <div className="inkpaper-torn-wrapper w-full animate-in fade-in zoom-in-95 duration-500">
+                <div className="inkpaper-torn-letter">
+                    <div className="inkpaper-letter-content">
+                        {/* Close Button */}
+                        <button 
+                            onClick={onClose}
+                            className="absolute top-0 right-0 transition-colors"
+                            style={{ color: 'var(--ink-stone)' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--ink-vermillion)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--ink-stone)'}
                         >
-                            <span className="ink-vermillion-dot" style={{ margin: '0 0.75rem 0 0', width: '5px', height: '5px' }}></span>
-                            <span>
-                                {status === 'loading' ? 'SENDING...' : 'SEND MESSAGE'}
-                            </span>
-                            <span className="line"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
                         </button>
-                    </form>
-                )}
+
+                        <h3 className="text-2xl font-light mb-8 tracking-wide" style={{ fontFamily: 'var(--ink-serif)', color: 'var(--ink-charcoal)' }}>
+                            連絡 — Send Message
+                        </h3>
+
+                        {status === 'success' ? (
+                            <div className="text-center py-10">
+                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: 'var(--ink-wash)', color: 'var(--ink-vermillion)' }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <h4 className="text-xl mb-2" style={{ fontFamily: 'var(--ink-serif)' }}>Message Sent!</h4>
+                                <p style={{ color: 'var(--ink-stone)' }}>I'll get back to you soon.</p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div>
+                                    <label htmlFor="name" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 border-b focus:outline-none transition-colors"
+                                        style={{ 
+                                            backgroundColor: 'transparent', 
+                                            borderColor: 'var(--ink-cream)', 
+                                            color: 'currentColor',
+                                            borderTop: 'none',
+                                            borderLeft: 'none',
+                                            borderRight: 'none',
+                                            borderRadius: 0
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
+                                        onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
+                                        placeholder="Your Name"
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 border-b focus:outline-none transition-colors"
+                                        style={{ 
+                                            backgroundColor: 'transparent', 
+                                            borderColor: 'var(--ink-cream)', 
+                                            color: 'currentColor',
+                                            borderTop: 'none',
+                                            borderLeft: 'none',
+                                            borderRight: 'none',
+                                            borderRadius: 0
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
+                                        onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
+                                        placeholder="your@email.com"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Message</label>
+                                    <textarea
+                                        id="message"
+                                        name="message"
+                                        required
+                                        rows="4"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 border focus:outline-none transition-colors resize-none"
+                                        style={{ 
+                                            backgroundColor: 'var(--ink-wash)', 
+                                            borderColor: 'transparent', 
+                                            color: 'currentColor',
+                                            borderRadius: '2px'
+                                        }}
+                                        onFocus={(e) => { e.target.style.borderColor = 'var(--ink-vermillion)'; e.target.style.backgroundColor = 'transparent'; }}
+                                        onBlur={(e) => { e.target.style.borderColor = 'transparent'; e.target.style.backgroundColor = 'var(--ink-wash)'; }}
+                                        placeholder="How can I help you?"
+                                    ></textarea>
+                                </div>
+
+                                {status === 'error' && (
+                                    <div className="text-sm p-3 rounded" style={{ color: 'var(--ink-vermillion)', backgroundColor: 'var(--ink-wash)' }}>
+                                        {errorMessage}
+                                    </div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={status === 'loading'}
+                                    className={`inkpaper-minimal-btn ${status === 'loading' ? 'is-loading' : ''}`}
+                                >
+                                    <span className="ink-vermillion-dot" style={{ margin: '0 0.75rem 0 0', width: '5px', height: '5px' }}></span>
+                                    <span>
+                                        {status === 'loading' ? 'SENDING...' : 'SEND MESSAGE'}
+                                    </span>
+                                    <span className="line"></span>
+                                </button>
+                            </form>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );
