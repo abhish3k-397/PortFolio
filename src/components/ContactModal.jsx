@@ -125,12 +125,12 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                             </svg>
                         </button>
 
-                        <h3 className="text-2xl font-light mb-8 tracking-wide inkpaper-ink-distort" style={{ fontFamily: 'var(--ink-serif)', color: 'var(--ink-charcoal)' }}>
+                        <h3 className="text-2xl font-light mb-8 md:mb-12 tracking-wide inkpaper-ink-distort" style={{ fontFamily: 'var(--ink-serif)', color: 'var(--ink-charcoal)' }}>
                             連絡 — Send Message
                         </h3>
 
                         {status === 'success' ? (
-                            <div className="text-center py-10">
+                            <div className="text-center py-20">
                                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: 'var(--ink-wash)', color: 'var(--ink-vermillion)' }}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <polyline points="20 6 9 17 4 12"></polyline>
@@ -140,67 +140,76 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                 <p style={{ color: 'var(--ink-stone)' }}>I'll get back to you soon.</p>
                             </div>
                         ) : (
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div>
-                                    <label htmlFor="name" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 border-b focus:outline-none transition-colors inkpaper-input-recessed"
-                                        style={{
-                                            backgroundColor: 'transparent',
-                                            borderColor: 'var(--ink-cream)',
-                                            color: 'currentColor',
-                                            borderTop: 'none',
-                                            borderLeft: 'none',
-                                            borderRight: 'none',
-                                            borderRadius: 0
-                                        }}
-                                        onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
-                                        onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
-                                        placeholder="Your Name"
-                                    />
+                            <form onSubmit={handleSubmit} className="md:grid md:grid-cols-2 md:gap-x-12 md:gap-y-8 space-y-6 md:space-y-0">
+                                <div className="space-y-6">
+                                    <div className="md:pt-4">
+                                        <label htmlFor="name" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Name</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            required
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 border-b focus:outline-none transition-colors inkpaper-input-recessed"
+                                            style={{
+                                                backgroundColor: 'transparent',
+                                                borderColor: 'var(--ink-cream)',
+                                                color: 'currentColor',
+                                                borderTop: 'none',
+                                                borderLeft: 'none',
+                                                borderRight: 'none',
+                                                borderRadius: 0
+                                            }}
+                                            onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
+                                            onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
+                                            placeholder="Your Name"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Email</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            required
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 border-b focus:outline-none transition-colors inkpaper-input-recessed"
+                                            style={{
+                                                backgroundColor: 'transparent',
+                                                borderColor: 'var(--ink-cream)',
+                                                color: 'currentColor',
+                                                borderTop: 'none',
+                                                borderLeft: 'none',
+                                                borderRight: 'none',
+                                                borderRadius: 0
+                                            }}
+                                            onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
+                                            onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
+                                            placeholder="your@email.com"
+                                        />
+                                    </div>
+                                    
+                                    <div className="hidden md:block pt-4">
+                                        <p className="text-sm italic opacity-70 leading-relaxed" style={{ color: 'var(--ink-stone)' }}>
+                                            The ink is wet, the paper is aged. <br/>
+                                            I await your correspondence with anticipation.
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        required
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 border-b focus:outline-none transition-colors inkpaper-input-recessed"
-                                        style={{
-                                            backgroundColor: 'transparent',
-                                            borderColor: 'var(--ink-cream)',
-                                            color: 'currentColor',
-                                            borderTop: 'none',
-                                            borderLeft: 'none',
-                                            borderRight: 'none',
-                                            borderRadius: 0
-                                        }}
-                                        onFocus={(e) => e.target.style.borderColor = 'var(--ink-vermillion)'}
-                                        onBlur={(e) => e.target.style.borderColor = 'var(--ink-cream)'}
-                                        placeholder="your@email.com"
-                                    />
-                                </div>
-
-                                <div>
+                                <div className="flex flex-col">
                                     <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Message</label>
                                     <textarea
                                         id="message"
                                         name="message"
                                         required
-                                        rows="4"
+                                        rows="6"
                                         value={formData.message}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 border focus:outline-none transition-colors resize-none inkpaper-input-recessed"
+                                        className="w-full h-full px-4 py-3 border focus:outline-none transition-colors resize-none inkpaper-input-recessed"
                                         style={{
                                             backgroundColor: 'var(--ink-wash)',
                                             borderColor: 'transparent',
@@ -211,25 +220,28 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         onBlur={(e) => { e.target.style.borderColor = 'transparent'; e.target.style.backgroundColor = 'var(--ink-wash)'; }}
                                         placeholder="How can I help you?"
                                     />
+                                    
+                                    <div className="mt-8 flex justify-end">
+                                        <button
+                                            type="submit"
+                                            disabled={status === 'loading'}
+                                            className={`inkpaper-minimal-btn inkpaper-ink-distort ${status === 'loading' ? 'is-loading' : ''}`}
+                                            style={{ margin: 0, width: 'auto', padding: '1rem 3rem' }}
+                                        >
+                                            <span className="ink-vermillion-dot" style={{ margin: '0 0.75rem 0 0', width: '5px', height: '5px' }}></span>
+                                            <span>
+                                                {status === 'loading' ? 'SENDING...' : 'SEND MESSAGE'}
+                                            </span>
+                                            <span className="line"></span>
+                                        </button>
+                                    </div>
                                 </div>
 
                                 {status === 'error' && (
-                                    <div className="text-sm p-3 rounded" style={{ color: 'var(--ink-vermillion)', backgroundColor: 'var(--ink-wash)' }}>
+                                    <div className="col-span-2 text-sm p-3 rounded mt-4" style={{ color: 'var(--ink-vermillion)', backgroundColor: 'var(--ink-wash)' }}>
                                         {errorMessage}
                                     </div>
                                 )}
-
-                                <button
-                                    type="submit"
-                                    disabled={status === 'loading'}
-                                    className={`inkpaper-minimal-btn inkpaper-ink-distort ${status === 'loading' ? 'is-loading' : ''}`}
-                                >
-                                    <span className="ink-vermillion-dot" style={{ margin: '0 0.75rem 0 0', width: '5px', height: '5px' }}></span>
-                                    <span>
-                                        {status === 'loading' ? 'SENDING...' : 'SEND MESSAGE'}
-                                    </span>
-                                    <span className="line"></span>
-                                </button>
                             </form>
                         )}
                     </div>
