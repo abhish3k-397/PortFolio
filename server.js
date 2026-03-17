@@ -43,7 +43,10 @@ app.post('/api/contact', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Make sure to set GMAIL_USER and GMAIL_APP_PASSWORD in your .env file!`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+export default app;
