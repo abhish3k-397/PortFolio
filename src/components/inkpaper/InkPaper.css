@@ -3,7 +3,7 @@
    Japanese Minimalism / Wabi-Sabi Aesthetic
    ======================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Noto+Sans+JP:wght@100;300;400;500;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Noto+Sans+JP:wght@100;300;400;500;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap');
 
 :root {
     --ink-bg: #FAF7F2;
@@ -19,6 +19,7 @@
     --ink-serif: 'Cormorant Garamond', 'Shippori Mincho', serif;
     --ink-sans: 'DM Sans', sans-serif;
     --ink-jp: 'Noto Sans JP', 'Shippori Mincho', sans-serif;
+    --ink-handwriting: 'Caveat', cursive;
 }
 
 /* ========================================
@@ -27,13 +28,13 @@
 .inkpaper-dark {
     --ink-bg: #111110;
     --ink-bg-warm: #1A1918;
-    --ink-charcoal: #E8E4DD;
-    --ink-charcoal-soft: #D4CFC6;
+    --ink-charcoal: #F2F0ED;
+    --ink-charcoal-soft: #E0DDD5;
     --ink-vermillion: #E53935;
     --ink-vermillion-soft: #EF5350;
     --ink-stone: #9A9590;
-    --ink-stone-light: #5C5752;
-    --ink-cream: #2A2826;
+    --ink-stone-light: #8C8681;
+    --ink-cream: #222120;
     --ink-wash: rgba(232, 228, 221, 0.04);
 }
 
@@ -1464,10 +1465,12 @@
         opacity: 0;
         transform: rotate(-8deg) scale(1.8);
     }
+
     60% {
         opacity: 1;
         transform: rotate(-8deg) scale(0.92);
     }
+
     100% {
         opacity: 0.85;
         transform: rotate(-8deg) scale(1);
@@ -1533,7 +1536,7 @@
 
 /* Ensure text stays above the image */
 .inkpaper-project__number,
-.inkpaper-project > div:last-child {
+.inkpaper-project>div:last-child {
     position: relative;
     z-index: 1;
 }
@@ -1713,11 +1716,25 @@
 }
 
 /* Staggered entrance */
-.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(1) { transition: opacity 0.5s 0.1s ease, transform 0.5s 0.1s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease; }
-.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(2) { transition: opacity 0.5s 0.18s ease, transform 0.5s 0.18s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease; }
-.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(3) { transition: opacity 0.5s 0.26s ease, transform 0.5s 0.26s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease; }
-.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(4) { transition: opacity 0.5s 0.34s ease, transform 0.5s 0.34s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease; }
-.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(5) { transition: opacity 0.5s 0.42s ease, transform 0.5s 0.42s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease; }
+.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(1) {
+    transition: opacity 0.5s 0.1s ease, transform 0.5s 0.1s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+}
+
+.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(2) {
+    transition: opacity 0.5s 0.18s ease, transform 0.5s 0.18s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+}
+
+.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(3) {
+    transition: opacity 0.5s 0.26s ease, transform 0.5s 0.26s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+}
+
+.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(4) {
+    transition: opacity 0.5s 0.34s ease, transform 0.5s 0.34s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+}
+
+.inkpaper-mobile-nav.is-open .inkpaper-mobile-nav__link:nth-child(5) {
+    transition: opacity 0.5s 0.42s ease, transform 0.5s 0.42s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s ease;
+}
 
 .inkpaper-mobile-nav__link.active {
     color: var(--ink-vermillion);
@@ -1765,6 +1782,7 @@
         display: flex;
     }
 }
+
 /* ---- KINTSUGI BUTTON ---- */
 .inkpaper-kintsugi-btn {
     position: relative;
@@ -1830,7 +1848,9 @@
 }
 
 @keyframes kintsugiDraw {
-    to { stroke-dashoffset: 0; }
+    to {
+        stroke-dashoffset: 0;
+    }
 }
 
 /* Text needs to stay above the crack */
@@ -1916,20 +1936,49 @@
     letter-spacing: 0.15em;
 }
 
-/* ---- TORN PAPER MODAL ---- */
+.inkpaper-dark .inkpaper-input-recessed {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
 .inkpaper-torn-letter {
     position: relative;
     max-width: 28rem;
     width: 100%;
     margin: 0 auto;
-    /* This SVG filter creates the rough, torn edge effect */
-    filter: url(#torn-edge) drop-shadow(0 25px 35px rgba(26, 26, 26, 0.2));
-    /* The paper background */
-    background-color: var(--ink-bg);
     padding: 3rem;
     color: var(--ink-charcoal);
-    font-family: var(--ink-sans);
+    font-family: var(--ink-handwriting);
+    font-size: 1.15rem;
     transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.inkpaper-torn-paper {
+    position: absolute;
+    inset: 0;
+    background-color: var(--ink-bg);
+    filter: url(#torn-edge);
+    z-index: 1;
+    transition: background-color 0.5s ease;
+}
+
+.inkpaper-ink-distort {
+    filter: url(#torn-edge);
+    display: inline-block;
+    /* Ensure filter applies correctly to inline elements if needed */
+}
+
+.inkpaper-torn-shadow {
+    position: absolute;
+    width: 98%;
+    max-width: 28rem;
+    height: 98%;
+    top: 1%;
+    left: 50%;
+    transform: translateX(-50%) rotate(-1.5deg) translate(8px, 18px);
+    background: rgba(0, 0, 0, 0.18);
+    filter: url(#torn-edge) blur(8px);
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* Base paper texture overlay */
@@ -1949,29 +1998,20 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    isolation: isolate;
 }
 
-.inkpaper-torn-wrapper::before {
-    content: '';
-    position: absolute;
-    width: 90%;
-    height: 90%;
-    top: 5%;
-    left: 5%;
-    background: rgba(0,0,0,0.15);
-    filter: blur(20px);
-    transform: rotate(-2deg) translate(5px, 15px);
-    z-index: -1;
-    pointer-events: none;
+.inkpaper-dark .inkpaper-torn-paper {
+    background-color: var(--ink-cream);
 }
 
 .inkpaper-dark .inkpaper-torn-letter {
-    background-color: var(--ink-cream);
     color: var(--ink-charcoal);
 }
 
-.inkpaper-dark .inkpaper-torn-wrapper::before {
-    background: rgba(0,0,0,0.5);
+.inkpaper-dark .inkpaper-torn-shadow {
+    background: rgba(0, 0, 0, 0.5);
+    filter: url(#torn-edge) blur(12px);
 }
 
 .inkpaper-letter-content {

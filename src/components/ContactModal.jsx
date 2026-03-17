@@ -107,12 +107,14 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
             </svg>
 
             <div className="inkpaper-torn-wrapper w-full animate-in fade-in zoom-in-95 duration-500">
+                <div className="inkpaper-torn-shadow"></div>
                 <div className="inkpaper-torn-letter">
+                    <div className="inkpaper-torn-paper"></div>
                     <div className="inkpaper-letter-content">
                         {/* Close Button */}
                         <button 
                             onClick={onClose}
-                            className="absolute top-0 right-0 transition-colors"
+                            className="absolute top-0 right-0 transition-colors inkpaper-ink-distort"
                             style={{ color: 'var(--ink-stone)' }}
                             onMouseEnter={(e) => e.currentTarget.style.color = 'var(--ink-vermillion)'}
                             onMouseLeave={(e) => e.currentTarget.style.color = 'var(--ink-stone)'}
@@ -123,7 +125,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                             </svg>
                         </button>
 
-                        <h3 className="text-2xl font-light mb-8 tracking-wide" style={{ fontFamily: 'var(--ink-serif)', color: 'var(--ink-charcoal)' }}>
+                        <h3 className="text-2xl font-light mb-8 tracking-wide inkpaper-ink-distort" style={{ fontFamily: 'var(--ink-serif)', color: 'var(--ink-charcoal)' }}>
                             連絡 — Send Message
                         </h3>
 
@@ -148,7 +150,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         required
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 border-b focus:outline-none transition-colors"
+                                        className="w-full px-4 py-3 border-b focus:outline-none transition-colors inkpaper-input-recessed"
                                         style={{ 
                                             backgroundColor: 'transparent', 
                                             borderColor: 'var(--ink-cream)', 
@@ -173,7 +175,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         required
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 border-b focus:outline-none transition-colors"
+                                        className="w-full px-4 py-3 border-b focus:outline-none transition-colors inkpaper-input-recessed"
                                         style={{ 
                                             backgroundColor: 'transparent', 
                                             borderColor: 'var(--ink-cream)', 
@@ -198,7 +200,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         rows="4"
                                         value={formData.message}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 border focus:outline-none transition-colors resize-none"
+                                        className="w-full px-4 py-3 border focus:outline-none transition-colors resize-none inkpaper-input-recessed"
                                         style={{ 
                                             backgroundColor: 'var(--ink-wash)', 
                                             borderColor: 'transparent', 
@@ -208,7 +210,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         onFocus={(e) => { e.target.style.borderColor = 'var(--ink-vermillion)'; e.target.style.backgroundColor = 'transparent'; }}
                                         onBlur={(e) => { e.target.style.borderColor = 'transparent'; e.target.style.backgroundColor = 'var(--ink-wash)'; }}
                                         placeholder="How can I help you?"
-                                    ></textarea>
+                                    />
                                 </div>
 
                                 {status === 'error' && (
@@ -220,7 +222,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    className={`inkpaper-minimal-btn ${status === 'loading' ? 'is-loading' : ''}`}
+                                    className={`inkpaper-minimal-btn inkpaper-ink-distort ${status === 'loading' ? 'is-loading' : ''}`}
                                 >
                                     <span className="ink-vermillion-dot" style={{ margin: '0 0.75rem 0 0', width: '5px', height: '5px' }}></span>
                                     <span>
