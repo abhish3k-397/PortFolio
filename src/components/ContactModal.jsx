@@ -20,7 +20,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
         setErrorMessage('');
 
         try {
-            const response = await fetch('https://port-folio-ten-cyan.vercel.app/api/contact', {
+            const response = await fetch('https://api.portfolio.abhishekcodes.tech/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
