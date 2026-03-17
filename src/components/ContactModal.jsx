@@ -20,7 +20,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
         setErrorMessage('');
 
         try {
-            const response = await fetch('http://localhost:5000/api/contact', {
+            const response = await fetch('port-folio-ten-cyan.vercel.app', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
@@ -95,7 +95,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
     // Ink Paper Theme specific rendering
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300" style={{ backgroundColor: 'var(--ink-wash)' }}>
-            
+
             {/* SVG Filter for Torn Paper Edge */}
             <svg style={{ position: 'absolute', width: 0, height: 0 }} xmlns="http://www.w3.org/2000/svg" version="1.1">
                 <defs>
@@ -112,7 +112,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                     <div className="inkpaper-torn-paper"></div>
                     <div className="inkpaper-letter-content">
                         {/* Close Button */}
-                        <button 
+                        <button
                             onClick={onClose}
                             className="absolute top-0 right-0 transition-colors inkpaper-ink-distort"
                             style={{ color: 'var(--ink-stone)' }}
@@ -151,9 +151,9 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         value={formData.name}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 border-b focus:outline-none transition-colors inkpaper-input-recessed"
-                                        style={{ 
-                                            backgroundColor: 'transparent', 
-                                            borderColor: 'var(--ink-cream)', 
+                                        style={{
+                                            backgroundColor: 'transparent',
+                                            borderColor: 'var(--ink-cream)',
                                             color: 'currentColor',
                                             borderTop: 'none',
                                             borderLeft: 'none',
@@ -165,7 +165,7 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         placeholder="Your Name"
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--ink-stone-light)' }}>Email</label>
                                     <input
@@ -176,9 +176,9 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         value={formData.email}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 border-b focus:outline-none transition-colors inkpaper-input-recessed"
-                                        style={{ 
-                                            backgroundColor: 'transparent', 
-                                            borderColor: 'var(--ink-cream)', 
+                                        style={{
+                                            backgroundColor: 'transparent',
+                                            borderColor: 'var(--ink-cream)',
                                             color: 'currentColor',
                                             borderTop: 'none',
                                             borderLeft: 'none',
@@ -201,9 +201,9 @@ const ContactModal = ({ isOpen, onClose, theme = 'samurai' }) => {
                                         value={formData.message}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 border focus:outline-none transition-colors resize-none inkpaper-input-recessed"
-                                        style={{ 
-                                            backgroundColor: 'var(--ink-wash)', 
-                                            borderColor: 'transparent', 
+                                        style={{
+                                            backgroundColor: 'var(--ink-wash)',
+                                            borderColor: 'transparent',
                                             color: 'currentColor',
                                             borderRadius: '2px'
                                         }}
