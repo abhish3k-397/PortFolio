@@ -58,10 +58,8 @@ const DotGrid = () => {
 
                     if (theme === 'cyberpunk') {
                         this.color = '#00f3ff'; // Cyber Neon
-                    } else if (theme === 'futuristic') {
-                        this.color = '#ffffff';
                     } else {
-                        this.color = '#000000';
+                        this.color = '#ffffff';
                     }
                 } else {
                     this.size = this.baseSize;

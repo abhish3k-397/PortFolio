@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
 import Layout from './Layout';
-import FutureLayout from './future/FutureLayout';
 import InkPaperLayout from './inkpaper/InkPaperLayout';
 
 // Import all standard components
@@ -22,12 +21,7 @@ const PortfolioContent = () => {
         return <InkPaperLayout />;
     }
 
-    // If theme is 'futuristic', render the new Future Layout
-    if (theme === 'futuristic') {
-        return <FutureLayout />;
-    }
-
-    // Otherwise render the standard layout (Cyberpunk / Creative)
+    // Otherwise render the standard layout (Cyberpunk)
     return (
         <Layout>
             <AchievementPopup />

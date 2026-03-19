@@ -89,8 +89,7 @@ const Experience = () => {
                 >
                     <div
                         ref={lineRef}
-                        className={`w-full h-full origin-top ${theme === 'cyberpunk' ? 'bg-cyber-yellow shadow-[0_0_15px_#f0db4f]' :
-                            theme === 'futuristic' ? 'bg-cyan-400 shadow-[0_0_15px_cyan]' : 'bg-purple-500'
+                        className={`w-full h-full origin-top ${theme === 'cyberpunk' ? 'bg-cyber-yellow shadow-[0_0_15px_#f0db4f]' : 'bg-cyan-400'
                             }`}
                     />
                 </div>

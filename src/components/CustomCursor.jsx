@@ -118,8 +118,6 @@ const CustomCursor = () => {
     const getColor = () => {
         switch (theme) {
             case 'cyberpunk': return '#fcee0a'; // Cyber Yellow
-            case 'futuristic': return '#06b6d4'; // Cyan
-            case 'creative': return '#d946ef'; // Fuchsia
             default: return '#06b6d4';
         }
     };

@@ -9,7 +9,7 @@ const StartPage = ({ onStart }) => {
     const { playClick, playHover } = useSoundFX();
     const { setTheme } = useTheme();
     const [step, setStep] = useState('choice'); // 'choice' or 'enter'
-    const [selectedPill, setSelectedPill] = useState(null); // 'cyberpunk' or 'futuristic'
+    const [selectedPill, setSelectedPill] = useState(null); // 'cyberpunk' or 'inkpaper'
     const [focusedPill, setFocusedPill] = useState(null); // For keyboard nav
 
     const handleChoice = (pill) => {

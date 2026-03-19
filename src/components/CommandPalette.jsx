@@ -5,7 +5,7 @@ import { useSoundFX } from '../context/SoundContext';
 import { useAchievements } from '../context/AchievementContext';
 import {
     Home, User, Briefcase, Mail,
-    Monitor, Zap,
+    Monitor, Zap, Feather,
     Github, Linkedin, Search, Trophy
 } from 'lucide-react';
 import TerminalCLI from './TerminalCLI';
@@ -189,15 +189,15 @@ const CommandPalette = ({ onStartHack }) => {
                                 <span>Cyberpunk Mode</span>
                             </Command.Item>
                             <Command.Item
-                                onSelect={() => handleThemeChange('futuristic')}
+                                onSelect={() => handleThemeChange('inkpaper')}
                                 className={`
                                     flex items-center gap-2 px-3 py-3 rounded-lg cursor-pointer transition-colors mb-1
                                     aria-selected:bg-white/10 aria-selected:text-white
                                     ${theme === 'cyberpunk' ? 'aria-selected:bg-cyber-neon/20 aria-selected:text-cyber-neon' : ''}
                                 `}
                             >
-                                <Zap size={18} />
-                                <span>Futuristic Mode</span>
+                                <Feather size={18} />
+                                <span>Ink & Paper Mode</span>
                             </Command.Item>
 
                         </Command.Group>

@@ -48,8 +48,6 @@ const Bio = () => {
     const getThemeColor = () => {
         switch (theme) {
             case 'cyberpunk': return 'yellow';
-            case 'futuristic': return 'cyan';
-            case 'creative': return 'purple';
             default: return 'cyan';
         }
     };
@@ -76,8 +74,7 @@ const Bio = () => {
                             />
 
                             {/* Duotone Overlay */}
-                            <div className={`absolute inset-0 mix-blend-overlay opacity-60 transition-opacity duration-500 group-hover:opacity-0 ${theme === 'cyberpunk' ? 'bg-cyber-yellow' :
-                                theme === 'futuristic' ? 'bg-cyan-500' : 'bg-purple-500'
+                            <div className={`absolute inset-0 mix-blend-overlay opacity-60 transition-opacity duration-500 group-hover:opacity-0 ${theme === 'cyberpunk' ? 'bg-cyber-yellow' : 'bg-cyan-500'
                                 }`} />
 
                             {/* Scanlines */}

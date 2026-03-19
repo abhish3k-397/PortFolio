@@ -35,10 +35,8 @@ const Footer = () => {
     return (
         <footer className={`relative z-[60] md:z-10 mt-20 border-t-2 transition-colors duration-500 overflow-hidden ${theme === 'cyberpunk'
             ? 'border-cyber-yellow/50 bg-black text-cyber-neon'
-            : theme === 'futuristic'
-                ? 'border-cyan-500/50 bg-slate-950 text-cyan-400'
-                : 'border-white/20 bg-purple-950 text-pink-200'
-            }`}>
+            : 'border-white/20 bg-black text-white'
+        }`}>
 
             {/* Background Texture */}
             <div className="absolute inset-0 opacity-5 pointer-events-none bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_25%,rgba(255,255,255,0.1)_50%,transparent_50%,transparent_75%,rgba(255,255,255,0.1)_75%,rgba(255,255,255,0.1)_100%)] bg-[length:20px_20px]" />

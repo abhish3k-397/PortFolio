@@ -5,7 +5,6 @@ const ThemeContext = createContext();
 export const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = useState(() => {
         const saved = localStorage.getItem('theme');
-        // Allow creative mode if saved (persistence for the easter egg)
         // Default to inkpaper theme
         return 'inkpaper';
     });
@@ -20,8 +19,6 @@ export const ThemeProvider = ({ children }) => {
         theme,
         setTheme,
         isCyberpunk: theme === 'cyberpunk',
-        isFuturistic: theme === 'futuristic',
-        isCreative: theme === 'creative',
         isInkPaper: theme === 'inkpaper'
     };
 

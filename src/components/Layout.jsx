@@ -14,14 +14,14 @@ import Footer from './Footer';
 import HackingGame from './HackingGame';
 
 const Layout = ({ children }) => {
-    const { theme, setTheme } = useTheme();
+    const { theme } = useTheme();
     const { playHover, playClick, playDenied } = useSoundFX();
     const { unlockAchievement } = useAchievements();
     const [isDenied, setIsDenied] = useState(false);
     const [isIdle, setIsIdle] = useState(false);
     const [showHackGame, setShowHackGame] = useState(false);
 
-    // Easter Egg: Konami Code
+    // Easter Egg: Konami Code - does nothing, just plays a sound
     useEffect(() => {
         const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
         let cursor = 0;
@@ -30,9 +30,7 @@ const Layout = ({ children }) => {
             if (e.key === konamiCode[cursor]) {
                 cursor++;
                 if (cursor === konamiCode.length) {
-                    // Unlock Creative Mode
-                    setTheme('creative');
-                    playClick(); // Or a special unlock sound
+                    playClick();
                     unlockAchievement('konami');
                     cursor = 0;
                 }
@@ -43,7 +41,7 @@ const Layout = ({ children }) => {
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [setTheme, playClick]);
+    }, [playClick, unlockAchievement]);
 
     useEffect(() => {
         const handleSecurityBreach = (e) => {
@@ -67,8 +65,6 @@ const Layout = ({ children }) => {
     return (
         <div className={`min-h-screen transition-colors duration-500 cursor-none 
       ${theme === 'cyberpunk' ? 'bg-cyber-blue text-cyber-neon' : ''}
-      ${theme === 'futuristic' ? 'bg-slate-950 text-cyan-400' : ''}
-      ${theme === 'creative' ? 'bg-purple-950 text-pink-300' : ''}
     `}>
             <CustomCursor />
             <CommandPalette onStartHack={() => setShowHackGame(true)} />
@@ -82,21 +78,17 @@ const Layout = ({ children }) => {
                 <main>
                     {children}
                 </main>
-                {theme !== 'futuristic' && <Footer />}
+                <Footer />
             </div>
 
             {/* Background Effects */}
             <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px]' : 'blur-0'}`}>
-                {theme !== 'futuristic' && <DotGrid />}
+                <DotGrid />
                 {theme === 'cyberpunk' && (
                     <>
                         <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[1] bg-[length:100%_2px,3px_100%] pointer-events-none animate-scanline" />
                         <div className="absolute inset-0 bg-cyber-blue/90" />
                     </>
-                )}
-
-                {theme === 'creative' && (
-                    <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-tr from-purple-900 via-pink-900 to-orange-900 opacity-50" />
                 )}
             </div>
         </div>

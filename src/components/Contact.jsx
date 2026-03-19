@@ -15,7 +15,7 @@ const Contact = () => {
     const { unlockAchievement } = useAchievements();
     const containerRef = useRef(null);
     const formRef = useRef(null);
-    const [formState, setFormState] = useState({ user_name: '', user_email: '', user_phone: '', message: '' });
+    const [formState, setFormState] = useState({ user_name: '', user_email: '', message: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [status, setStatus] = useState('IDLE'); // IDLE, SENDING, SENT, ERROR
 
@@ -52,7 +52,7 @@ const Contact = () => {
                 console.log(result.text);
                 setIsSubmitting(false);
                 setStatus('SENT');
-                setFormState({ user_name: '', user_email: '', user_phone: '', message: '' });
+                setFormState({ user_name: '', user_email: '', message: '' });
                 setTimeout(() => setStatus('IDLE'), 5000);
             }, (error) => {
                 console.log(error.text);
@@ -65,8 +65,6 @@ const Contact = () => {
     const getThemeColor = () => {
         switch (theme) {
             case 'cyberpunk': return 'yellow';
-            case 'futuristic': return 'cyan';
-            case 'creative': return 'purple';
             default: return 'cyan';
         }
     };
@@ -196,21 +194,6 @@ const Contact = () => {
                                         : 'border-white/20 focus:border-cyan-400 text-cyan-300 placeholder-white/20'
                                         }`}
                                     placeholder="ENTER EMAIL..."
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-xs font-mono opacity-50 ml-1">FREQ_BAND (PHONE)</label>
-                                <input
-                                    type="tel"
-                                    name="user_phone"
-                                    value={formState.user_phone}
-                                    onChange={e => setFormState({ ...formState, user_phone: e.target.value })}
-                                    className={`w-full bg-transparent border-b-2 p-3 font-mono focus:outline-none transition-colors ${theme === 'cyberpunk'
-                                        ? 'border-white/20 focus:border-cyber-yellow text-cyber-yellow placeholder-white/20'
-                                        : 'border-white/20 focus:border-cyan-400 text-cyan-300 placeholder-white/20'
-                                        }`}
-                                    placeholder="ENTER PHONE..."
                                 />
                             </div>
 

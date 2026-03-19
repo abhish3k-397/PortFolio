@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { useTheme } from '../context/ThemeContext';
-import InteractiveBlob from './InteractiveBlob';
 import MagneticButton from './MagneticButton';
 import CodeRevealText from './CodeRevealText';
 
@@ -21,16 +20,6 @@ const Hero = () => {
                     duration: 1.2,
                     ease: "power4.out",
                     delay: 0.5
-                });
-
-            } else if (theme === 'futuristic') {
-                // Futuristic Fade In
-                gsap.from(".hero-text-element", {
-                    y: 50,
-                    opacity: 0,
-                    stagger: 0.2,
-                    duration: 1.5,
-                    ease: "power2.out"
                 });
             } else {
                 // Standard Fade
@@ -60,33 +49,17 @@ const Hero = () => {
                 </div>
             )}
 
-            {theme === 'futuristic' && (
-                <InteractiveBlob />
-            )}
-
             <div className="z-10 text-center w-full pointer-events-none">
                 <div ref={textRef} className="overflow-visible pointer-events-auto">
                     <h2 className="hero-text-element text-xl md:text-2xl mb-4 font-mono tracking-widest">
                         {theme === 'cyberpunk' ? (
                             <span className="text-cyber-yellow bg-black/50 px-2">&gt; SYSTEM.INIT(USER: ABHISHEK)</span>
-                        ) : theme === 'futuristic' ? (
-                            <span className="text-cyan-400 tracking-[0.5em] uppercase text-sm">Interactive Experience</span>
                         ) : (
                             <span className="text-cyan-400">Hello, I am</span>
                         )}
                     </h2>
 
-                    {theme === 'futuristic' ? (
-                        <>
-                            <h1 className="hero-text-element text-5xl md:text-8xl font-bold mb-6 tracking-tight leading-tight text-white mix-blend-overlay">
-                                Crafting experiences <br /> through code.
-                            </h1>
-                            <p className="hero-text-element text-lg md:text-xl opacity-90 max-w-2xl mx-auto font-light text-cyan-100">
-                                Building intuitive, fast, and meaningful software.
-                            </p>
-                        </>
-                    ) : (
-                        <div className="relative z-10 text-center px-4">
+                    <div className="relative z-10 text-center px-4">
                             <div
                                 className="mb-8 relative inline-block group"
                                 onMouseEnter={() => {
@@ -154,10 +127,8 @@ const Hero = () => {
                                         onClick={() => scrollToSection('about')}
                                         className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
                                             ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
-                                            : theme === 'futuristic'
-                                                ? 'border-white/10 text-white rounded-full hover:bg-white/5'
-                                                : 'border-white/20 text-white rounded-full hover:bg-white/10'
-                                            }`}>
+                                            : 'border-white/20 text-white rounded-full hover:bg-white/10'
+                                        }`}>
                                         ABOUT ME
                                     </button>
                                 </MagneticButton>
@@ -167,10 +138,8 @@ const Hero = () => {
                                         onClick={() => scrollToSection('projects')}
                                         className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 ${theme === 'cyberpunk'
                                             ? 'bg-cyber-red text-black skew-x-[-10deg] hover:bg-white hover:shadow-[0_0_20px_#ff003c]'
-                                            : theme === 'futuristic'
-                                                ? 'bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 border border-white/20'
-                                                : 'bg-cyan-500 text-black rounded-full hover:bg-cyan-400 hover:shadow-[0_0_20px_cyan]'
-                                            }`}>
+                                            : 'bg-cyan-500 text-black rounded-full hover:bg-cyan-400 hover:shadow-[0_0_20px_cyan]'
+                                        }`}>
                                         VIEW WORK
                                     </button>
                                 </MagneticButton>
@@ -180,19 +149,16 @@ const Hero = () => {
                                         onClick={() => scrollToSection('contact')}
                                         className={`w-auto px-4 py-2 text-sm md:px-8 md:py-4 md:font-bold md:text-xl transition-all duration-300 transform hover:-translate-y-1 border-2 ${theme === 'cyberpunk'
                                             ? 'border-cyber-yellow text-cyber-yellow skew-x-[-10deg] hover:bg-cyber-yellow hover:text-black'
-                                            : theme === 'futuristic'
-                                                ? 'border-white/10 text-white rounded-full hover:bg-white/5'
-                                                : 'border-white/20 text-white rounded-full hover:bg-white/10'
-                                            }`}>
+                                            : 'border-white/20 text-white rounded-full hover:bg-white/10'
+                                        }`}>
                                         CONTACT
                                     </button>
                                 </MagneticButton>
                             </div>
-                        </div>
-                    )}
+                    </div>
                 </div>
-            </div >
-        </section >
+            </div>
+        </section>
     );
 };
 
