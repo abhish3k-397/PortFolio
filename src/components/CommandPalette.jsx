@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import TerminalCLI from './TerminalCLI';
 
-const CommandPalette = ({ onStartHack }) => {
+    const CommandPalette = ({ onStartHack, onStartBreach }) => {
     const [open, setOpen] = useState(false);
     const [mode, setMode] = useState('cli'); // 'cli' or 'gui'
     const { setTheme, theme } = useTheme();
@@ -74,6 +74,7 @@ const CommandPalette = ({ onStartHack }) => {
                 onClose={() => setOpen(false)}
                 onSwitchToGui={() => setMode('gui')}
                 onStartHack={onStartHack}
+                onStartBreach={onStartBreach}
             />
         );
     }

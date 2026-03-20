@@ -4,7 +4,7 @@ import { useSoundFX } from '../context/SoundContext';
 import { useAchievements, ACHIEVEMENTS } from '../context/AchievementContext';
 import ElectricBorder from './ElectricBorder';
 
-const TerminalCLI = ({ onClose, onSwitchToGui, onStartHack }) => {
+const TerminalCLI = ({ onClose, onSwitchToGui, onStartHack, onStartBreach }) => {
     const { theme } = useTheme();
     const { playClick } = useSoundFX();
     const { unlockAchievement, unlocked } = useAchievements();
@@ -35,19 +35,20 @@ const TerminalCLI = ({ onClose, onSwitchToGui, onStartHack }) => {
         switch (command) {
             case 'help':
                 output = `
-AVAILABLE COMMANDS:
-  help      - Show this help message
-  gui       - Switch to Graphical User Interface
-  clear     - Clear terminal output
-  ls        - List sections/directories
-  cd [dir]  - Navigate to a section
-  whoami    - Display current user
-  date      - Display system time
-  exit      - Close terminal
-  download  - Download Resume
-  achievements - List unlocked achievements
-  matrix    - ???
-`;
+                AVAILABLE COMMANDS:
+                  help      - Show this help message
+                  gui       - Switch to Graphical User Interface
+                  clear     - Clear terminal output
+                  ls        - List sections/directories
+                  cd [dir]  - Navigate to a section
+                  whoami    - Display current user
+                  date      - Display system time
+                  exit      - Close terminal
+                  download  - Download Resume
+                  achievements - List unlocked achievements
+                  breach    - Initiate Breach Protocol minigame
+                  matrix    - ???
+                `;
                 break;
             case 'achievements':
                 if (unlocked.length === 0) {
@@ -71,7 +72,7 @@ AVAILABLE COMMANDS:
                     output = 'Error: Breach Protocol module not found.';
                 }
                 break;
-            case 'download':
+            case 'download': {
                 if (args[0] === 'resume') {
                     const link = document.createElement('a');
                     link.href = '/resume.pdf';
@@ -84,6 +85,7 @@ AVAILABLE COMMANDS:
                     output = 'Usage: download resume';
                 }
                 break;
+            }
             case 'gui':
                 onSwitchToGui();
                 return;
@@ -93,7 +95,7 @@ AVAILABLE COMMANDS:
             case 'ls':
                 output = 'SECTIONS:\n  hero\n  about\n  skills\n  projects\n  contact\n\nFILES:\n  resume.pdf\n  portfolio.config';
                 break;
-            case 'cd':
+            case 'cd': {
                 const target = args[0];
                 if (!target) {
                     output = 'Usage: cd [section]';
@@ -111,6 +113,7 @@ AVAILABLE COMMANDS:
                     output = `Error: Directory '${target}' not found.`;
                 }
                 break;
+            }
             case 'whoami':
                 output = 'guest@portfolio-visitor';
                 break;
@@ -124,6 +127,19 @@ AVAILABLE COMMANDS:
                 output = 'Wake up, Neo...';
                 // Could trigger a visual effect here if we had one.
                 break;
+            case 'breach': {
+                const difficulty = args[0] || 'medium';
+                if (onStartBreach) {
+                    output = `Initializing Breach Protocol (${difficulty} difficulty)...`;
+                    setTimeout(() => {
+                        onStartBreach(difficulty);
+                        onClose();
+                    }, 1000);
+                } else {
+                    output = 'Error: Breach Protocol module not found.';
+                }
+                break;
+            }
             case '':
                 break;
             default:

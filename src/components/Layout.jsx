@@ -10,16 +10,18 @@ import CommandPalette from './CommandPalette';
 import CyberpunkHUD from './CyberpunkHUD';
 import AccessDenied from './AccessDenied';
 import Footer from './Footer';
-
 import HackingGame from './HackingGame';
+import BreachProtocol from './BreachProtocol';
 
-const Layout = ({ children }) => {
+    const Layout = ({ children }) => {
     const { theme } = useTheme();
     const { playHover, playClick, playDenied } = useSoundFX();
     const { unlockAchievement } = useAchievements();
     const [isDenied, setIsDenied] = useState(false);
     const [isIdle, setIsIdle] = useState(false);
     const [showHackGame, setShowHackGame] = useState(false);
+    const [isBreachActive, setIsBreachActive] = useState(false);
+    const [breachDifficulty, setBreachDifficulty] = useState('medium');
 
     // Easter Egg: Konami Code - does nothing, just plays a sound
     useEffect(() => {
@@ -67,8 +69,18 @@ const Layout = ({ children }) => {
       ${theme === 'cyberpunk' ? 'bg-cyber-blue text-cyber-neon' : ''}
     `}>
             <CustomCursor />
-            <CommandPalette onStartHack={() => setShowHackGame(true)} />
+            <CommandPalette onStartHack={() => setShowHackGame(true)} onStartBreach={(difficulty) => {
+        setIsBreachActive(true);
+        setBreachDifficulty(difficulty);
+    }} />
             {showHackGame && <HackingGame onClose={() => setShowHackGame(false)} />}
+            {isBreachActive && (
+                <BreachProtocol 
+                    onComplete={() => setIsBreachActive(false)} 
+                    onExit={() => setIsBreachActive(false)} 
+                    difficulty={breachDifficulty} 
+                />
+            )}
             {theme === 'cyberpunk' && <CyberpunkHUD onIdleChange={setIsIdle} />}
             {isDenied && <AccessDenied onDismiss={() => setIsDenied(false)} />}
 

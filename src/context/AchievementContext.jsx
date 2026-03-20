@@ -29,22 +29,29 @@ export const ACHIEVEMENTS = {
         icon: 'clock'
     },
     EXPLORER: {
-        id: 'explorer',
-        title: 'SOURCE_HUNTER',
-        description: 'Viewed a project source code',
-        icon: 'code'
+      id: 'explorer',
+      title: 'SOURCE_HUNTER',
+      description: 'Viewed a project source code',
+      icon: 'code'
     },
     THEME_SHIFTER: {
-        id: 'theme_shifter',
-        title: 'REALITY_WARP',
-        description: 'Changed the visual theme',
-        icon: 'zap'
+      id: 'theme_shifter',
+      title: 'REALITY_WARP',
+      description: 'Changed the visual theme',
+      icon: 'zap'
     },
     NETRUNNER_ELITE: {
-        id: 'netrunner_elite',
-        title: 'ICE_BREAKER',
-        description: 'Completed the Hacking Gauntlet',
-        icon: 'cpu'
+      id: 'netrunner_elite',
+      title: 'ICE_BREAKER',
+      description: 'Completed the Hacking Gauntlet',
+      icon: 'cpu'
+    },
+    GHOST_IN_THE_SHELL: {
+      id: 'ghost_in_the_shell',
+      title: 'GHOST_IN_THE_SHELL',
+      description: 'Completed Breach Protocol on hard difficulty',
+      icon: 'cpu',
+      secret: true
     }
 };
 

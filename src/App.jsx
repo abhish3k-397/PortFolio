@@ -8,6 +8,7 @@ import Loader from './components/Loader'
 import { AchievementProvider } from './context/AchievementContext'
 import AchievementPopup from './components/AchievementPopup'
 import SmoothScroll from './components/SmoothScroll'
+import BreachProtocol from './components/BreachProtocol'
 
 // Ink & Paper Pages
 import InkPaperLayout from './components/inkpaper/InkPaperLayout'
@@ -20,6 +21,8 @@ import InkPaperContact from './components/inkpaper/pages/InkPaperContact'
 const AppContent = () => {
     const [hasStarted, setHasStarted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isBreachActive, setIsBreachActive] = useState(false);
+    const [breachDifficulty, setBreachDifficulty] = useState('medium');
     const { theme } = useTheme();
 
     const handleStart = () => {
@@ -30,6 +33,15 @@ const AppContent = () => {
         setIsLoading(false);
         setHasStarted(true);
     }, []);
+
+    const handleStartBreach = (difficulty) => {
+        setBreachDifficulty(difficulty);
+        setIsBreachActive(true);
+    };
+
+    const handleEndBreach = () => {
+        setIsBreachActive(false);
+    };
 
     // If theme is Ink & Paper, we use the Router structure
     if (theme === 'inkpaper') {
@@ -73,8 +85,17 @@ const AppContent = () => {
                 )}
 
                 {/* Render PortfolioContent only after loader is complete so animations play correctly */}
-                {hasStarted && (
+                {hasStarted && !isBreachActive && (
                     <PortfolioContent />
+                )}
+
+                {/* Breach Protocol Minigame Overlay */}
+                {isBreachActive && (
+                    <BreachProtocol 
+                        onComplete={handleEndBreach} 
+                        onExit={handleEndBreach} 
+                        difficulty={breachDifficulty} 
+                    />
                 )}
 
                 {isLoading && (
