@@ -33,7 +33,13 @@ import BreachProtocol from './BreachProtocol';
                 cursor++;
                 if (cursor === konamiCode.length) {
                     playClick();
-                    unlockAchievement('konami');
+                    unlockAchievement('konami', true); // Force notification every time
+                    
+                    // Small delay to let user see the "Congratulations" message
+                    setTimeout(() => {
+                        window.open('https://projectk.abhishekcodes.tech/', '_blank');
+                    }, 1500);
+
                     cursor = 0;
                 }
             } else {

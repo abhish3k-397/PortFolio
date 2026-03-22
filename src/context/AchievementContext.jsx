@@ -12,8 +12,8 @@ export const ACHIEVEMENTS = {
     },
     KONAMI: {
         id: 'konami',
-        title: 'CHEAT_CODE',
-        description: 'Unlocked Creative Mode via Konami Code',
+        title: 'CONGRATULATIONS!',
+        description: 'You\'ve discovered the secret path to Project K.',
         icon: 'gamepad'
     },
     RECRUITER: {
@@ -67,9 +67,11 @@ export const AchievementProvider = ({ children }) => {
         sessionStorage.setItem('achievements', JSON.stringify(unlocked));
     }, [unlocked]);
 
-    const unlockAchievement = (id) => {
-        if (!unlocked.includes(id)) {
-            setUnlocked(prev => [...prev, id]);
+    const unlockAchievement = (id, forceNotification = false) => {
+        if (!unlocked.includes(id) || forceNotification) {
+            if (!unlocked.includes(id)) {
+                setUnlocked(prev => [...prev, id]);
+            }
 
             // Find achievement details
             const achievement = Object.values(ACHIEVEMENTS).find(a => a.id === id);
