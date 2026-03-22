@@ -35,14 +35,17 @@ import BreachProtocol from './BreachProtocol';
                     playClick();
                     unlockAchievement('konami', true); // Force notification every time
                     
+                    // Enter fullscreen mode 
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen().catch(err => {
+                            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                        });
+                    }
+
                     // Small delay to let user see the "Congratulations" message
                     setTimeout(() => {
-                        window.open(
-                            'https://projectk.abhishekcodes.tech/', 
-                            '_blank',
-                            'noopener,noreferrer,fullscreen=yes'
-                        );
-                    }, 1500);
+                        window.location.href = 'https://projectk.abhishekcodes.tech/';
+                    }, 2000);
 
                     cursor = 0;
                 }
