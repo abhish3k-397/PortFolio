@@ -37,7 +37,11 @@ import BreachProtocol from './BreachProtocol';
                     
                     // Small delay to let user see the "Congratulations" message
                     setTimeout(() => {
-                        window.open('https://projectk.abhishekcodes.tech/', '_blank');
+                        window.open(
+                            'https://projectk.abhishekcodes.tech/', 
+                            '_blank',
+                            'noopener,noreferrer,fullscreen=yes'
+                        );
                     }, 1500);
 
                     cursor = 0;
