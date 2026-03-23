@@ -5,6 +5,7 @@ const PerformanceContext = createContext();
 export const PerformanceProvider = ({ children }) => {
     const [liteMode, setLiteMode] = useState(() => {
         const saved = localStorage.getItem('portfolio-lite-mode');
+        if (saved === null) return true; // Default to the optimized SVG CSS border
         return saved === 'true';
     });
 

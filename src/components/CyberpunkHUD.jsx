@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Battery, BatteryCharging, Wifi } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAchievements } from '../context/AchievementContext';
+import { usePerformance } from '../context/PerformanceContext';
+import { useSoundFX } from '../context/SoundContext';
 
 const useTime = () => {
     const [time, setTime] = useState(new Date());
@@ -15,6 +17,8 @@ const useTime = () => {
 const CyberpunkHUD = ({ onIdleChange }) => {
     const { time } = useTime();
     const { unlockAchievement } = useAchievements();
+    const { liteMode, toggleLiteMode } = usePerformance();
+    const { playClick } = useSoundFX();
     const [battery, setBattery] = useState({ level: 100, charging: false });
     const [scrollProgress, setScrollProgress] = useState(0);
     const [isIdle, setIsIdle] = useState(false);
@@ -188,9 +192,26 @@ const CyberpunkHUD = ({ onIdleChange }) => {
                 {/* Other HUD Elements (Fade out when idle) */}
                 <motion.div animate={{ opacity: isIdle ? 0 : 1 }} transition={{ duration: 0.5 }}>
 
-                    {/* Top Right: Battery & Network */}
-                    <div className="absolute top-8 right-8 hidden md:flex flex-col items-end gap-2">
+                    {/* Top Right: Battery & Network & Performance Toggle */}
+                    <div className="absolute top-8 right-8 hidden md:flex flex-col items-end gap-2 pointer-events-auto">
                         <div className="flex items-center gap-4 text-cyan-400">
+                            {/* Performance Mode Toggle */}
+                            <button
+                                onClick={() => {
+                                    toggleLiteMode();
+                                    playClick();
+                                }}
+                                className={`flex items-center gap-1.5 px-2 py-0.5 rounded border transition-colors cursor-none
+                                    ${liteMode 
+                                        ? 'border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/20' 
+                                        : 'border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/20'
+                                    }`}
+                                title={liteMode ? 'Switch to Full FX (Electric Borders)' : 'Switch to Lite Mode (Tubelight Borders)'}
+                            >
+                                <span className="text-[10px] tracking-widest">{liteMode ? 'LITE' : 'FULL'}</span>
+                                <span className="text-xs">{liteMode ? '💡' : '⚡'}</span>
+                            </button>
+
                             <div className="flex items-center gap-2">
                                 <span className="text-xs tracking-widest">NET</span>
                                 <Wifi size={18} />
