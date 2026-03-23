@@ -6,6 +6,7 @@ import PortfolioContent from './components/PortfolioContent'
 import StartPage from './components/StartPage'
 import Loader from './components/Loader'
 import { AchievementProvider } from './context/AchievementContext'
+import { PerformanceProvider } from './context/PerformanceContext'
 import AchievementPopup from './components/AchievementPopup'
 import SmoothScroll from './components/SmoothScroll'
 import BreachProtocol from './components/BreachProtocol'
@@ -109,11 +110,13 @@ const AppContent = () => {
 function App() {
     return (
         <Router>
-            <ThemeProvider>
-                <SoundProvider>
-                    <AppContent />
-                </SoundProvider>
-            </ThemeProvider>
+            <PerformanceProvider>
+                <ThemeProvider>
+                    <SoundProvider>
+                        <AppContent />
+                    </SoundProvider>
+                </ThemeProvider>
+            </PerformanceProvider>
         </Router>
     )
 }

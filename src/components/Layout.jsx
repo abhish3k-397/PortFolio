@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSoundFX } from '../context/SoundContext';
 import { useAchievements } from '../context/AchievementContext';
+import { usePerformance } from '../context/PerformanceContext';
 
 import CustomCursor from './CustomCursor';
 import MagneticButton from './MagneticButton';
@@ -17,6 +18,7 @@ import BreachProtocol from './BreachProtocol';
     const { theme } = useTheme();
     const { playHover, playClick, playDenied } = useSoundFX();
     const { unlockAchievement } = useAchievements();
+    const { liteMode, toggleLiteMode } = usePerformance();
     const [isDenied, setIsDenied] = useState(false);
     const [isIdle, setIsIdle] = useState(false);
     const [showHackGame, setShowHackGame] = useState(false);
@@ -96,6 +98,24 @@ import BreachProtocol from './BreachProtocol';
             )}
             {theme === 'cyberpunk' && <CyberpunkHUD onIdleChange={setIsIdle} />}
             {isDenied && <AccessDenied onDismiss={() => setIsDenied(false)} />}
+
+            {/* Lite Mode Toggle */}
+            <button
+                onClick={() => {
+                    toggleLiteMode();
+                    playClick();
+                }}
+                className={`fixed bottom-6 right-6 z-[90] w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 cursor-none
+                    ${liteMode
+                        ? 'bg-yellow-400/20 border border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/30'
+                        : 'bg-cyan-400/10 border border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/20'
+                    }
+                `}
+                title={liteMode ? 'Switch to Full FX (Electric Borders)' : 'Switch to Lite Mode (Tubelight Borders)'}
+                aria-label="Toggle performance mode"
+            >
+                <span className="text-lg">{liteMode ? '💡' : '⚡'}</span>
+            </button>
 
 
 

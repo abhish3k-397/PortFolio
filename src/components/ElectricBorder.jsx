@@ -1,5 +1,7 @@
 import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import ElectricBorderMobile from './ElectricBorderMobile';
+import TubelightBorder from './TubelightBorder';
+import { usePerformance } from '../context/PerformanceContext';
 
 function hexToRgba(hex, alpha = 1) {
     if (!hex) return `rgba(0,0,0,${alpha})`;
@@ -18,6 +20,7 @@ function hexToRgba(hex, alpha = 1) {
 }
 
 const ElectricBorder = ({ children, color = '#5227FF', speed = 1, chaos = 1, thickness = 2, className, innerClassName, style }) => {
+    const { liteMode } = usePerformance();
     const rawId = useId().replace(/[:]/g, '');
     const filterId = `turbulent-displace-${rawId}`;
     const svgRef = useRef(null);
@@ -100,16 +103,16 @@ const ElectricBorder = ({ children, color = '#5227FF', speed = 1, chaos = 1, thi
     useEffect(() => {
         updateAnim();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [speed, chaos, isTouch]);
+    }, [speed, chaos, isTouch, liteMode]);
 
     useLayoutEffect(() => {
-        if (!rootRef.current) return;
+        if (!rootRef.current || liteMode) return;
         const ro = new ResizeObserver(() => updateAnim());
         ro.observe(rootRef.current);
         updateAnim();
         return () => ro.disconnect();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isTouch]);
+    }, [isTouch, liteMode]);
 
     const inheritRadius = {
         borderRadius: style?.borderRadius ?? 'inherit'
@@ -148,6 +151,20 @@ const ElectricBorder = ({ children, color = '#5227FF', speed = 1, chaos = 1, thi
         zIndex: -1,
         background: `linear-gradient(-30deg, ${hexToRgba(activeColor, 0.8)}, transparent, ${activeColor})`
     };
+
+    if (liteMode) {
+        return (
+            <TubelightBorder
+                color={color}
+                thickness={thickness}
+                className={className}
+                innerClassName={innerClassName}
+                style={style}
+            >
+                {children}
+            </TubelightBorder>
+        );
+    }
 
     if (isTouch) {
         return (
