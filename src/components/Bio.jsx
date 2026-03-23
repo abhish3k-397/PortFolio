@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
@@ -12,10 +12,13 @@ const Bio = () => {
     const containerRef = useRef(null);
     const imageRef = useRef(null);
     const textRef = useRef(null);
+    const parallaxRef = useRef(null);
+    const bgLayerRef = useRef(null);
+    const fgLayerRef = useRef(null);
+    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Image Animation
             gsap.from(imageRef.current, {
                 scrollTrigger: {
                     trigger: containerRef.current,
@@ -28,7 +31,6 @@ const Bio = () => {
                 ease: "power3.out"
             });
 
-            // Text Animation
             gsap.from(textRef.current, {
                 scrollTrigger: {
                     trigger: containerRef.current,
@@ -43,6 +45,67 @@ const Bio = () => {
             });
         }, containerRef);
         return () => ctx.revert();
+    }, []);
+
+    const handleMouseMove = useCallback((e) => {
+        if (!parallaxRef.current || !bgLayerRef.current || !fgLayerRef.current) return;
+        const rect = parallaxRef.current.getBoundingClientRect();
+        // Normalized -1 to 1
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+
+        // Background moves opposite to cursor (subtle)
+        gsap.to(bgLayerRef.current, {
+            x: -x * 15,
+            y: -y * 10,
+            duration: 0.6,
+            ease: 'power2.out',
+        });
+
+        // Foreground moves with cursor (more dramatic)
+        gsap.to(fgLayerRef.current, {
+            x: x * 25,
+            y: y * 15,
+            duration: 0.4,
+            ease: 'power2.out',
+        });
+    }, []);
+
+    const handleMouseEnter = useCallback(() => {
+        setIsHovering(true);
+        if (fgLayerRef.current) {
+            gsap.to(fgLayerRef.current, {
+                scale: 1.08,
+                duration: 0.6,
+                ease: 'power2.out',
+            });
+        }
+        if (bgLayerRef.current) {
+            gsap.to(bgLayerRef.current, {
+                scale: 1.15,
+                duration: 0.6,
+                ease: 'power2.out',
+            });
+        }
+    }, []);
+
+    const handleMouseLeave = useCallback(() => {
+        setIsHovering(false);
+        // Reset both layers to center
+        if (bgLayerRef.current) {
+            gsap.to(bgLayerRef.current, {
+                x: 0, y: 0, scale: 1.05,
+                duration: 0.8,
+                ease: 'elastic.out(1, 0.5)',
+            });
+        }
+        if (fgLayerRef.current) {
+            gsap.to(fgLayerRef.current, {
+                x: 0, y: 0, scale: 1,
+                duration: 0.8,
+                ease: 'elastic.out(1, 0.5)',
+            });
+        }
     }, []);
 
     const getThemeColor = () => {
@@ -63,27 +126,64 @@ const Bio = () => {
                         className="w-full max-w-md mx-auto aspect-[3/4]"
                         innerClassName="relative w-full h-full bg-black"
                     >
-                        {/* The Image with Cyberpunk Filters */}
-                        <div className="relative w-full h-full overflow-hidden">
+                        {/* Parallax Container */}
+                        <div
+                            ref={parallaxRef}
+                            className="relative w-full h-full overflow-hidden cursor-none"
+                            onMouseMove={handleMouseMove}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            {/* Background Layer — event/crowd scene */}
                             <img
-                                src="/profile.webp"
+                                ref={bgLayerRef}
+                                src="/layer2.png"
+                                alt=""
+                                aria-hidden="true"
+                                className="absolute inset-0 w-full h-full object-cover transition-[filter] duration-500 grayscale contrast-125 brightness-90 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100"
+                                style={{ scale: 1.05, willChange: 'transform' }}
+                            />
+
+                            {/* Foreground Layer — person cutout */}
+                            <img
+                                ref={fgLayerRef}
+                                src="/layer1.png"
                                 alt="Abhishek Krishna"
-                                className={`w-full h-full object-cover transition-all duration-500 
-                                    grayscale contrast-125 brightness-90 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100
-                                `}
+                                className="absolute bottom-0 left-0 right-0 mx-auto w-[75%] h-[85%] object-contain object-bottom transition-[filter] duration-500 grayscale contrast-125 brightness-90 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100"
+                                style={{ willChange: 'transform', zIndex: 1 }}
                             />
 
                             {/* Duotone Overlay */}
-                            <div className={`absolute inset-0 mix-blend-overlay opacity-60 transition-opacity duration-500 group-hover:opacity-0 ${theme === 'cyberpunk' ? 'bg-cyber-yellow' : 'bg-cyan-500'
-                                }`} />
+                            <div
+                                className={`absolute inset-0 mix-blend-overlay opacity-60 transition-opacity duration-500 group-hover:opacity-0 ${
+                                    theme === 'cyberpunk' ? 'bg-cyber-yellow' : 'bg-cyan-500'
+                                }`}
+                                style={{ zIndex: 2 }}
+                            />
 
                             {/* Scanlines */}
-                            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-20 bg-[length:100%_4px,3px_100%] pointer-events-none" />
+                            <div
+                                className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none"
+                                style={{ zIndex: 3 }}
+                            />
 
                             {/* Glitch Overlay (Cyberpunk only) */}
                             {theme === 'cyberpunk' && (
-                                <div className="absolute inset-0 bg-cyber-red/10 mix-blend-color-dodge opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                                <div
+                                    className="absolute inset-0 bg-cyber-red/10 mix-blend-color-dodge opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+                                    style={{ zIndex: 4 }}
+                                />
                             )}
+
+                            {/* Depth shadow vignette */}
+                            <div
+                                className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+                                style={{
+                                    zIndex: 5,
+                                    background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)',
+                                    opacity: isHovering ? 0.8 : 0.4,
+                                }}
+                            />
                         </div>
                     </ElectricBorder>
                 </div>

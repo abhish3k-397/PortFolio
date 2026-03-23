@@ -97,7 +97,7 @@ const InkPaperContact = () => {
                 {/* Right Image Column */}
                 <div className="inkpaper-contact__image-wrapper inkpaper-contact-image-wrapper">
                     <img
-                        src="/profile.webp"
+                        src="/professional.png"
                         alt="Portrait"
                         className="inkpaper-contact__image"
                         style={{

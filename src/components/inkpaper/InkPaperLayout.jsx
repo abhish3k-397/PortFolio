@@ -357,7 +357,7 @@ const InkPaperLayout = () => {
                             </h2>
                         </div>
                         <div className="inkpaper-overlay__image-wrapper">
-                            <img src="/profile.webp" alt="Abhishek Krishna" className="inkpaper-overlay__image" />
+                            <img src="/professional.png" alt="Abhishek Krishna" className="inkpaper-overlay__image" />
                         </div>
                         <div className="inkpaper-overlay__right">
                             <p className="inkpaper-overlay__cta">
