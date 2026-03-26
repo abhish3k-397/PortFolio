@@ -131,7 +131,7 @@ import BreachProtocol from './BreachProtocol';
         <div className={`min-h-screen transition-colors duration-500 cursor-none 
       ${theme === 'cyberpunk' ? 'bg-cyber-blue text-cyber-neon' : ''}
     `}>
-            <CustomCursor />
+            <CustomCursor isAltPressed={isAltPressed} />
             <CommandPalette onStartHack={() => setShowHackGame(true)} onStartBreach={(difficulty) => {
         setIsBreachActive(true);
         setBreachDifficulty(difficulty);

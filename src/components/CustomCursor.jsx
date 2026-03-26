@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { useTheme } from '../context/ThemeContext';
 
-const CustomCursor = () => {
+const CustomCursor = ({ isAltPressed }) => {
     const { theme } = useTheme();
     const cursorRef = useRef(null);
     const outerRef = useRef(null);
@@ -129,7 +129,7 @@ const CustomCursor = () => {
             {/* Center Dot */}
             <div
                 ref={cursorRef}
-                className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 mix-blend-difference"
+                className={`fixed top-0 left-0 w-1.5 h-1.5 rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 mix-blend-difference transition-opacity duration-300 ${isAltPressed ? 'opacity-0' : 'opacity-100'}`}
                 style={{ backgroundColor: color }}
             />
 
@@ -139,14 +139,27 @@ const CustomCursor = () => {
                 className="fixed top-0 left-0 pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 mix-blend-difference"
                 style={{ width: '40px', height: '40px' }}
             >
-                {/* Top Left */}
-                <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2" style={{ borderColor: color }} />
-                {/* Top Right */}
-                <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2" style={{ borderColor: color }} />
-                {/* Bottom Left */}
-                <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2" style={{ borderColor: color }} />
-                {/* Bottom Right */}
-                <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2" style={{ borderColor: color }} />
+                {isAltPressed ? (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        {/* Outer rotating ring */}
+                        <div className="w-full h-full rounded-full border border-dashed animate-[spin_4s_linear_infinite]" style={{ borderColor: color }} />
+                        {/* Inner reverse rotating ring */}
+                        <div className="absolute w-[70%] h-[70%] rounded-full border border-cyber-yellow animate-[spin_2s_linear_infinite_reverse] opacity-60" style={{ borderColor: color }} />
+                        {/* The Core */}
+                        <div className="absolute w-[30%] h-[30%] rounded-full bg-cyber-yellow shadow-[0_0_15px_#fcee0a]" style={{ backgroundColor: color }} />
+                    </div>
+                ) : (
+                    <>
+                        {/* Top Left */}
+                        <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2" style={{ borderColor: color }} />
+                        {/* Top Right */}
+                        <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2" style={{ borderColor: color }} />
+                        {/* Bottom Left */}
+                        <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2" style={{ borderColor: color }} />
+                        {/* Bottom Right */}
+                        <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2" style={{ borderColor: color }} />
+                    </>
+                )}
             </div>
         </>
     );
