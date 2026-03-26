@@ -44,13 +44,15 @@ const AppContent = () => {
         setIsBreachActive(false);
     };
 
-    // If theme is Ink & Paper, we use the Router structure
-    if (theme === 'inkpaper') {
-        return (
-            <>
-                {/* Ink & Paper owns its own Lenis instance (avoid double Lenis loops). */}
-                {/* Render Ink & Paper Layout immediately so it's visible under the transparent loader */}
-                {(hasStarted || isLoading) && (
+    return (
+        <>
+            {/* Always render StartPage in the same stable position before loading */}
+            {!hasStarted && !isLoading && (
+                <StartPage onStart={handleStart} />
+            )}
+
+            {(hasStarted || isLoading) && theme === 'inkpaper' ? (
+                <>
                     <Routes>
                         <Route path="/inkpaper" element={<InkPaperLayout />}>
                             <Route index element={<InkPaperHome />} />
@@ -59,50 +61,28 @@ const AppContent = () => {
                             <Route path="about" element={<InkPaperAbout />} />
                             <Route path="contact" element={<InkPaperContact />} />
                         </Route>
-                        {/* Redirect root to inkpaper home if in inkpaper theme */}
                         <Route path="*" element={<Navigate to="/inkpaper" replace />} />
                     </Routes>
-                )}
+                    {isLoading && <Loader onComplete={handleLoadingComplete} />}
+                </>
+            ) : (hasStarted || isLoading) && theme !== 'inkpaper' ? (
+                <>
+                    <SmoothScroll />
+                    {hasStarted && !isBreachActive && (
+                        <PortfolioContent />
+                    )}
 
-                {/* Start Page for Ink & Paper Theme */}
-                {!hasStarted && !isLoading && (
-                    <StartPage onStart={handleStart} />
-                )}
+                    {isBreachActive && (
+                        <BreachProtocol 
+                            onComplete={handleEndBreach} 
+                            onExit={handleEndBreach} 
+                            difficulty={breachDifficulty} 
+                        />
+                    )}
 
-                {/* Loader Overlay */}
-                {isLoading && (
-                    <Loader onComplete={handleLoadingComplete} />
-                )}
-            </>
-        );
-    }
-
-    return (
-        <>
-            <SmoothScroll />
-            <AchievementProvider>
-                {!hasStarted && !isLoading && (
-                    <StartPage onStart={handleStart} />
-                )}
-
-                {/* Render PortfolioContent only after loader is complete so animations play correctly */}
-                {hasStarted && !isBreachActive && (
-                    <PortfolioContent />
-                )}
-
-                {/* Breach Protocol Minigame Overlay */}
-                {isBreachActive && (
-                    <BreachProtocol 
-                        onComplete={handleEndBreach} 
-                        onExit={handleEndBreach} 
-                        difficulty={breachDifficulty} 
-                    />
-                )}
-
-                {isLoading && (
-                    <Loader onComplete={handleLoadingComplete} />
-                )}
-            </AchievementProvider>
+                    {isLoading && <Loader onComplete={handleLoadingComplete} />}
+                </>
+            ) : null}
         </>
     );
 };
@@ -113,7 +93,9 @@ function App() {
             <PerformanceProvider>
                 <ThemeProvider>
                     <SoundProvider>
-                        <AppContent />
+                        <AchievementProvider>
+                            <AppContent />
+                        </AchievementProvider>
                     </SoundProvider>
                 </ThemeProvider>
             </PerformanceProvider>

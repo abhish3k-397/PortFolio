@@ -6,6 +6,7 @@ import { useAchievements } from '../context/AchievementContext';
 import CustomCursor from './CustomCursor';
 import MagneticButton from './MagneticButton';
 import DotGrid from './DotGrid';
+import BlackHoleBackground from './BlackHoleBackground';
 import CommandPalette from './CommandPalette';
 import CyberpunkHUD from './CyberpunkHUD';
 import AccessDenied from './AccessDenied';
@@ -22,6 +23,55 @@ import BreachProtocol from './BreachProtocol';
     const [showHackGame, setShowHackGame] = useState(false);
     const [isBreachActive, setIsBreachActive] = useState(false);
     const [breachDifficulty, setBreachDifficulty] = useState('medium');
+    const [isAltPressed, setIsAltPressed] = useState(false);
+    const [forceGlitch, setForceGlitch] = useState(false);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Alt') setIsAltPressed(true);
+        };
+        const handleKeyUp = (e) => {
+            if (e.key === 'Alt') setIsAltPressed(false);
+        };
+        const handleBlur = () => setIsAltPressed(false);
+
+        const handleTouchStart = (e) => {
+            if (e.touches.length >= 2) {
+                setIsAltPressed(prev => {
+                    if (!prev) {
+                        setForceGlitch(true);
+                        setTimeout(() => setForceGlitch(false), 500);
+                        playClick(); // mechanical feedback sound
+                    }
+                    return true;
+                });
+            }
+        };
+
+        const handleTouchEnd = (e) => {
+            if (e.touches.length < 2) {
+                setIsAltPressed(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+        window.addEventListener('blur', handleBlur);
+        
+        window.addEventListener('touchstart', handleTouchStart, { passive: false });
+        window.addEventListener('touchend', handleTouchEnd);
+        window.addEventListener('touchcancel', handleTouchEnd);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+            window.removeEventListener('blur', handleBlur);
+
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchend', handleTouchEnd);
+            window.removeEventListener('touchcancel', handleTouchEnd);
+        };
+    }, [playClick]);
 
     // Easter Egg: Konami Code - does nothing, just plays a sound
     useEffect(() => {
@@ -94,27 +144,23 @@ import BreachProtocol from './BreachProtocol';
                     difficulty={breachDifficulty} 
                 />
             )}
-            {theme === 'cyberpunk' && <CyberpunkHUD onIdleChange={setIsIdle} />}
+            {theme === 'cyberpunk' && <CyberpunkHUD onIdleChange={setIsIdle} forceGlitch={forceGlitch} />}
             {isDenied && <AccessDenied onDismiss={() => setIsDenied(false)} />}
 
 
 
-            <div className={`relative z-10 transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px] opacity-50' : 'blur-0 opacity-100'}`}>
-                <main>
+            <div className={`relative z-10 transition-all duration-1000 ease-in-out pointer-events-none ${isIdle ? 'blur-[50px] opacity-50' : 'blur-0 opacity-100'}`}>
+                <main className={`[&_section]:pointer-events-none ${isAltPressed ? '' : '[&_section>*:not(.pointer-events-none)]:pointer-events-auto'} `}>
                     {children}
                 </main>
-                <Footer />
+                <div className={isAltPressed ? 'pointer-events-none' : 'pointer-events-auto'}>
+                    <Footer />
+                </div>
             </div>
 
             {/* Background Effects */}
-            <div className={`fixed inset-0 z-0 pointer-events-none overflow-hidden transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px]' : 'blur-0'}`}>
-                <DotGrid />
-                {theme === 'cyberpunk' && (
-                    <>
-                        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[1] bg-[length:100%_2px,3px_100%] pointer-events-none animate-scanline" />
-                        <div className="absolute inset-0 bg-cyber-blue/90" />
-                    </>
-                )}
+            <div className={`fixed inset-0 z-0 overflow-hidden transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px]' : 'blur-0'}`}>
+                {theme === 'cyberpunk' ? <BlackHoleBackground isInteractive={isAltPressed} /> : <div className="pointer-events-none w-full h-full"><DotGrid /></div>}
             </div>
         </div>
     );

@@ -14,7 +14,7 @@ const useTime = () => {
     return { time, setTime };
 };
 
-const CyberpunkHUD = ({ onIdleChange }) => {
+const CyberpunkHUD = ({ onIdleChange, forceGlitch }) => {
     const { time } = useTime();
     const { unlockAchievement } = useAchievements();
     const { liteMode, toggleLiteMode } = usePerformance();
@@ -23,6 +23,7 @@ const CyberpunkHUD = ({ onIdleChange }) => {
     const [scrollProgress, setScrollProgress] = useState(0);
     const [isIdle, setIsIdle] = useState(false);
     const [isGlitching, setIsGlitching] = useState(false);
+    const activeGlitch = isGlitching || forceGlitch;
     const idleTimerRef = useRef(null);
 
     // Idle Detection Logic
@@ -158,21 +159,21 @@ const CyberpunkHUD = ({ onIdleChange }) => {
                     {/* Glitch Clock Structure */}
                     <div className="relative">
                         {/* Red Ghost Layer */}
-                        <div className={`absolute inset-0 text-cyber-red opacity-70 select-none pointer-events-none z-[-1] ${isGlitching ? 'animate-glitch-1 block' : 'hidden'}`} aria-hidden="true">
+                        <div className={`absolute inset-0 text-cyber-red opacity-70 select-none pointer-events-none z-[-1] ${activeGlitch ? 'animate-glitch-1 block' : 'hidden'}`} aria-hidden="true">
                             <div className="text-2xl md:text-4xl font-bold tracking-widest font-orbitron whitespace-nowrap glitch-skew origin-center">
                                 {formatTime(time)}
                             </div>
                         </div>
 
                         {/* Cyan Ghost Layer */}
-                        <div className={`absolute inset-0 text-cyan-400 opacity-70 select-none pointer-events-none z-[-2] ${isGlitching ? 'animate-glitch-2 block' : 'hidden'}`} aria-hidden="true">
+                        <div className={`absolute inset-0 text-cyan-400 opacity-70 select-none pointer-events-none z-[-2] ${activeGlitch ? 'animate-glitch-2 block' : 'hidden'}`} aria-hidden="true">
                             <div className="text-2xl md:text-4xl font-bold tracking-widest font-orbitron whitespace-nowrap glitch-skew origin-center">
                                 {formatTime(time)}
                             </div>
                         </div>
 
                         {/* Main Visible Text */}
-                        <div className={`text-2xl md:text-4xl font-bold tracking-widest font-orbitron whitespace-nowrap relative z-10 ${isGlitching ? 'glitch-skew origin-center' : ''}`}>
+                        <div className={`text-2xl md:text-4xl font-bold tracking-widest font-orbitron whitespace-nowrap relative z-10 ${activeGlitch ? 'glitch-skew origin-center' : ''}`}>
                             {formatTime(time)}
                         </div>
                     </div>
