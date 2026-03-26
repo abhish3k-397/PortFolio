@@ -5,12 +5,12 @@
     "type": "module",
     "packageManager": "bun@1.1.34",
     "scripts": {
-        "dev": "bun run build:blackhole && vite",
-        "build:blackhole": "cd ../webgl-black-hole && bun install && bun run build -- --base=/blackhole/ && cd - && rm -rf public/blackhole && mkdir -p public/blackhole && cp -R ../webgl-black-hole/dist/. public/blackhole/",
-        "build": "bun run build:blackhole && vite build && cp dist/index.html dist/404.html",
+        "dev": "vite",
+        "build:blackhole": "cd webgl-black-hole && bun install && bun run build -- --base=/blackhole/ && cd .. && rm -rf public/blackhole && mkdir -p public/blackhole && cp -R webgl-black-hole/dist/. public/blackhole/",
+        "build": "vite build && cp dist/index.html dist/404.html",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview",
-        "predeploy": "bun run build:blackhole && vite build",
+        "predeploy": "vite build",
         "deploy": "gh-pages -d dist"
     },
     "dependencies": {
