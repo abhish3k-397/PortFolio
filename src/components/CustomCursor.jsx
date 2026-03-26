@@ -43,10 +43,15 @@ const CustomCursor = ({ isAltPressed }) => {
 
         // Mouse movement logic
         const moveCursor = (e) => {
+            const clientX = e.clientX ?? e.data?.clientX;
+            const clientY = e.clientY ?? e.data?.clientY;
+            
+            if (clientX === undefined || clientY === undefined) return;
+
             // Always move the small dot
             gsap.to(cursorRef.current, {
-                x: e.clientX,
-                y: e.clientY,
+                x: clientX,
+                y: clientY,
                 duration: 0.1,
                 ease: "power2.out"
             });
@@ -70,8 +75,8 @@ const CustomCursor = ({ isAltPressed }) => {
             } else {
                 // If not hovering, follow mouse with default shape
                 gsap.to(outerRef.current, {
-                    x: e.clientX,
-                    y: e.clientY,
+                    x: clientX,
+                    y: clientY,
                     width: 40,
                     height: 40,
                     borderRadius: '0px', // Square by default for target look
@@ -79,6 +84,12 @@ const CustomCursor = ({ isAltPressed }) => {
                     duration: 0.3,
                     ease: "power2.out"
                 });
+            }
+        };
+
+        const handleMessage = (e) => {
+            if (e.data && e.data.type === 'webgl-mousemove') {
+                moveCursor(e);
             }
         };
 
@@ -94,6 +105,7 @@ const CustomCursor = ({ isAltPressed }) => {
         };
 
         window.addEventListener('mousemove', moveCursor);
+        window.addEventListener('message', handleMessage);
 
         // Re-bind listeners periodically or use a mutation observer if needed, 
         // but for now standard selection is fine.
@@ -106,6 +118,7 @@ const CustomCursor = ({ isAltPressed }) => {
 
         return () => {
             window.removeEventListener('mousemove', moveCursor);
+            window.removeEventListener('message', handleMessage);
             clickables.forEach(el => {
                 el.removeEventListener('mouseenter', handleMouseEnter);
                 el.removeEventListener('mouseleave', handleMouseLeave);
