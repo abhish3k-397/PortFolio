@@ -142,9 +142,12 @@ export default class Renderer
         this.instance.setSize(this.config.width, this.config.height)
         this.instance.setPixelRatio(this.config.pixelRatio)
 
-        // Post process
-        this.postProcess.composer.setSize(this.config.width, this.config.height)
-        this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
+        // Composition targets
+        if(this.composition?.space)
+            this.composition.space.setSize(this.sizes.width * 2, this.sizes.height * 2)
+
+        if(this.composition?.distortion)
+            this.composition.distortion.setSize(this.sizes.width * 0.5, this.sizes.height * 0.5)
     }
 
     update()
@@ -178,8 +181,11 @@ export default class Renderer
     {
         this.instance.renderLists.dispose()
         this.instance.dispose()
-        this.renderTarget.dispose()
-        this.postProcess.composer.renderTarget1.dispose()
-        this.postProcess.composer.renderTarget2.dispose()
+
+        if(this.composition?.space)
+            this.composition.space.dispose()
+
+        if(this.composition?.distortion)
+            this.composition.distortion.dispose()
     }
 }

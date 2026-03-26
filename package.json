@@ -14,7 +14,6 @@
         "deploy": "gh-pages -d dist"
     },
     "dependencies": {
-        "@emailjs/browser": "^4.4.1",
         "@react-three/drei": "9.99.0",
         "@react-three/fiber": "8.15.16",
         "@studio-freight/lenis": "^1.0.42",

@@ -39,8 +39,37 @@ export default class Experience
         this.setScenes()
         this.setCamera()
         this.setRenderer()
-        this.setResources()
+        this.resources = new Resources(assets)
         this.setWorld()
+        
+        // Scroll progress & Interaction state
+        this.scrollProgress = 0
+        this.isInteractive = false
+        this.trackpadDeltaX = 0
+        this.trackpadDeltaY = 0
+        this.trackpadIsPinch = false
+
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'scroll-progress') {
+                this.scrollProgress = event.data.progress
+                if (event.data.isInteractive !== undefined) {
+                    this.isInteractive = event.data.isInteractive
+                }
+            }
+            if (event.data.type === 'interaction-state') {
+                this.isInteractive = event.data.isInteractive
+            }
+        })
+
+        window.addEventListener('webgl-trackpad-gesture', (event) => {
+            if (!this.isInteractive) return
+            const detail = event.detail || {}
+            const deltaMode = detail.deltaMode || 0
+            const modeMultiplier = deltaMode === 1 ? 16 : (deltaMode === 2 ? 120 : 1)
+            this.trackpadDeltaX += (detail.deltaX || 0) * modeMultiplier
+            this.trackpadDeltaY += (detail.deltaY || 0) * modeMultiplier
+            this.trackpadIsPinch = !!detail.ctrlKey
+        })
         
         this.sizes.on('resize', () =>
         {

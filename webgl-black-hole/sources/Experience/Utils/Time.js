@@ -12,7 +12,7 @@ export default class Time extends EventEmitter
         this.start = Date.now() / 1000
         this.current = this.start
         this.elapsed = 0
-        this.delta = 16
+        this.delta = 0
         this.playing = true
 
         this.tick = this.tick.bind(this)
@@ -42,9 +42,9 @@ export default class Time extends EventEmitter
         this.elapsed += this.playing ? this.delta : 0
         this.current = current
 
-        if(this.delta > 60)
+        if(this.delta > 0.1)
         {
-            this.delta = 60
+            this.delta = 0.1
         }
 
         if(this.playing)

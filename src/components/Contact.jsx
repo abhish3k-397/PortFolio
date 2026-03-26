@@ -6,7 +6,7 @@ import { useAchievements } from '../context/AchievementContext';
 import { Mail, Github, Linkedin, Twitter, Send, Terminal, AlertTriangle, FileText, Download } from 'lucide-react';
 import ElectricBorder from './ElectricBorder';
 import MagneticButton from './MagneticButton';
-import emailjs from '@emailjs/browser';
+// emailjs removed to use unified backend API
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,29 +37,39 @@ const Contact = () => {
         return () => ctx.revert();
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         setStatus('SENDING');
 
-        emailjs.sendForm(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-            formRef.current,
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-        )
-            .then((result) => {
-                console.log(result.text);
+        try {
+            const response = await fetch('https://api.portfolio.abhishekcodes.tech/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formState.user_name,
+                    email: formState.user_email,
+                    message: formState.message
+                }),
+            });
+
+            if (response.ok) {
                 setIsSubmitting(false);
                 setStatus('SENT');
                 setFormState({ user_name: '', user_email: '', message: '' });
                 setTimeout(() => setStatus('IDLE'), 5000);
-            }, (error) => {
-                console.log(error.text);
-                setIsSubmitting(false);
-                setStatus('ERROR');
-                setTimeout(() => setStatus('IDLE'), 5000);
-            });
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to send message');
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            setIsSubmitting(false);
+            setStatus('ERROR');
+            setTimeout(() => setStatus('IDLE'), 5000);
+        }
     };
 
     const getThemeColor = () => {

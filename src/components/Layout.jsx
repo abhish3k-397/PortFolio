@@ -23,21 +23,44 @@ import BreachProtocol from './BreachProtocol';
     const [showHackGame, setShowHackGame] = useState(false);
     const [isBreachActive, setIsBreachActive] = useState(false);
     const [breachDifficulty, setBreachDifficulty] = useState('medium');
-    const [isAltPressed, setIsAltPressed] = useState(false);
+    const [isRPressed, setIsRPressed] = useState(false);
     const [forceGlitch, setForceGlitch] = useState(false);
 
     useEffect(() => {
+        const isTextFieldTarget = (target) => {
+            if (!target || !(target instanceof HTMLElement)) return false;
+            const tag = target.tagName;
+            return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
+        };
+
         const handleKeyDown = (e) => {
-            if (e.key === 'Alt') setIsAltPressed(true);
+            if (isTextFieldTarget(e.target)) return;
+            if (e.key === 'r' || e.key === 'R') {
+                setIsRPressed(true);
+            }
         };
         const handleKeyUp = (e) => {
-            if (e.key === 'Alt') setIsAltPressed(false);
+            if (isTextFieldTarget(e.target)) return;
+            if (e.key === 'r' || e.key === 'R') {
+                setIsRPressed(false);
+            }
         };
-        const handleBlur = () => setIsAltPressed(false);
+        const handleIframeInteractionKey = (e) => {
+            if (!e.data || e.data.type !== 'webgl-interaction-key') return;
+            if (typeof e.data.isPressed !== 'boolean') return;
+            setIsRPressed(e.data.isPressed);
+        };
+        const handleBlur = () => {
+            // Keep the key state during iframe focus transitions.
+            // We only force-reset when the document truly loses focus.
+            if (!document.hasFocus()) {
+                setIsRPressed(false);
+            }
+        };
 
         const handleTouchStart = (e) => {
             if (e.touches.length >= 2) {
-                setIsAltPressed(prev => {
+                setIsRPressed(prev => {
                     if (!prev) {
                         setForceGlitch(true);
                         setTimeout(() => setForceGlitch(false), 500);
@@ -50,12 +73,13 @@ import BreachProtocol from './BreachProtocol';
 
         const handleTouchEnd = (e) => {
             if (e.touches.length < 2) {
-                setIsAltPressed(false);
+                setIsRPressed(false);
             }
         };
 
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
+        window.addEventListener('message', handleIframeInteractionKey);
         window.addEventListener('blur', handleBlur);
         
         window.addEventListener('touchstart', handleTouchStart, { passive: false });
@@ -65,6 +89,7 @@ import BreachProtocol from './BreachProtocol';
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('keyup', handleKeyUp);
+            window.removeEventListener('message', handleIframeInteractionKey);
             window.removeEventListener('blur', handleBlur);
 
             window.removeEventListener('touchstart', handleTouchStart);
@@ -131,7 +156,7 @@ import BreachProtocol from './BreachProtocol';
         <div className={`min-h-screen transition-colors duration-500 cursor-none 
       ${theme === 'cyberpunk' ? 'bg-cyber-blue text-cyber-neon' : ''}
     `}>
-            <CustomCursor isAltPressed={isAltPressed} />
+            <CustomCursor isAltPressed={isRPressed} />
             <CommandPalette onStartHack={() => setShowHackGame(true)} onStartBreach={(difficulty) => {
         setIsBreachActive(true);
         setBreachDifficulty(difficulty);
@@ -150,17 +175,17 @@ import BreachProtocol from './BreachProtocol';
 
 
             <div className={`relative z-10 transition-all duration-1000 ease-in-out pointer-events-none ${isIdle ? 'blur-[50px] opacity-50' : 'blur-0 opacity-100'}`}>
-                <main className={`[&_section]:pointer-events-none ${isAltPressed ? '' : '[&_section>*:not(.pointer-events-none)]:pointer-events-auto'} `}>
+                <main className={`[&_section]:pointer-events-none ${isRPressed ? '' : '[&_section>*:not(.pointer-events-none)]:pointer-events-auto'} `}>
                     {children}
                 </main>
-                <div className={isAltPressed ? 'pointer-events-none' : 'pointer-events-auto'}>
+                <div className={isRPressed ? 'pointer-events-none' : 'pointer-events-auto'}>
                     <Footer />
                 </div>
             </div>
 
             {/* Background Effects */}
             <div className={`fixed inset-0 z-0 overflow-hidden transition-all duration-1000 ease-in-out ${isIdle ? 'blur-[50px]' : 'blur-0'}`}>
-                {theme === 'cyberpunk' ? <BlackHoleBackground isInteractive={isAltPressed} /> : <div className="pointer-events-none w-full h-full"><DotGrid /></div>}
+                {theme === 'cyberpunk' ? <BlackHoleBackground isInteractive={isRPressed} /> : <div className="pointer-events-none w-full h-full"><DotGrid /></div>}
             </div>
         </div>
     );
