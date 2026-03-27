@@ -58,7 +58,13 @@ export const ACHIEVEMENTS = {
 export const AchievementProvider = ({ children }) => {
     const [unlocked, setUnlocked] = useState(() => {
         const saved = sessionStorage.getItem('achievements');
-        return saved ? JSON.parse(saved) : [];
+        if (!saved) return [];
+        try {
+            const parsed = JSON.parse(saved);
+            return Array.isArray(parsed) ? [...new Set(parsed)] : [];
+        } catch (e) {
+            return [];
+        }
     });
     const [notification, setNotification] = useState(null);
     const { playClick } = useSoundFX(); // We might want a specific sound later
@@ -70,7 +76,10 @@ export const AchievementProvider = ({ children }) => {
     const unlockAchievement = (id, forceNotification = false) => {
         if (!unlocked.includes(id) || forceNotification) {
             if (!unlocked.includes(id)) {
-                setUnlocked(prev => [...prev, id]);
+                setUnlocked(prev => {
+                    if (prev.includes(id)) return prev;
+                    return [...prev, id];
+                });
             }
 
             // Find achievement details

@@ -43,8 +43,11 @@ const Achievements = () => {
     };
 
     const achievementList = Object.values(ACHIEVEMENTS);
-    // Ensure we only count unlocked achievements that still exist in our definition
-    const validUnlockedCount = unlocked.filter(id => achievementList.find(a => a.id === id)).length;
+    // Use a Set to ensure we only count unique unlocked achievements
+    const uniqueUnlocked = [...new Set(unlocked)];
+    const validUnlockedCount = [...new Set(unlocked)].filter(id => achievementList.find(a => a.id === id)).length;
+    
+    // Total count includes all achievements
     const totalCount = achievementList.length;
 
     return (
