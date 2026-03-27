@@ -7,7 +7,7 @@
     "scripts": {
         "dev": "vite",
         "build:blackhole": "cd webgl-black-hole && bun install && bun run build -- --base=/blackhole/ && cd .. && rm -rf public/blackhole && mkdir -p public/blackhole && cp -R webgl-black-hole/dist/. public/blackhole/",
-        "build": "vite build && cp dist/index.html dist/404.html",
+        "build": "bun run build:blackhole && vite build && cp dist/index.html dist/404.html",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview",
         "predeploy": "vite build",
