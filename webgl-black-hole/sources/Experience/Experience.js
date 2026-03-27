@@ -55,18 +55,14 @@ export default class Experience
                 }
                 if (this._debugMsgLogCount < 8) {
                     this._debugMsgLogCount += 1
-                    // #region agent log
-                    fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline',hypothesisId:'H3',location:'Experience.js:message-scroll-progress',message:'experience-received-scroll-progress',data:{msgCount:this._debugMsgLogCount,progress:this.scrollProgress,isInteractive:this.isInteractive},timestamp:Date.now()})}).catch(()=>{});
-                    // #endregion
+
                 }
             }
             if (event.data.type === 'interaction-state') {
                 this.isInteractive = event.data.isInteractive
                 if (this._debugMsgLogCount < 8) {
                     this._debugMsgLogCount += 1
-                    // #region agent log
-                    fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline',hypothesisId:'H4',location:'Experience.js:message-interaction-state',message:'experience-received-interaction-state',data:{msgCount:this._debugMsgLogCount,isInteractive:this.isInteractive},timestamp:Date.now()})}).catch(()=>{});
-                    // #endregion
+
                 }
             }
         })

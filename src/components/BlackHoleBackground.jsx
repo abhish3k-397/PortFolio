@@ -22,12 +22,7 @@ const BlackHoleBackground = ({ isInteractive }) => {
         if (!isInteractive) {
             lastProgressRef.current = progress;
         }
-        if (postLogCountRef.current < 6) {
-            postLogCountRef.current += 1;
-            // #region agent log
-            fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline',hypothesisId:'H1',location:'BlackHoleBackground.jsx:postStateToIframe',message:'posting-state-to-iframe',data:{hasWindow:!!iframeRef.current?.contentWindow,isInteractive,progress,baseProgress,postCount:postLogCountRef.current},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
-        }
+
 
         iframeRef.current.contentWindow.postMessage({
             type: 'scroll-progress',
@@ -44,12 +39,7 @@ const BlackHoleBackground = ({ isInteractive }) => {
     useEffect(() => {
         const handleSyncRequest = (event) => {
             if (!event.data || event.data.type !== 'webgl-request-sync') return;
-            if (syncRequestLogCountRef.current < 4) {
-                syncRequestLogCountRef.current += 1;
-                // #region agent log
-                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline',hypothesisId:'H1',location:'BlackHoleBackground.jsx:handleSyncRequest',message:'received-webgl-request-sync',data:{syncCount:syncRequestLogCountRef.current,isInteractive},timestamp:Date.now()})}).catch(()=>{});
-                // #endregion
-            }
+
             postStateToIframe();
         };
 
@@ -57,12 +47,7 @@ const BlackHoleBackground = ({ isInteractive }) => {
 
         const handleScroll = () => {
             const safeProgress = getSafeProgress();
-            if (scrollLogCountRef.current < 20) {
-                scrollLogCountRef.current += 1;
-                // #region agent log
-                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline3',hypothesisId:'H8',location:'BlackHoleBackground.jsx:handleScroll',message:'scroll-handler-fired',data:{count:scrollLogCountRef.current,scrollY:window.scrollY,docScrollTop:document.documentElement.scrollTop,scrollHeight:document.documentElement.scrollHeight,innerHeight:window.innerHeight,safeProgress,isInteractive},timestamp:Date.now()})}).catch(()=>{});
-                // #endregion
-            }
+
 
             if (!isInteractive) {
                 lastProgressRef.current = safeProgress;
@@ -84,12 +69,7 @@ const BlackHoleBackground = ({ isInteractive }) => {
             if (!isInteractive) {
                 lastProgressRef.current = safeProgress;
             }
-            if (heartbeatLogCountRef.current < 4) {
-                heartbeatLogCountRef.current += 1;
-                // #region agent log
-                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline',hypothesisId:'H6',location:'BlackHoleBackground.jsx:syncTimer',message:'periodic-sync-tick',data:{tick:heartbeatLogCountRef.current,isInteractive,progressToSend,safeProgress},timestamp:Date.now()})}).catch(()=>{});
-                // #endregion
-            }
+
             postStateToIframe(progressToSend);
         }, 120);
 

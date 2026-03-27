@@ -128,9 +128,7 @@ export default class Camera {
             controls.update()
             const finiteState = Number.isFinite(debug.instance.position.x) && Number.isFinite(debug.instance.position.y) && Number.isFinite(debug.instance.position.z) && Number.isFinite(debug.instance.position.length())
             if (!finiteState) {
-                // #region agent log
-                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0b6722' }, body: JSON.stringify({ sessionId: '0b6722', runId: 'baseline6', hypothesisId: 'H12', location: 'Camera.js:interactive-nonfinite', message: 'non-finite-camera-state', data: { x: debug.instance.position.x, y: debug.instance.position.y, z: debug.instance.position.z, len: debug.instance.position.length(), minDistance: controls.minDistance, maxDistance: controls.maxDistance }, timestamp: Date.now() }) }).catch(() => { });
-                // #endregion
+
             }
 
             // 3. Read the resulting coordinates caused by the user's drag
@@ -152,15 +150,11 @@ export default class Camera {
                 debug.hasInteracted = true
                 if (debug._debugAnchorInteractLogCount < 8) {
                     debug._debugAnchorInteractLogCount += 1
-                    // #region agent log
-                    fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0b6722' }, body: JSON.stringify({ sessionId: '0b6722', runId: 'baseline7', hypothesisId: 'H13', location: 'Camera.js:interactive-custom-start', message: 'custom-start-updated-from-interaction', data: { count: debug._debugAnchorInteractLogCount, s, currentDist, currentPolar, customStartDist: debug.customStartDist, customStartPolar: debug.customStartPolar }, timestamp: Date.now() }) }).catch(() => { });
-                    // #endregion
+
                 }
             } else if (debug._debugNearEndLogCount < 6) {
                 debug._debugNearEndLogCount += 1
-                // #region agent log
-                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0b6722' }, body: JSON.stringify({ sessionId: '0b6722', runId: 'baseline10', hypothesisId: 'H17', location: 'Camera.js:interactive-near-end', message: 'skipped-custom-start-near-end', data: { count: debug._debugNearEndLogCount, s, currentDist, currentPolar, customStartDist: debug.customStartDist, customStartPolar: debug.customStartPolar }, timestamp: Date.now() }) }).catch(() => { });
-                // #endregion
+
             }
         } else {
             // SCROLLING / IDLE
@@ -182,9 +176,7 @@ export default class Camera {
                     debug.leftBottomSinceInteract = false
                     if (debug._debugAnchorResetLogCount < 8) {
                         debug._debugAnchorResetLogCount += 1
-                        // #region agent log
-                        fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0b6722' }, body: JSON.stringify({ sessionId: '0b6722', runId: 'baseline7', hypothesisId: 'H14', location: 'Camera.js:anchor-reset', message: 'custom-start-reset-to-canonical', data: { count: debug._debugAnchorResetLogCount, s, atTop, atBottom, shouldResetFromTopReturn, shouldResetFromBottomReturn, customStartDist: debug.customStartDist, customStartPolar: debug.customStartPolar }, timestamp: Date.now() }) }).catch(() => { });
-                        // #endregion
+
                     }
                 }
             }
@@ -195,9 +187,7 @@ export default class Camera {
             if (holdTopInteractiveState || holdBottomInteractiveState) {
                 if (debug._debugEdgeLogCount < 8) {
                     debug._debugEdgeLogCount += 1
-                    // #region agent log
-                    fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0b6722' }, body: JSON.stringify({ sessionId: '0b6722', runId: 'baseline8', hypothesisId: 'H16', location: 'Camera.js:edge-hold', message: 'holding-interacted-edge-state', data: { count: debug._debugEdgeLogCount, s, atTop, atBottom, leftTopSinceInteract: debug.leftTopSinceInteract, leftBottomSinceInteract: debug.leftBottomSinceInteract }, timestamp: Date.now() }) }).catch(() => { });
-                    // #endregion
+
                 }
                 const source = this.modes[this.mode].instance
                 source.updateWorldMatrix(true, false)
@@ -212,9 +202,7 @@ export default class Camera {
             const targetPolar = MathUtils.lerp(debug.customStartPolar, debug.endPolar, s)
             if ((atTop || atBottom) && debug._debugEdgeLogCount < 8) {
                 debug._debugEdgeLogCount += 1
-                // #region agent log
-                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0b6722' }, body: JSON.stringify({ sessionId: '0b6722', runId: 'baseline7', hypothesisId: 'H15', location: 'Camera.js:edge-target', message: 'edge-target-computed', data: { count: debug._debugEdgeLogCount, s, atTop, atBottom, targetDist, targetPolar, customStartDist: debug.customStartDist, customStartPolar: debug.customStartPolar }, timestamp: Date.now() }) }).catch(() => { });
-                // #endregion
+
             }
             const currentAzimuth = controls.getAzimuthalAngle()
             const targetPosition = new THREE.Vector3().setFromSpherical(
@@ -226,9 +214,7 @@ export default class Camera {
             const currentDistAfter = debug.instance.position.length()
             if (debug._debugCameraLogCount < 14 && (s > 0 || debug._debugCameraLogCount < 4)) {
                 debug._debugCameraLogCount += 1
-                // #region agent log
-                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0b6722' }, body: JSON.stringify({ sessionId: '0b6722', runId: 'baseline4', hypothesisId: 'H9', location: 'Camera.js:update-non-interactive', message: 'camera-scroll-targets', data: { count: debug._debugCameraLogCount, s, currentDistBefore, currentDistAfter, targetDist, targetPolar, customStartDist: debug.customStartDist, endDist: debug.endDist }, timestamp: Date.now() }) }).catch(() => { });
-                // #endregion
+
             }
 
             // Converge the OrbitControls limits smoothly. We leave a tiny threshold to prevent

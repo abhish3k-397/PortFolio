@@ -25,16 +25,10 @@ import BreachProtocol from './BreachProtocol';
     const [breachDifficulty, setBreachDifficulty] = useState('medium');
     const [isInteractiveMode, setIsInteractiveMode] = useState(false);
     const [forceGlitch, setForceGlitch] = useState(false);
-    const debugRLogRef = useRef(0);
+
     const physicalRDownRef = useRef(false);
 
-    const logRDebug = (location, message, data) => {
-        if (debugRLogRef.current >= 30) return;
-        debugRLogRef.current += 1;
-        // #region agent log
-        fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline5',hypothesisId:'H10',location,message,data:{...data,count:debugRLogRef.current},timestamp:Date.now()})}).catch(()=>{});
-        // #endregion
-    };
+
 
     useEffect(() => {
         const isTextFieldTarget = (target) => {
@@ -54,7 +48,6 @@ import BreachProtocol from './BreachProtocol';
                 if (!physicalRDownRef.current) {
                     physicalRDownRef.current = true;
                     toggleInteractive();
-                    logRDebug('Layout.jsx:handleKeyDown', 'parent-r-keydown-toggle', { key:e.key, targetTag:e.target?.tagName||null, hasFocus:document.hasFocus() });
                 }
             }
         };
@@ -63,7 +56,6 @@ import BreachProtocol from './BreachProtocol';
             if (isTextFieldTarget(e.target)) return;
             if (e.key === 'r' || e.key === 'R') {
                 physicalRDownRef.current = false;
-                logRDebug('Layout.jsx:handleKeyUp', 'parent-r-keyup', { key:e.key, targetTag:e.target?.tagName||null, hasFocus:document.hasFocus() });
             }
         };
 
@@ -75,18 +67,15 @@ import BreachProtocol from './BreachProtocol';
                 if (!physicalRDownRef.current) {
                     physicalRDownRef.current = true;
                     toggleInteractive();
-                    logRDebug('Layout.jsx:handleIframeInteractionKey', 'iframe-r-keydown-toggle', { isPressed:true, hasFocus:document.hasFocus() });
                 }
             } else {
                 physicalRDownRef.current = false;
-                logRDebug('Layout.jsx:handleIframeInteractionKey', 'iframe-r-keyup', { isPressed:false, hasFocus:document.hasFocus() });
             }
         };
 
         const handleBlur = () => {
             if (!document.hasFocus()) {
                 physicalRDownRef.current = false;
-                logRDebug('Layout.jsx:handleBlur', 'forced-r-reset-on-blur', { hasFocus:document.hasFocus() });
             }
         };
 
@@ -126,9 +115,7 @@ import BreachProtocol from './BreachProtocol';
 
     const isRPressed = isInteractiveMode; // keep name so the rest works exactly the same
 
-    useEffect(() => {
-        logRDebug('Layout.jsx:isRPressedEffect', 'isRPressed-state-changed', { isRPressed, hasFocus:document.hasFocus(), activeTag:document.activeElement?.tagName||null });
-    }, [isRPressed]);
+
 
     // Easter Egg: Konami Code - does nothing, just plays a sound
     useEffect(() => {
