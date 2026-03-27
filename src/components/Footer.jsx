@@ -33,9 +33,9 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className={`relative z-[60] md:z-10 mt-20 border-t-2 transition-colors duration-500 overflow-hidden ${theme === 'cyberpunk'
-            ? 'border-cyber-yellow/50 bg-black text-cyber-neon'
-            : 'border-white/20 bg-black text-white'
+        <footer className={`relative z-[60] md:z-10 mt-20 border-t-2 transition-colors duration-500 overflow-hidden max-md:backdrop-blur-md ${theme === 'cyberpunk'
+            ? 'border-cyber-yellow/50 bg-black/60 md:bg-black text-cyber-neon'
+            : 'border-white/20 bg-black/60 md:bg-black text-white'
         }`}>
 
             {/* Background Texture */}
