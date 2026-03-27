@@ -103,6 +103,15 @@ export default class Camera {
         if (debug.customStartDist === undefined) {
             debug.customStartDist = debug.startDist
             debug.customStartPolar = debug.startPolar
+            debug._debugCameraLogCount = 0
+            debug._debugZoomLogCount = 0
+            debug._debugAnchorInteractLogCount = 0
+            debug._debugAnchorResetLogCount = 0
+            debug._debugEdgeLogCount = 0
+            debug._debugNearEndLogCount = 0
+            debug.hasInteracted = false
+            debug.leftTopSinceInteract = false
+            debug.leftBottomSinceInteract = false
         }
 
         controls.autoRotate = true
@@ -114,33 +123,14 @@ export default class Camera {
             controls.minPolarAngle = 0
             controls.maxPolarAngle = Math.PI
 
-            // Trackpad gestures: two-finger drag rotates/tilts, pinch zooms.
-            const gestureX = this.experience.trackpadDeltaX || 0
-            const gestureY = this.experience.trackpadDeltaY || 0
-            const isPinchGesture = !!this.experience.trackpadIsPinch
-            this.experience.trackpadDeltaX = 0
-            this.experience.trackpadDeltaY = 0
-            this.experience.trackpadIsPinch = false
-
-            if (Math.abs(gestureX) > 0.001 || Math.abs(gestureY) > 0.001) {
-                const absX = Math.abs(gestureX)
-                const absY = Math.abs(gestureY)
-                const verticalDominant = absY > absX * 1.6 && absY > 1.5
-                if (isPinchGesture || verticalDominant) {
-                    const zoomScale = Math.exp(Math.min(absY, 100) * 0.0035)
-                    if (gestureY > 0) {
-                        controls.dollyOut(zoomScale)
-                    } else {
-                        controls.dollyIn(zoomScale)
-                    }
-                } else {
-                    controls.rotateLeft(gestureX * 0.0045)
-                    controls.rotateUp(gestureY * 0.0045)
-                }
-            }
-
             // 2. MUST process the drag right now while unlocked
             controls.update()
+            const finiteState = Number.isFinite(debug.instance.position.x) && Number.isFinite(debug.instance.position.y) && Number.isFinite(debug.instance.position.z) && Number.isFinite(debug.instance.position.length())
+            if (!finiteState) {
+                // #region agent log
+                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline6',hypothesisId:'H12',location:'Camera.js:interactive-nonfinite',message:'non-finite-camera-state',data:{x:debug.instance.position.x,y:debug.instance.position.y,z:debug.instance.position.z,len:debug.instance.position.length(),minDistance:controls.minDistance,maxDistance:controls.maxDistance},timestamp:Date.now()})}).catch(()=>{});
+                // #endregion
+            }
 
             // 3. Read the resulting coordinates caused by the user's drag
             const currentDist = debug.instance.position.length()
@@ -148,28 +138,97 @@ export default class Camera {
 
             // 4. Recalculate the virtual 'Start' anchor so that the cinematic path
             // passes exactly through this current user viewpoint.
-            // Start = (Current - End * s) / (1 - s)
+            // We solve in Cartesian space for better stability:
+            // startPos = (currentPos - endPos * s) / (1 - s)
             if (s < 0.99) {
-                const newStartDist = (currentDist - debug.endDist * s) / (1 - s)
-                const newStartPolar = (currentPolar - debug.endPolar * s) / (1 - s)
+                const denominator = 1 - s
+                const solvedStartPosition = debug.instance.position.clone().sub(debug.endPosition.clone().multiplyScalar(s)).multiplyScalar(1 / denominator)
+                const solvedStartDist = solvedStartPosition.length()
+                const solvedStartPolar = Math.acos(THREE.MathUtils.clamp(solvedStartPosition.y / Math.max(solvedStartDist, 0.0001), -1, 1))
 
-                if (isFinite(newStartDist)) debug.customStartDist = newStartDist
-                if (isFinite(newStartPolar)) debug.customStartPolar = THREE.MathUtils.clamp(newStartPolar, 0, Math.PI)
+                if (Number.isFinite(solvedStartDist)) debug.customStartDist = solvedStartDist
+                if (Number.isFinite(solvedStartPolar)) debug.customStartPolar = solvedStartPolar
+                debug.hasInteracted = true
+                if (debug._debugAnchorInteractLogCount < 8) {
+                    debug._debugAnchorInteractLogCount += 1
+                    // #region agent log
+                    fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline7',hypothesisId:'H13',location:'Camera.js:interactive-custom-start',message:'custom-start-updated-from-interaction',data:{count:debug._debugAnchorInteractLogCount,s,currentDist,currentPolar,customStartDist:debug.customStartDist,customStartPolar:debug.customStartPolar},timestamp:Date.now()})}).catch(()=>{});
+                    // #endregion
+                }
+            } else if (debug._debugNearEndLogCount < 6) {
+                debug._debugNearEndLogCount += 1
+                // #region agent log
+                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline10',hypothesisId:'H17',location:'Camera.js:interactive-near-end',message:'skipped-custom-start-near-end',data:{count:debug._debugNearEndLogCount,s,currentDist,currentPolar,customStartDist:debug.customStartDist,customStartPolar:debug.customStartPolar},timestamp:Date.now()})}).catch(()=>{});
+                // #endregion
             }
         } else {
             // SCROLLING / IDLE
             controls.update()
 
-            // Once the cinematic reaches the end, restore canonical start anchors.
-            // Scrolling back up then always returns to the canonical start position.
-            if (s >= 0.999) {
-                debug.customStartDist = debug.startDist
-                debug.customStartPolar = debug.startPolar
+            const atTop = s <= 0.001
+            const atBottom = s >= 0.999
+            if (debug.hasInteracted) {
+                if (!atTop) debug.leftTopSinceInteract = true
+                if (!atBottom) debug.leftBottomSinceInteract = true
+
+                const shouldResetFromTopReturn = atTop && debug.leftTopSinceInteract
+                const shouldResetFromBottomReturn = atBottom && debug.leftBottomSinceInteract
+                if (shouldResetFromTopReturn || shouldResetFromBottomReturn) {
+                    debug.customStartDist = debug.startDist
+                    debug.customStartPolar = debug.startPolar
+                    debug.hasInteracted = false
+                    debug.leftTopSinceInteract = false
+                    debug.leftBottomSinceInteract = false
+                    if (debug._debugAnchorResetLogCount < 8) {
+                        debug._debugAnchorResetLogCount += 1
+                        // #region agent log
+                        fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline7',hypothesisId:'H14',location:'Camera.js:anchor-reset',message:'custom-start-reset-to-canonical',data:{count:debug._debugAnchorResetLogCount,s,atTop,atBottom,shouldResetFromTopReturn,shouldResetFromBottomReturn,customStartDist:debug.customStartDist,customStartPolar:debug.customStartPolar},timestamp:Date.now()})}).catch(()=>{});
+                        // #endregion
+                    }
+                }
             }
 
             // Calculate exact target coordinates for current scroll 
+            const holdTopInteractiveState = debug.hasInteracted && atTop && !debug.leftTopSinceInteract
+            const holdBottomInteractiveState = debug.hasInteracted && atBottom && !debug.leftBottomSinceInteract
+            if (holdTopInteractiveState || holdBottomInteractiveState) {
+                if (debug._debugEdgeLogCount < 8) {
+                    debug._debugEdgeLogCount += 1
+                    // #region agent log
+                    fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline8',hypothesisId:'H16',location:'Camera.js:edge-hold',message:'holding-interacted-edge-state',data:{count:debug._debugEdgeLogCount,s,atTop,atBottom,leftTopSinceInteract:debug.leftTopSinceInteract,leftBottomSinceInteract:debug.leftBottomSinceInteract},timestamp:Date.now()})}).catch(()=>{});
+                    // #endregion
+                }
+                const source = this.modes[this.mode].instance
+                source.updateWorldMatrix(true, false)
+                this.instance.position.set(0, 0, 0)
+                this.instance.quaternion.set(0, 0, 0, 0)
+                this.instance.scale.set(1, 1, 1)
+                this.instance.applyMatrix4(source.matrixWorld)
+                return
+            }
+
             const targetDist = MathUtils.lerp(debug.customStartDist, debug.endDist, s)
             const targetPolar = MathUtils.lerp(debug.customStartPolar, debug.endPolar, s)
+            if ((atTop || atBottom) && debug._debugEdgeLogCount < 8) {
+                debug._debugEdgeLogCount += 1
+                // #region agent log
+                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline7',hypothesisId:'H15',location:'Camera.js:edge-target',message:'edge-target-computed',data:{count:debug._debugEdgeLogCount,s,atTop,atBottom,targetDist,targetPolar,customStartDist:debug.customStartDist,customStartPolar:debug.customStartPolar},timestamp:Date.now()})}).catch(()=>{});
+                // #endregion
+            }
+            const currentAzimuth = controls.getAzimuthalAngle()
+            const targetPosition = new THREE.Vector3().setFromSpherical(
+                new THREE.Spherical(targetDist, targetPolar, currentAzimuth)
+            )
+            const currentDistBefore = debug.instance.position.length()
+            debug.instance.position.lerp(targetPosition, 0.12)
+            debug.instance.lookAt(0, 0, 0)
+            const currentDistAfter = debug.instance.position.length()
+            if (debug._debugCameraLogCount < 14 && (s > 0 || debug._debugCameraLogCount < 4)) {
+                debug._debugCameraLogCount += 1
+                // #region agent log
+                fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline4',hypothesisId:'H9',location:'Camera.js:update-non-interactive',message:'camera-scroll-targets',data:{count:debug._debugCameraLogCount,s,currentDistBefore,currentDistAfter,targetDist,targetPolar,customStartDist:debug.customStartDist,endDist:debug.endDist},timestamp:Date.now()})}).catch(()=>{});
+                // #endregion
+            }
 
             // Converge the OrbitControls limits smoothly. We leave a tiny threshold to prevent
             // math locks within OrbitControls logic.

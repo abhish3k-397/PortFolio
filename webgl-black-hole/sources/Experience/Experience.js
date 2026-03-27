@@ -45,9 +45,7 @@ export default class Experience
         // Scroll progress & Interaction state
         this.scrollProgress = 0
         this.isInteractive = false
-        this.trackpadDeltaX = 0
-        this.trackpadDeltaY = 0
-        this.trackpadIsPinch = false
+        this._debugMsgLogCount = 0
 
         window.addEventListener('message', (event) => {
             if (event.data.type === 'scroll-progress') {
@@ -55,22 +53,24 @@ export default class Experience
                 if (event.data.isInteractive !== undefined) {
                     this.isInteractive = event.data.isInteractive
                 }
+                if (this._debugMsgLogCount < 8) {
+                    this._debugMsgLogCount += 1
+                    // #region agent log
+                    fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline',hypothesisId:'H3',location:'Experience.js:message-scroll-progress',message:'experience-received-scroll-progress',data:{msgCount:this._debugMsgLogCount,progress:this.scrollProgress,isInteractive:this.isInteractive},timestamp:Date.now()})}).catch(()=>{});
+                    // #endregion
+                }
             }
             if (event.data.type === 'interaction-state') {
                 this.isInteractive = event.data.isInteractive
+                if (this._debugMsgLogCount < 8) {
+                    this._debugMsgLogCount += 1
+                    // #region agent log
+                    fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline',hypothesisId:'H4',location:'Experience.js:message-interaction-state',message:'experience-received-interaction-state',data:{msgCount:this._debugMsgLogCount,isInteractive:this.isInteractive},timestamp:Date.now()})}).catch(()=>{});
+                    // #endregion
+                }
             }
         })
 
-        window.addEventListener('webgl-trackpad-gesture', (event) => {
-            if (!this.isInteractive) return
-            const detail = event.detail || {}
-            const deltaMode = detail.deltaMode || 0
-            const modeMultiplier = deltaMode === 1 ? 16 : (deltaMode === 2 ? 120 : 1)
-            this.trackpadDeltaX += (detail.deltaX || 0) * modeMultiplier
-            this.trackpadDeltaY += (detail.deltaY || 0) * modeMultiplier
-            this.trackpadIsPinch = !!detail.ctrlKey
-        })
-        
         this.sizes.on('resize', () =>
         {
             this.resize()

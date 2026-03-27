@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSoundFX } from '../context/SoundContext';
 import { useAchievements } from '../context/AchievementContext';
@@ -23,8 +23,18 @@ import BreachProtocol from './BreachProtocol';
     const [showHackGame, setShowHackGame] = useState(false);
     const [isBreachActive, setIsBreachActive] = useState(false);
     const [breachDifficulty, setBreachDifficulty] = useState('medium');
-    const [isRPressed, setIsRPressed] = useState(false);
+    const [isInteractiveMode, setIsInteractiveMode] = useState(false);
     const [forceGlitch, setForceGlitch] = useState(false);
+    const debugRLogRef = useRef(0);
+    const physicalRDownRef = useRef(false);
+
+    const logRDebug = (location, message, data) => {
+        if (debugRLogRef.current >= 30) return;
+        debugRLogRef.current += 1;
+        // #region agent log
+        fetch('http://127.0.0.1:7566/ingest/ddb65d42-c42b-4d3f-a233-340b59f387ad',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'0b6722'},body:JSON.stringify({sessionId:'0b6722',runId:'baseline5',hypothesisId:'H10',location,message,data:{...data,count:debugRLogRef.current},timestamp:Date.now()})}).catch(()=>{});
+        // #endregion
+    };
 
     useEffect(() => {
         const isTextFieldTarget = (target) => {
@@ -33,48 +43,64 @@ import BreachProtocol from './BreachProtocol';
             return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
         };
 
+        const toggleInteractive = () => {
+            setIsInteractiveMode(prev => !prev);
+        };
+
         const handleKeyDown = (e) => {
             if (isTextFieldTarget(e.target)) return;
             if (e.key === 'r' || e.key === 'R') {
-                setIsRPressed(true);
+                if (e.repeat) return; // Prevent toggling rapidly when holding down the key
+                if (!physicalRDownRef.current) {
+                    physicalRDownRef.current = true;
+                    toggleInteractive();
+                    logRDebug('Layout.jsx:handleKeyDown', 'parent-r-keydown-toggle', { key:e.key, targetTag:e.target?.tagName||null, hasFocus:document.hasFocus() });
+                }
             }
         };
+
         const handleKeyUp = (e) => {
             if (isTextFieldTarget(e.target)) return;
             if (e.key === 'r' || e.key === 'R') {
-                setIsRPressed(false);
+                physicalRDownRef.current = false;
+                logRDebug('Layout.jsx:handleKeyUp', 'parent-r-keyup', { key:e.key, targetTag:e.target?.tagName||null, hasFocus:document.hasFocus() });
             }
         };
+
         const handleIframeInteractionKey = (e) => {
             if (!e.data || e.data.type !== 'webgl-interaction-key') return;
             if (typeof e.data.isPressed !== 'boolean') return;
-            setIsRPressed(e.data.isPressed);
+            
+            if (e.data.isPressed) {
+                if (!physicalRDownRef.current) {
+                    physicalRDownRef.current = true;
+                    toggleInteractive();
+                    logRDebug('Layout.jsx:handleIframeInteractionKey', 'iframe-r-keydown-toggle', { isPressed:true, hasFocus:document.hasFocus() });
+                }
+            } else {
+                physicalRDownRef.current = false;
+                logRDebug('Layout.jsx:handleIframeInteractionKey', 'iframe-r-keyup', { isPressed:false, hasFocus:document.hasFocus() });
+            }
         };
+
         const handleBlur = () => {
-            // Keep the key state during iframe focus transitions.
-            // We only force-reset when the document truly loses focus.
             if (!document.hasFocus()) {
-                setIsRPressed(false);
+                physicalRDownRef.current = false;
+                logRDebug('Layout.jsx:handleBlur', 'forced-r-reset-on-blur', { hasFocus:document.hasFocus() });
             }
         };
 
         const handleTouchStart = (e) => {
             if (e.touches.length >= 2) {
-                setIsRPressed(prev => {
-                    if (!prev) {
-                        setForceGlitch(true);
-                        setTimeout(() => setForceGlitch(false), 500);
-                        playClick(); // mechanical feedback sound
-                    }
-                    return true;
-                });
+                toggleInteractive();
+                setForceGlitch(true);
+                setTimeout(() => setForceGlitch(false), 500);
+                playClick();
             }
         };
 
         const handleTouchEnd = (e) => {
-            if (e.touches.length < 2) {
-                setIsRPressed(false);
-            }
+            // Nothing to do for toggle mode
         };
 
         window.addEventListener('keydown', handleKeyDown);
@@ -97,6 +123,12 @@ import BreachProtocol from './BreachProtocol';
             window.removeEventListener('touchcancel', handleTouchEnd);
         };
     }, [playClick]);
+
+    const isRPressed = isInteractiveMode; // keep name so the rest works exactly the same
+
+    useEffect(() => {
+        logRDebug('Layout.jsx:isRPressedEffect', 'isRPressed-state-changed', { isRPressed, hasFocus:document.hasFocus(), activeTag:document.activeElement?.tagName||null });
+    }, [isRPressed]);
 
     // Easter Egg: Konami Code - does nothing, just plays a sound
     useEffect(() => {
