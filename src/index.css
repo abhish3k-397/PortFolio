@@ -321,3 +321,165 @@ body {
 .glitch-text {
   animation: glitch-skew 4s infinite step-end;
 }
+
+/* ═══════════════════════════════════════════════════════
+   TERMINAL — Shared
+   ═══════════════════════════════════════════════════════ */
+
+/* Terminal cursor blink */
+@keyframes terminal-cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.animate-terminal-cursor {
+  animation: terminal-cursor-blink 1s step-end infinite;
+}
+
+/* Terminal entrance animation */
+@keyframes terminal-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(16px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+.terminal-enter {
+  animation: terminal-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════
+   TERMINAL — Cyberpunk
+   ═══════════════════════════════════════════════════════ */
+
+/* Scanline sweep */
+@keyframes scanline-sweep {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.animate-scanline-sweep {
+  animation: scanline-sweep 4s linear infinite;
+}
+
+/* CRT glow pulse for cursor */
+@keyframes terminal-cyber-cursor {
+  0%, 49% {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(252, 238, 10, 0.8), 0 0 15px rgba(252, 238, 10, 0.4);
+  }
+  50%, 100% {
+    opacity: 0;
+    box-shadow: none;
+  }
+}
+
+.animate-terminal-cyber-cursor {
+  animation: terminal-cyber-cursor 0.8s step-end infinite;
+}
+
+/* Ambient flicker for the terminal window */
+@keyframes terminal-ambient-flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  92% { opacity: 1; filter: brightness(1); }
+  93% { opacity: 0.98; filter: brightness(1.02); }
+  94% { opacity: 1; filter: brightness(1); }
+  97% { opacity: 0.99; filter: brightness(1.01); }
+  98% { opacity: 1; filter: brightness(1); }
+}
+
+/* Cyberpunk header glow line */
+@keyframes terminal-header-glow {
+  0%, 100% { opacity: 0.3; box-shadow: 0 0 5px rgba(0, 243, 255, 0.2); }
+  50% { opacity: 0.7; box-shadow: 0 0 15px rgba(0, 243, 255, 0.5); }
+}
+
+/* Grid background for cyber terminal */
+.terminal-cyber-grid {
+  background-image:
+    linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Cyber terminal scrollbar */
+.terminal-cyber-scroll::-webkit-scrollbar {
+  width: 4px;
+  display: block;
+}
+.terminal-cyber-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-cyber-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 243, 255, 0.15);
+  border-radius: 2px;
+}
+.terminal-cyber-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 243, 255, 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════
+   TERMINAL — InkPaper
+   ═══════════════════════════════════════════════════════ */
+
+/* Ink cursor blink — gentler */
+@keyframes terminal-ink-cursor {
+  0%, 49% { opacity: 0.8; }
+  50%, 100% { opacity: 0; }
+}
+
+.terminal-ink-cursor {
+  animation: terminal-ink-cursor 1.2s step-end infinite;
+}
+
+/* Washi paper noise overlay */
+.terminal-ink-paper-texture {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.035;
+}
+
+/* Ink terminal scrollbar */
+.terminal-ink-scroll::-webkit-scrollbar {
+  width: 3px;
+  display: block;
+}
+.terminal-ink-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-ink-scroll::-webkit-scrollbar-thumb {
+  background: rgba(139, 69, 19, 0.15);
+  border-radius: 2px;
+}
+.terminal-ink-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 69, 19, 0.3);
+}
+
+/* Ink header underline */
+@keyframes terminal-ink-brush {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+/* Close button hover animation */
+.terminal-close-btn {
+  transition: all 0.2s ease;
+}
+.terminal-close-btn:hover {
+  transform: scale(1.15);
+}
+
+/* Hide scrollbar on trackpad scrolling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

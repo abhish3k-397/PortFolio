@@ -80,35 +80,35 @@ import TerminalCLI from './TerminalCLI';
     }
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 ${theme === 'cyberpunk' ? 'bg-black/60' : 'bg-[#2c2418]/70'} backdrop-blur-sm`}>
             <div className="w-full max-w-2xl animate-in fade-in zoom-in duration-200">
-                <Command
+                    <Command
                     className={`
                         w-full rounded-xl border shadow-2xl overflow-hidden
                         ${theme === 'cyberpunk'
                             ? 'bg-black/90 border-cyber-neon shadow-[0_0_30px_rgba(0,243,255,0.2)]'
-                            : 'bg-slate-900/90 border-white/10'
+                            : 'bg-[#2c2418]/95 border-[#c4956a]/40 shadow-[0_0_30px_rgba(0,0,0,0.3)]'
                         }
                     `}
                     loop
                 >
-                    <div className="flex items-center border-b border-white/10 px-4" cmdk-input-wrapper="">
-                        <Search className={`w-5 h-5 mr-2 ${theme === 'cyberpunk' ? 'text-cyber-neon' : 'text-gray-400'}`} />
+                    <div className={`flex items-center border-b px-4 ${theme === 'cyberpunk' ? 'border-white/10' : 'border-[#c4956a]/20'}`} cmdk-input-wrapper="">
+                        <Search className={`w-5 h-5 mr-2 ${theme === 'cyberpunk' ? 'text-cyber-neon' : 'text-[#c4956a]'}`} />
                         <Command.Input
                             placeholder="Type a command or search..."
                             className={`
-                                w-full bg-transparent py-4 text-lg outline-none placeholder:text-gray-500
-                                ${theme === 'cyberpunk' ? 'text-white' : 'text-white'}
+                                w-full bg-transparent py-4 text-lg outline-none
+                                ${theme === 'cyberpunk' ? 'text-white placeholder:text-gray-500' : 'text-[#f5f0e8] placeholder:text-[#8b6914]/50'}
                             `}
                         />
                     </div>
 
                     <Command.List className="max-h-[60vh] overflow-y-auto p-2 scroll-py-2">
-                        <Command.Empty className="py-6 text-center text-gray-500">
+                        <Command.Empty className={`py-6 text-center ${theme === 'cyberpunk' ? 'text-gray-500' : 'text-[#8b6914]/50'}`}>
                             No results found.
                         </Command.Empty>
 
-                        <Command.Group heading="Navigation" className="text-xs font-bold text-gray-500 mb-2 px-2 mt-2">
+                        <Command.Group heading="Navigation" className={`text-xs font-bold mb-2 px-2 mt-2 ${theme === 'cyberpunk' ? 'text-gray-500' : 'text-[#8b6914]/70'}`}>
                             <Command.Item
                                 onSelect={() => scrollToSection('hero')}
                                 className={`
@@ -177,7 +177,7 @@ import TerminalCLI from './TerminalCLI';
                             </Command.Item>
                         </Command.Group>
 
-                        <Command.Group heading="Theme" className="text-xs font-bold text-gray-500 mb-2 px-2 mt-4">
+                        <Command.Group heading="Theme" className={`text-xs font-bold mb-2 px-2 mt-4 ${theme === 'cyberpunk' ? 'text-gray-500' : 'text-[#8b6914]/70'}`}>
                             <Command.Item
                                 onSelect={() => handleThemeChange('cyberpunk')}
                                 className={`
@@ -203,7 +203,7 @@ import TerminalCLI from './TerminalCLI';
 
                         </Command.Group>
 
-                        <Command.Group heading="Socials" className="text-xs font-bold text-gray-500 mb-2 px-2 mt-4">
+                        <Command.Group heading="Socials" className={`text-xs font-bold mb-2 px-2 mt-4 ${theme === 'cyberpunk' ? 'text-gray-500' : 'text-[#8b6914]/70'}`}>
                             <Command.Item
                                 onSelect={() => openLink('https://github.com/abhish3k-397')}
                                 className={`
@@ -229,10 +229,10 @@ import TerminalCLI from './TerminalCLI';
                         </Command.Group>
                     </Command.List>
 
-                    <div className="border-t border-white/10 px-4 py-2 flex justify-between items-center text-xs text-gray-500">
+                    <div className={`border-t px-4 py-2 flex justify-between items-center text-xs ${theme === 'cyberpunk' ? 'border-white/10 text-gray-500' : 'border-[#c4956a]/20 text-[#8b6914]/60'}`}>
                         <span>Use arrow keys to navigate</span>
                         <div className="flex gap-2">
-                            <span className="bg-white/10 px-1.5 py-0.5 rounded">↵</span>
+                            <span className={`px-1.5 py-0.5 rounded ${theme === 'cyberpunk' ? 'bg-white/10' : 'bg-[#c4956a]/15'}`}>↵</span>
                             <span>to select</span>
                         </div>
                     </div>

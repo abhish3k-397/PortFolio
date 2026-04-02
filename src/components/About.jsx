@@ -41,7 +41,7 @@ const About = () => {
         <section id="skills" ref={containerRef} className="min-h-screen py-20 px-4 flex flex-col items-center justify-center relative z-10">
             <h2 className={`text-4xl md:text-6xl font-black mb-16 ${theme === 'cyberpunk' ? 'text-cyber-red' : 'text-white'
                 }`}>
-                SKILLSET_DATABASE
+                SKILL.md
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full">

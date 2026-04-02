@@ -52,6 +52,33 @@ export const ACHIEVEMENTS = {
       description: 'Completed Breach Protocol on hard difficulty',
       icon: 'cpu',
       secret: true
+    },
+    SHELL_EXPERT: {
+      id: 'shell_expert',
+      title: 'SHELL_EXPERT',
+      description: 'Executed 50+ commands in a single session',
+      icon: 'terminal',
+      secret: true
+    },
+    FILE_EXPLORER: {
+      id: 'file_explorer',
+      title: 'FILE_EXPLORER',
+      description: 'Read every file in the virtual filesystem',
+      icon: 'folder',
+      secret: true
+    },
+    FORTUNE_FINDER: {
+      id: 'fortune_finder',
+      title: 'FORTUNE_FINDER',
+      description: 'Discovered the fortune command',
+      icon: 'sparkles'
+    },
+    MATRIX_VIEWER: {
+      id: 'matrix_viewer',
+      title: 'WAKE_UP_NEO',
+      description: 'Executed the matrix command',
+      icon: 'monitor',
+      secret: true
     }
 };
 

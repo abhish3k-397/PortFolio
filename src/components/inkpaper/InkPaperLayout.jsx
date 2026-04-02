@@ -4,6 +4,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link, Outlet, useLocation, useNavigate, useOutlet } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from 'lenis';
+import CommandPalette from '../CommandPalette';
+import HackingGame from '../HackingGame';
+import BreachProtocol from '../BreachProtocol';
+import AchievementPopup from '../AchievementPopup';
 import './InkPaper.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -42,6 +46,9 @@ const InkPaperLayout = () => {
         const saved = localStorage.getItem('inkpaper-dark');
         return saved === 'true';
     });
+    const [showHackGame, setShowHackGame] = useState(false);
+    const [isBreachActive, setIsBreachActive] = useState(false);
+    const [breachDifficulty, setBreachDifficulty] = useState('medium');
     const locationRef = useRef(location.pathname);
 
     // Persist dark mode and handle route jump
@@ -343,6 +350,24 @@ const InkPaperLayout = () => {
 
     return (
         <div className={`inkpaper-wrapper ${isDark ? 'inkpaper-dark' : ''}`} ref={containerRef}>
+
+            {/* Terminal / Command Palette (Ctrl+K) */}
+            <CommandPalette
+                onStartHack={() => setShowHackGame(true)}
+                onStartBreach={(difficulty) => {
+                    setIsBreachActive(true);
+                    setBreachDifficulty(difficulty);
+                }}
+            />
+            {showHackGame && <HackingGame onClose={() => setShowHackGame(false)} />}
+            {isBreachActive && (
+                <BreachProtocol
+                    onComplete={() => setIsBreachActive(false)}
+                    onExit={() => setIsBreachActive(false)}
+                    difficulty={breachDifficulty}
+                />
+            )}
+            <AchievementPopup />
 
             {/* ===== CLICK-TO-ENTER OVERLAY ===== */}
             {!isEntered && (

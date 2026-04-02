@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTheme } from '../context/ThemeContext';
 import { useAchievements, ACHIEVEMENTS } from '../context/AchievementContext';
-import { Trophy, Lock, Terminal, Gamepad, FileText, Clock, Code, Zap } from 'lucide-react';
+import { Trophy, Lock, Terminal, Gamepad, FileText, Clock, Code, Zap, Folder, Sparkles, Monitor } from 'lucide-react';
 import ElectricBorder from './ElectricBorder';
 import TiltCard from './TiltCard';
 
@@ -38,6 +38,10 @@ const Achievements = () => {
             case 'clock': return Clock;
             case 'code': return Code;
             case 'zap': return Zap;
+            case 'cpu': return Zap;
+            case 'folder': return Folder;
+            case 'sparkles': return Sparkles;
+            case 'monitor': return Monitor;
             default: return Trophy;
         }
     };
@@ -83,7 +87,7 @@ const Achievements = () => {
                                         {/* Locked Overlay (Mist) */}
                                         {!isUnlocked && (
                                             <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-[2px]">
-                                                <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+                                                <div className="absolute inset-0 opacity-20 terminal-ink-paper-texture mix-blend-overlay"></div>
                                                 <Lock className="w-12 h-12 text-white/20 mb-2" />
                                                 <div className="absolute bottom-4 text-xs font-mono text-white/30 tracking-widest">
                                                     LOCKED_DATA
