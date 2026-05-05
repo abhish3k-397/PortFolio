@@ -16,7 +16,7 @@
     "dependencies": {
         "@react-three/drei": "9.99.0",
         "@react-three/fiber": "8.15.16",
-        "@react-three/rapier": "^2.2.0",
+        "@react-three/rapier": "^1",
         "@studio-freight/lenis": "^1.0.42",
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",

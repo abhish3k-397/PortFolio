@@ -8,7 +8,6 @@ import CommandPalette from '../CommandPalette';
 import HackingGame from '../HackingGame';
 import BreachProtocol from '../BreachProtocol';
 import AchievementPopup from '../AchievementPopup';
-import Lanyard from '../Lanyard';
 import './InkPaper.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -382,10 +381,8 @@ const InkPaperLayout = () => {
                                 <div>ポートフォリオ</div>
                             </h2>
                         </div>
-                        <div className="inkpaper-overlay__image-wrapper" style={{ pointerEvents: 'auto' }}>
-                            <div className="inkpaper-overlay__image" style={{ width: '100%', height: '100%' }}>
-                                <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
-                            </div>
+                        <div className="inkpaper-overlay__image-wrapper">
+                            <img src="/professional.png" alt="Abhishek Krishna" className="inkpaper-overlay__image" />
                         </div>
                         <div className="inkpaper-overlay__right">
                             <p className="inkpaper-overlay__cta">
